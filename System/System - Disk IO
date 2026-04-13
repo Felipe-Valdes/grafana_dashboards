@@ -246,6 +246,7 @@
             "mean",
             "p90",
             "stdDev",
+            "max",
             "last"
           ],
           "displayMode": "table",
@@ -526,6 +527,7 @@
             "mean",
             "p90",
             "stdDev",
+            "max",
             "last"
           ],
           "displayMode": "table",
@@ -715,6 +717,7 @@
             "mean",
             "p90",
             "stdDev",
+            "max",
             "last"
           ],
           "displayMode": "table",
@@ -814,6 +817,7 @@
             "mean",
             "p90",
             "stdDev",
+            "max",
             "last"
           ],
           "displayMode": "table",
@@ -908,6 +912,7 @@
             "mean",
             "p90",
             "stdDev",
+            "max",
             "last"
           ],
           "displayMode": "table",
@@ -1041,6 +1046,6 @@
   "timezone": "browser",
   "title": "System - Disk I/O",
   "uid": "adpgjzb",
-  "version": 11,
+  "version": 12,
   "weekStart": ""
 }

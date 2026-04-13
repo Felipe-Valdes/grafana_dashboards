@@ -26,19 +26,19 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 6,
         "w": 4,
         "x": 0,
         "y": 0
       },
-      "id": 1,
+      "id": 1001,
       "options": {
         "code": {
           "language": "plaintext",
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; gap: 8px; overflow: hidden; padding: 10px;\">\n  <img src=\"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/linux.svg\" style=\"height: 50%; width: auto; filter: invert(0.8);\" />\n  <span style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 24px; font-weight: 500; color: #8E8E8E; letter-spacing: 1px; line-height: 1.2; text-transform: uppercase;\">Memory</span>\n</div>",
+        "content": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 5px; box-sizing: border-box; overflow: hidden;\">\n  <img src=\"https://www.svgrepo.com/show/448221/docker.svg\" style=\"height: 35%; width: auto; object-fit: contain; margin-bottom: 8px; flex-shrink: 0;\" />\n  <div style=\"font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; font-size: 22px; font-weight: 700; color: #2496ed; line-height: 1; text-align: center; width: 100%; word-wrap: break-word; display: block;\">\n    $container\n  </div>\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.4.2",
@@ -50,7 +50,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "gray",
+            "fixedColor": "green",
             "mode": "fixed"
           },
           "mappings": [],
@@ -67,20 +67,20 @@
               }
             ]
           },
-          "unit": "bytes"
+          "unit": "s"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 3,
+        "h": 6,
+        "w": 4,
         "x": 4,
         "y": 0
       },
-      "id": 2,
+      "id": 100,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
+        "colorMode": "background",
+        "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -92,226 +92,130 @@
           "values": false
         },
         "showPercentChange": false,
-        "textMode": "auto",
+        "textMode": "value_and_name",
         "wideLayout": true
       },
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "expr": "node_memory_MemTotal_bytes",
-          "instant": true,
+          "expr": "time() - container_start_time_seconds{name=\"$container\"}",
           "refId": "A"
         }
       ],
-      "title": "Total Memory",
+      "title": "Uptime",
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "loki"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
-          "max": 8160437862,
-          "thresholds": {
-            "mode": "percent",
-            "steps": [
-              {
-                "color": "blue",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 7,
-        "y": 0
-      },
-      "id": 11,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
+          "mappings": [
+            {
+              "options": {
+                "debug": {
+                  "color": "purple",
+                  "index": 0,
+                  "text": "Debug"
+                },
+                "error": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Errors"
+                },
+                "info": {
+                  "color": "blue",
+                  "index": 2,
+                  "text": "Info"
+                },
+                "warn": {
+                  "color": "orange",
+                  "index": 3,
+                  "text": "Warnings"
+                }
+              },
+              "type": "value"
+            }
           ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.4.2",
-      "targets": [
-        {
-          "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Memory Usage",
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "gray",
-            "mode": "fixed"
-          },
-          "decimals": 2,
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "text",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
-          },
-          "unit": "bytes"
+          }
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 3,
-        "x": 10,
+        "h": 6,
+        "w": 4,
+        "x": 8,
         "y": 0
       },
-      "id": 13,
+      "id": 115,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "center",
-        "orientation": "auto",
+        "orientation": "horizontal",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
           "fields": "",
-          "values": false
+          "values": true
         },
         "showPercentChange": false,
-        "textMode": "value",
+        "textMode": "value_and_name",
         "wideLayout": true
       },
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "expr": "node_memory_SwapTotal_bytes",
+          "datasource": {
+            "type": "loki"
+          },
+          "expr": "sum by (level) (count_over_time({container=\"$container\"} | json | level=~\".+\" [$__range]))",
           "instant": true,
+          "legendFormat": "{{level}}",
           "refId": "A"
         }
       ],
-      "title": "Total Swap",
+      "title": "LOGS - Status Overview",
       "type": "stat"
     },
     {
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "fixedColor": "orange",
-            "mode": "fixed"
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 13,
-        "y": 0
-      },
-      "id": 15,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.4.2",
-      "targets": [
-        {
-          "expr": "node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Swap Usage",
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
-            "align": "auto",
+            "align": "left",
             "cellOptions": {
-              "type": "auto"
+              "type": "color-background"
             },
             "footer": {
               "reducers": []
             },
             "inspect": false
           },
-          "decimals": 1,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
+                "color": "white",
                 "value": 0
               },
               {
-                "color": "orange",
-                "value": 1073741824
+                "color": "red",
+                "value": 80
               }
             ]
           }
@@ -320,36 +224,48 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "RSS Memory"
+              "options": "short_name"
             },
             "properties": [
               {
-                "id": "unit",
-                "value": "bytes"
+                "id": "displayName",
+                "options": "Name"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Usage %"
+              "options": "image"
             },
             "properties": [
               {
-                "id": "unit",
-                "value": "percent"
+                "id": "displayName",
+                "options": "Image"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "options": "Qty"
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 20,
-        "w": 8,
-        "x": 16,
+        "h": 6,
+        "w": 12,
+        "x": 12,
         "y": 0
       },
-      "id": 5,
+      "id": 3,
       "options": {
         "cellHeight": "sm",
         "showHeader": true
@@ -357,26 +273,14 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "expr": "sort_desc(topk(15, sum by (name) (container_memory_rss{name!=\"\"})))",
+          "expr": "sum by (image, registry, short_name) (label_replace(label_replace(label_replace(count by (image) (container_last_seen{name=\"$container\"}), \"registry\", \"Quay.io\", \"image\", \"quay.io/.*\"), \"registry\", \"Docker Hub\", \"registry\", \"^$\"), \"short_name\", \"$1\", \"image\", \"(?:.*/)?([^:]+)(?::.*)?\"))",
           "format": "table",
           "instant": true,
           "refId": "A"
-        },
-        {
-          "expr": "sort_desc(topk(15, (sum by (name) (container_memory_rss{name!=\"\"}) / on() group_left() machine_memory_bytes) * 100))",
-          "format": "table",
-          "instant": true,
-          "refId": "B"
         }
       ],
-      "title": "Top 15 System Processes by Memory Consumption",
+      "title": "Running Containers by Image",
       "transformations": [
-        {
-          "id": "seriesToColumns",
-          "options": {
-            "byField": "name"
-          }
-        },
         {
           "id": "organize",
           "options": {
@@ -384,14 +288,10 @@
               "Time": true
             },
             "indexByName": {
-              "RSS Memory": 1,
-              "Usage %": 2,
-              "name": 0
-            },
-            "renameByName": {
-              "Value #A": "RSS Memory",
-              "Value #B": "Usage %",
-              "name": "Process/Service"
+              "Value": 3,
+              "image": 1,
+              "registry": 2,
+              "short_name": 0
             }
           }
         }
@@ -402,138 +302,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "orange",
-                "value": 70
-              },
-              {
-                "color": "red",
-                "value": 90
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 7,
-        "y": 4
-      },
-      "id": 3,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.4.2",
-      "targets": [
-        {
-          "expr": "((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * 100",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Memory Usage (%)",
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 1,
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "orange",
-                "value": 10
-              },
-              {
-                "color": "red",
-                "value": 50
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 13,
-        "y": 4
-      },
-      "id": 14,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.4.2",
-      "targets": [
-        {
-          "expr": "((node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) / node_memory_SwapTotal_bytes) * 100",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Swap Usage (%)",
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "purple",
+            "fixedColor": "green",
             "mode": "fixed"
           },
           "custom": {
@@ -545,8 +314,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 25,
-            "gradientMode": "opacity",
+            "fillOpacity": 0,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -554,14 +323,14 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -571,14 +340,16 @@
             }
           },
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "purple",
+                "color": "green",
                 "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
@@ -587,12 +358,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 12,
-        "w": 8,
+        "h": 10,
+        "w": 12,
         "x": 0,
-        "y": 8
+        "y": 6
       },
-      "id": 4,
+      "id": 10,
       "options": {
         "legend": {
           "calcs": [
@@ -600,7 +371,7 @@
             "p90",
             "stdDev",
             "max",
-            "last"
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -615,13 +386,108 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100",
-          "interval": "5s",
-          "legendFormat": "Memory usage",
-          "refId": "UsoRAM"
+          "expr": "sum(rate(container_cpu_usage_seconds_total{name=\"$container\"}[1m])) * 100",
+          "legendFormat": "CPU",
+          "refId": "A"
         }
       ],
-      "title": "Memory Usage ",
+      "title": "CPU Usage",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 6
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "p90",
+            "stdDev",
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "expr": "container_memory_usage_bytes{name=\"$container\"}",
+          "legendFormat": "RAM",
+          "refId": "A"
+        }
+      ],
+      "title": "Memory Usage",
       "type": "timeseries"
     },
     {
@@ -649,12 +515,12 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
+            "showPoints": "auto",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -665,10 +531,7 @@
               "mode": "off"
             }
           },
-          "decimals": 1,
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -682,17 +545,17 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "Bps"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 12,
-        "w": 8,
-        "x": 8,
-        "y": 8
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 16
       },
-      "id": 8,
+      "id": 12,
       "options": {
         "legend": {
           "calcs": [
@@ -700,7 +563,7 @@
             "p90",
             "stdDev",
             "max",
-            "last"
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -715,13 +578,108 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "expr": "((node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) / node_memory_SwapTotal_bytes) * 100",
-          "interval": "5s",
-          "legendFormat": "Swap usage",
-          "refId": "UsoSwap"
+          "expr": "rate(container_network_receive_bytes_total{name=\"$container\"}[1m])",
+          "legendFormat": "Net RX",
+          "refId": "A"
         }
       ],
-      "title": "Swap Usage History",
+      "title": "Network Traffic (Receive)",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "purple",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "p90",
+            "stdDev",
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "expr": "rate(container_fs_writes_bytes_total{name=\"$container\"}[1m])",
+          "legendFormat": "Disk Write",
+          "refId": "A"
+        }
+      ],
+      "title": "Disk Write",
       "type": "timeseries"
     }
   ],
@@ -729,7 +687,25 @@
   "schemaVersion": 42,
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "text": "cadvisor",
+          "value": "cadvisor"
+        },
+        "datasource": {
+          "type": "prometheus"
+        },
+        "definition": "label_values(container_cpu_usage_seconds_total, name)",
+        "label": "Container",
+        "name": "container",
+        "options": [],
+        "query": "label_values(container_cpu_usage_seconds_total, name)",
+        "refresh": 1,
+        "regexApplyTo": "value",
+        "type": "query"
+      }
+    ]
   },
   "time": {
     "from": "now-6h",
@@ -737,8 +713,8 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "System - Memory",
-  "uid": "addthfz",
-  "version": 13,
+  "title": "Docker Service Diagnostic - Detailed View",
+  "uid": "adnqj4l",
+  "version": 11,
   "weekStart": ""
 }

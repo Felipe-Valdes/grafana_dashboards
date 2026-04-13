@@ -145,6 +145,7 @@
             "mean",
             "p90",
             "stdDev",
+            "max",
             "last"
           ],
           "displayMode": "table",
@@ -668,6 +669,6 @@
   "timezone": "browser",
   "title": "System - CPU",
   "uid": "adlz285",
-  "version": 20,
+  "version": 21,
   "weekStart": ""
 }

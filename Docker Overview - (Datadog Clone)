@@ -47,6 +47,136 @@
       "type": "text"
     },
     {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 4,
+        "y": 0
+      },
+      "id": 300,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "expr": "sum(rate(container_cpu_usage_seconds_total{job=\"cadvisor-athena\", name!=\"\"}[$__range])) * 100",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Docker CPU",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 100000000
+              },
+              {
+                "color": "red",
+                "value": 500000000
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 5,
+        "x": 7,
+        "y": 0
+      },
+      "id": 999,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "expr": "sum(rate(container_network_receive_bytes_total{job=\"cadvisor-athena\"}[$__range]) + rate(container_network_transmit_bytes_total{job=\"cadvisor-athena\"}[$__range]))",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Docker Network Traffic",
+      "type": "stat"
+    },
+    {
       "datasource": {
         "type": "prometheus",
         "uid": "efiat2e873k74d"
@@ -73,8 +203,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 4,
-        "x": 4,
+        "w": 3,
+        "x": 12,
         "y": 0
       },
       "id": 1,
@@ -110,43 +240,37 @@
           "refId": "A"
         }
       ],
-      "title": "CONTAINERS - Running",
+      "title": "UP Containers",
       "type": "stat"
     },
     {
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "fixed"
           },
           "decimals": 0,
           "mappings": [],
-          "max": 100,
-          "min": 0,
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "#32373a",
                 "value": 0
-              },
-              {
-                "color": "green",
-                "value": 100
               }
             ]
-          },
-          "unit": "percent"
+          }
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 4,
-        "x": 8,
+        "h": 3,
+        "w": 3,
+        "x": 15,
         "y": 0
       },
-      "id": 1005,
+      "id": 343,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -167,128 +291,39 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "expr": "min(up{job=\"cadvisor\"}) * 100",
+          "expr": "sum(changes(container_start_time_seconds{job=\"cadvisor-athena\", name!=\"\"}[$__range]))",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Container Availability",
+      "title": "Restarts",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "loki"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "debug": {
-                  "color": "purple",
-                  "index": 0,
-                  "text": "Debug"
-                },
-                "error": {
-                  "color": "red",
-                  "index": 1,
-                  "text": "Errors"
-                },
-                "info": {
-                  "color": "blue",
-                  "index": 2,
-                  "text": "Info"
-                },
-                "warn": {
-                  "color": "orange",
-                  "index": 3,
-                  "text": "Warnings"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 4,
-        "x": 12,
-        "y": 0
-      },
-      "id": 115,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "horizontal",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "showPercentChange": false,
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.4.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki"
-          },
-          "expr": "sum by (level) (count_over_time({container=~\".+\"} | json | level=~\".+\" [$__range]))",
-          "instant": true,
-          "legendFormat": "{{level}}",
-          "refId": "A"
-        }
-      ],
-      "title": "LOGS - Status Overview",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus"
-      },
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": "left",
+            "align": "center",
             "cellOptions": {
-              "type": "color-background"
+              "type": "auto"
             },
             "footer": {
               "reducers": []
             },
             "inspect": false
           },
+          "decimals": 0,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "white",
+                "color": "blue",
                 "value": 0
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "green",
+                "value": 2
               }
             ]
           }
@@ -297,64 +332,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "short_name"
+              "options": "Service/Image"
             },
             "properties": [
-              {
-                "id": "displayName",
-                "options": "Name"
-              },
               {
                 "id": "custom.align",
-                "options": "left"
-              },
-              {
-                "id": "custom.width",
-                "value": 96
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "image"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "options": "Image"
-              },
-              {
-                "id": "custom.width",
-                "value": 178
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "registry"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 128
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "options": "Qty"
-              },
-              {
-                "id": "custom.width",
-                "options": 60
+                "value": "left"
               }
             ]
           }
@@ -362,40 +345,53 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 8,
-        "x": 16,
+        "w": 6,
+        "x": 18,
         "y": 0
       },
-      "id": 3,
+      "id": 2113,
       "options": {
         "cellHeight": "sm",
-        "showHeader": true,
-        "sortBy": []
+        "showHeader": true
       },
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "expr": "sum by (image, registry, short_name) (label_replace(label_replace(label_replace(count by (image) (container_last_seen{image!=\"\"}), \"registry\", \"Quay.io\", \"image\", \"quay.io/.*\"), \"registry\", \"Docker Hub\", \"registry\", \"^$\"), \"short_name\", \"$1\", \"image\", \"(?:.*/)?([^:]+)(?::.*)?\"))",
+          "expr": "count by (image) (container_last_seen{job=\"cadvisor-athena\", image!=\"\"})",
           "format": "table",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Running Containers by Image",
+      "title": "Container Density by Image",
       "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "/^(?:.*\\/)?([^:]+)(?::.*)?$/",
+            "renamePattern": "$1"
+          }
+        },
         {
           "id": "organize",
           "options": {
             "excludeByName": {
               "Time": true
             },
-            "indexByName": {
-              "Value": 3,
-              "image": 1,
-              "registry": 2,
-              "short_name": 0
+            "renameByName": {
+              "Value": "Instances",
+              "image": "Service/Image"
             }
           }
+        },
+        {
+          "id": "sortBy",
+          "options": [
+            {
+              "desc": true,
+              "displayName": "Instances"
+            }
+          ]
         }
       ],
       "type": "table"
@@ -406,35 +402,40 @@
           "color": {
             "mode": "thresholds"
           },
-          "decimals": 0,
+          "decimals": 1,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "rgb(150, 150, 150)",
+                "color": "blue",
                 "value": 0
               },
               {
+                "color": "orange",
+                "value": 17179869184
+              },
+              {
                 "color": "red",
-                "value": 1
+                "value": 25769803776
               }
             ]
-          }
+          },
+          "unit": "bytes"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 3,
-        "w": 4,
+        "w": 3,
         "x": 4,
         "y": 3
       },
-      "id": 2,
+      "id": 400,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
+        "graphMode": "area",
+        "justifyMode": "center",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
@@ -451,12 +452,182 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "expr": "count(container_state_status{status!=\"running\", container_label_com_docker_compose_project!=\"\"}) or vector(0)",
-          "legendFormat": "Stopped",
+          "expr": "sum(container_memory_usage_bytes{job=\"cadvisor-athena\", name!=\"\"})",
+          "instant": true,
           "refId": "A"
         }
       ],
-      "title": "CONTAINERS - Stopped",
+      "title": "Docker RAM",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#32373a",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#32373a",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 7,
+        "y": 3
+      },
+      "id": 500,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "expr": "(sum(container_fs_usage_bytes{job=\"cadvisor-athena\", device=~\"/dev/.*\"}) / sum(container_fs_limit_bytes{job=\"cadvisor-athena\", device=~\"/dev/.*\"})) * 100",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Docker Disk",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#515354",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#515354",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 10,
+        "y": 3
+      },
+      "id": 2112,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "expr": "avg(time() - container_start_time_seconds{job=\"cadvisor-athena\", name!=\"\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg. Container Uptime",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#32373a",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 14,
+        "y": 3
+      },
+      "id": 2111,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "expr": "sum(increase(container_oom_events_total{job=\"cadvisor-athena\"}[$__range]))",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Crashes (OOM)",
       "type": "stat"
     },
     {
@@ -2139,6 +2310,6 @@
   "timezone": "browser",
   "title": "Docker Overview - (Datadog Clone)",
   "uid": "ad6lcp6",
-  "version": 20,
+  "version": 9,
   "weekStart": ""
 }

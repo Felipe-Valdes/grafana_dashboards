@@ -5,7 +5,7 @@
         "builtIn": 1,
         "datasource": {
           "type": "grafana",
-          "uid": "-- Grafana --"
+          "uid": "-- Mixed --"
         },
         "enable": true,
         "hide": true,
@@ -18,6 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 2,
   "links": [],
   "panels": [
     {
@@ -41,7 +42,7 @@
         "content": "<div style=\"text-align: center; display: flex; flex-direction: column; justify-content: center; height: 100%;\">\n  <img src=\"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/linux.svg\" style=\"height: 75px; filter: invert(0.8); margin-bottom: 10px;\" />\n  <h2 style=\"margin: 0; color: #8E8E8E; font-weight: 300; letter-spacing: 3px;\">CPU</h2>\n</div>",
         "mode": "html"
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "title": "",
       "type": "text"
     },
@@ -61,7 +62,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 25,
+            "fillOpacity": 0,
             "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
@@ -70,12 +71,12 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": true,
             "stacking": {
@@ -104,32 +105,7 @@
           },
           "unit": "percent"
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "CPU Usage"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": true,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 9,
@@ -141,10 +117,13 @@
       "options": {
         "legend": {
           "calcs": [
+            "lastNotNull",
             "mean",
-            "p90",
+            "p50",
             "stdDev",
-            "last"
+            "p95",
+            "p99",
+            "max"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -152,14 +131,18 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "(1 - avg(irate(node_cpu_seconds_total{mode=\"idle\"}[1m]))) * 100",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "(1 - avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[1m]))) * 100",
           "interval": "5s",
           "legendFormat": "CPU Usage",
           "refId": "Uso"
@@ -184,7 +167,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 25,
+            "fillOpacity": 0,
             "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
@@ -193,12 +176,12 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": true,
             "stacking": {
@@ -243,10 +226,13 @@
       "options": {
         "legend": {
           "calcs": [
+            "lastNotNull",
             "mean",
-            "p90",
+            "p50",
             "stdDev",
-            "last"
+            "p95",
+            "p99",
+            "max"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -254,14 +240,18 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "avg(node_hwmon_temp_celsius{chip=\"platform_coretemp_0\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "avg(node_hwmon_temp_celsius{server=\"$server\", chip=\"platform_coretemp_0\"})",
           "interval": "5s",
           "legendFormat": "Temp CPU",
           "refId": "Temp"
@@ -310,7 +300,7 @@
       "id": 1,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -325,10 +315,14 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "avg(irate(node_cpu_seconds_total{mode=\"iowait\"}[1m])) * 100",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"iowait\"}[1m])) * 100",
           "refId": "A"
         }
       ],
@@ -375,7 +369,7 @@
       "id": 2,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -390,11 +384,14 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "100 - (avg by (instance) (irate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
-          "legendFormat": "CPU %",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "100 - (avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[1m])) * 100)",
           "refId": "A"
         }
       ],
@@ -436,7 +433,7 @@
       "id": 20,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -451,10 +448,14 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "avg(irate(node_cpu_seconds_total{mode=\"steal\"}[1m])) * 100",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"steal\"}[1m])) * 100",
           "refId": "A"
         }
       ],
@@ -519,11 +520,15 @@
         "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
           "editorMode": "code",
-          "expr": "(1 - irate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100",
+          "expr": "(1 - irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[1m])) * 100",
           "instant": true,
           "legendFormat": "H{{cpu}}",
           "refId": "A"
@@ -599,10 +604,14 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_hwmon_temp_celsius{chip=\"platform_coretemp_0\", sensor=~\"temp[2-9]\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "node_hwmon_temp_celsius{server=\"$server\", chip=\"platform_coretemp_0\", sensor=~\"temp[2-9]\"}",
           "instant": true,
           "legendFormat": "Core {{sensor}}",
           "refId": "A"
@@ -619,6 +628,8 @@
           },
           "decimals": 0,
           "mappings": [],
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -676,10 +687,14 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_hwmon_fan_rpm{chip=\"platform_nct6775_656\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "node_hwmon_fan_rpm{server=\"$server\", chip=\"platform_nct6775_656\"}",
           "instant": true,
           "legendFormat": "{{sensor}}",
           "refId": "A"
@@ -737,10 +752,14 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "irate(node_forks_total[1m])",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "irate(node_forks_total{server=\"$server\"}[1m])",
           "refId": "A"
         }
       ],
@@ -798,10 +817,14 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_procs_running - 1",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "node_procs_running{server=\"$server\"} - 1",
           "refId": "A"
         }
       ],
@@ -839,7 +862,7 @@
       "id": 8,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "center",
         "orientation": "vertical",
         "percentChangeColorMode": "standard",
@@ -854,10 +877,14 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_hwmon_in_volts{chip=\"platform_nct6775_656\", sensor=\"in0\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "node_hwmon_in_volts{server=\"$server\", chip=\"platform_nct6775_656\", sensor=\"in0\"}",
           "instant": true,
           "refId": "A"
         }
@@ -881,7 +908,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 20,
+            "fillOpacity": 0,
             "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
@@ -890,12 +917,12 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": true,
             "stacking": {
@@ -935,10 +962,13 @@
       "options": {
         "legend": {
           "calcs": [
+            "lastNotNull",
             "mean",
-            "p90",
+            "p50",
             "stdDev",
-            "last"
+            "p95",
+            "p99",
+            "max"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -946,19 +976,23 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_hwmon_in_volts{chip=\"platform_nct6775_656\", sensor=\"in0\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "node_hwmon_in_volts{server=\"$server\", chip=\"platform_nct6775_656\", sensor=\"in0\"}",
           "legendFormat": "CPU Vcore (in0)",
           "refId": "Volt"
         }
       ],
-      "title": "CPU Voltage",
+      "title": "CPU Voltage History",
       "type": "timeseries"
     },
     {
@@ -1006,10 +1040,14 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "irate(node_context_switches_total[1m])",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "irate(node_context_switches_total{server=\"$server\"}[1m])",
           "refId": "A"
         }
       ],
@@ -1050,7 +1088,7 @@
       "id": 25,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -1065,10 +1103,14 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_time_seconds - node_boot_time_seconds",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "node_time_seconds{server=\"$server\"} - node_boot_time_seconds{server=\"$server\"}",
           "refId": "A"
         }
       ],
@@ -1124,10 +1166,14 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "irate(node_intr_total[1m])",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "irate(node_intr_total{server=\"$server\"}[1m])",
           "refId": "A"
         }
       ],
@@ -1139,7 +1185,35 @@
   "schemaVersion": 42,
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "hide": 0,
+        "label": "Data Source",
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(up, server)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Servidor",
+        "name": "server",
+        "options": [],
+        "query": "label_values(up, server)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      }
+    ]
   },
   "time": {
     "from": "now-6h",
@@ -1149,6 +1223,5 @@
   "timezone": "browser",
   "title": "System - CPU (Bare Metal)",
   "uid": "sm-baremetal-cpu",
-  "version": 1,
-  "weekStart": ""
+  "version": 3
 }

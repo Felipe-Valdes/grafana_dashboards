@@ -5,7 +5,7 @@
         "builtIn": 1,
         "datasource": {
           "type": "grafana",
-          "uid": "-- Grafana --"
+          "uid": "-- Mixed --"
         },
         "enable": true,
         "hide": true,
@@ -18,6 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 5,
   "links": [],
   "panels": [
     {
@@ -41,7 +42,7 @@
         "content": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; gap: 5px; overflow: hidden; padding: 5px;\">\n  <img src=\"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/linux.svg\" style=\"height: 55%; width: auto; filter: invert(0.8);\" />\n  <span style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 500; color: #8E8E8E; letter-spacing: 1px; line-height: 1.2; text-transform: uppercase; white-space: nowrap;\">Disk I/O</span>\n</div>",
         "mode": "html"
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "title": "",
       "transparent": true,
       "type": "text"
@@ -96,10 +97,14 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "max(container_fs_limit_bytes{id=\"/\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "max(container_fs_limit_bytes{server=\"$server\", id=\"/\"})",
           "refId": "A"
         }
       ],
@@ -165,10 +170,14 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "(sum(node_filesystem_size_bytes{device=~\"/dev/.*\"} - node_filesystem_free_bytes{device=~\"/dev/.*\"}) / sum(container_fs_limit_bytes{device=~\"/dev/sda.*|/dev/mapper/.*\", id=\"/\"})) * 100",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "(sum(node_filesystem_size_bytes{server=\"$server\", device=~\"/dev/.*\"} - node_filesystem_free_bytes{server=\"$server\", device=~\"/dev/.*\"}) / sum(container_fs_limit_bytes{server=\"$server\", device=~\"/dev/sda.*|/dev/mapper/.*\", id=\"/\"})) * 100",
           "refId": "A"
         }
       ],
@@ -190,8 +199,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
+            "fillOpacity": 10,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -199,12 +208,12 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -243,11 +252,13 @@
       "options": {
         "legend": {
           "calcs": [
+            "lastNotNull",
             "mean",
-            "p90",
+            "p50",
             "stdDev",
-            "max",
-            "last"
+            "p95",
+            "p99",
+            "max"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -255,14 +266,18 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "irate(node_disk_writes_completed_total[1m])",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "irate(node_disk_writes_completed_total{server=\"$server\"}[1m])",
           "legendFormat": "{{device}}",
           "refId": "A"
         }
@@ -316,66 +331,6 @@
                 "value": "percentunit"
               }
             ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Device"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 153
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "FS Type"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 96
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Mount Point"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 144
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value #Total"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 111
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "__name__"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 207
-              }
-            ]
           }
         ]
       },
@@ -390,15 +345,23 @@
         "cellHeight": "sm",
         "showHeader": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_filesystem_size_bytes{device=~\"/dev/.*\", fstype!=\"tmpfs\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "node_filesystem_size_bytes{server=\"$server\", device=~\"/dev/.*\", fstype!=\"tmpfs\"}",
           "format": "table",
           "refId": "Total"
         },
         {
-          "expr": "node_filesystem_size_bytes{device=~\"/dev/.*\", fstype!=\"tmpfs\"} - node_filesystem_free_bytes{device=~\"/dev/.*\", fstype!=\"tmpfs\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "node_filesystem_size_bytes{server=\"$server\", device=~\"/dev/.*\", fstype!=\"tmpfs\"} - node_filesystem_free_bytes{server=\"$server\", device=~\"/dev/.*\", fstype!=\"tmpfs\"}",
           "format": "table",
           "refId": "Used"
         }
@@ -423,7 +386,9 @@
               "instance 2": true,
               "job 1": true,
               "job 2": true,
-              "mountpoint 2": true
+              "mountpoint 2": true,
+              "server 1": true,
+              "server 2": true
             },
             "indexByName": {
               "Total": 3,
@@ -471,8 +436,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
+            "fillOpacity": 10,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -485,7 +450,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -524,11 +489,13 @@
       "options": {
         "legend": {
           "calcs": [
+            "lastNotNull",
             "mean",
-            "p90",
+            "p50",
             "stdDev",
-            "max",
-            "last"
+            "p95",
+            "p99",
+            "max"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -536,14 +503,18 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "rate(node_disk_io_time_seconds_total[1m]) * 100",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "rate(node_disk_io_time_seconds_total{server=\"$server\"}[1m]) * 100",
           "legendFormat": "{{device}}",
           "refId": "A"
         }
@@ -566,7 +537,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 10,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -620,10 +591,13 @@
       "options": {
         "legend": {
           "calcs": [
+            "lastNotNull",
             "mean",
-            "p90",
-            "max",
-            "last"
+            "p50",
+            "stdDev",
+            "p95",
+            "p99",
+            "max"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -631,14 +605,18 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "irate(node_disk_read_bytes_total{device!~\"dm-.*|ram.*|loop.*\"}[1m])",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "irate(node_disk_read_bytes_total{server=\"$server\", device!~\"dm-.*|ram.*|loop.*\"}[1m])",
           "legendFormat": "{{device}}",
           "refId": "A"
         }
@@ -675,7 +653,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -714,11 +692,13 @@
       "options": {
         "legend": {
           "calcs": [
+            "lastNotNull",
             "mean",
-            "p90",
+            "p50",
             "stdDev",
-            "max",
-            "last"
+            "p95",
+            "p99",
+            "max"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -726,19 +706,27 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "rate(node_disk_read_time_seconds_total[1m]) / rate(node_disk_reads_completed_total[1m]) * 1000",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "rate(node_disk_read_time_seconds_total{server=\"$server\"}[1m]) / rate(node_disk_reads_completed_total{server=\"$server\"}[1m]) * 1000",
           "legendFormat": "Read {{device}}",
           "refId": "A"
         },
         {
-          "expr": "rate(node_disk_write_time_seconds_total[1m]) / rate(node_disk_writes_completed_total[1m]) * 1000",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "rate(node_disk_write_time_seconds_total{server=\"$server\"}[1m]) / rate(node_disk_writes_completed_total{server=\"$server\"}[1m]) * 1000",
           "legendFormat": "Write {{device}}",
           "refId": "B"
         }
@@ -761,7 +749,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 10,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -775,7 +763,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -814,11 +802,13 @@
       "options": {
         "legend": {
           "calcs": [
+            "lastNotNull",
             "mean",
-            "p90",
+            "p50",
             "stdDev",
-            "max",
-            "last"
+            "p95",
+            "p99",
+            "max"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -826,14 +816,18 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "avg by (instance) (irate(node_cpu_seconds_total{mode=\"iowait\"}[1m])) * 100",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "avg by (instance) (irate(node_cpu_seconds_total{server=\"$server\", mode=\"iowait\"}[1m])) * 100",
           "legendFormat": "{{instance}}",
           "refId": "A"
         }
@@ -856,7 +850,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 10,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -865,12 +859,12 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -909,11 +903,13 @@
       "options": {
         "legend": {
           "calcs": [
+            "lastNotNull",
             "mean",
-            "p90",
+            "p50",
             "stdDev",
-            "max",
-            "last"
+            "p95",
+            "p99",
+            "max"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -921,14 +917,18 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "irate(node_disk_reads_completed_total[1m])",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "irate(node_disk_reads_completed_total{server=\"$server\"}[1m])",
           "legendFormat": "{{device}}",
           "refId": "A"
         }
@@ -951,7 +951,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 10,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -1005,10 +1005,13 @@
       "options": {
         "legend": {
           "calcs": [
+            "lastNotNull",
             "mean",
-            "p90",
-            "max",
-            "last"
+            "p50",
+            "stdDev",
+            "p95",
+            "p99",
+            "max"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -1016,14 +1019,18 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "irate(node_disk_written_bytes_total{device!~\"dm-.*|ram.*|loop.*\"}[1m])",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "irate(node_disk_written_bytes_total{server=\"$server\", device!~\"dm-.*|ram.*|loop.*\"}[1m])",
           "legendFormat": "{{device}}",
           "refId": "A"
         }
@@ -1036,7 +1043,35 @@
   "schemaVersion": 42,
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+ 
+        "label": "Data Source",
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      },
+      {
+
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(up, server)",
+        "includeAll": false,
+        "label": "Servidor",
+        "name": "server",
+        "options": [],
+        "query": "label_values(up, server)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      }
+    ]
   },
   "time": {
     "from": "now-6h",
@@ -1046,6 +1081,5 @@
   "timezone": "browser",
   "title": "System - Disk I/O",
   "uid": "adpgjzb",
-  "version": 12,
-  "weekStart": ""
+  "version": 5
 }

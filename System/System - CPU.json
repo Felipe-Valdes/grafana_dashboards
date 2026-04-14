@@ -686,7 +686,7 @@
         },
         "definition": "label_values(up, server)",
         "includeAll": false,
-        "label": "Servidor",
+        "label": "Server",
         "name": "server",
         "options": [],
         "query": "label_values(up, server)",
@@ -705,5 +705,5 @@
   "timezone": "browser",
   "title": "System - CPU",
   "uid": "adlz285",
-  "version": 9
+  "version": 12
 }

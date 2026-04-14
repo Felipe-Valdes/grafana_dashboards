@@ -2463,7 +2463,7 @@
         },
         "definition": "label_values(up, server)",
         "includeAll": false,
-        "label": "Servidor",
+        "label": "Server",
         "name": "server",
         "options": [],
         "query": "label_values(up, server)",
@@ -2482,5 +2482,5 @@
   "timezone": "browser",
   "title": "Docker Overview - (Datadog Clone)",
   "uid": "ad6lcp6",
-  "version": 9
+  "version": 11
 }

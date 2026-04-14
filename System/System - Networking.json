@@ -176,7 +176,32 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Active Connections"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 10,
@@ -1299,7 +1324,7 @@
         },
         "definition": "label_values(up, server)",
         "includeAll": false,
-        "label": "Servidor",
+        "label": "Server",
         "name": "server",
         "options": [],
         "query": "label_values(up, server)",
@@ -1318,5 +1343,5 @@
   "timezone": "",
   "title": "System - Networking",
   "uid": "adn8sm7",
-  "version": 4
+  "version": 7
 }

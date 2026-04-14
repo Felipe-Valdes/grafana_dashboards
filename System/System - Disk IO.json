@@ -1045,7 +1045,6 @@
   "templating": {
     "list": [
       {
- 
         "label": "Data Source",
         "name": "datasource",
         "options": [],
@@ -1055,14 +1054,13 @@
         "type": "datasource"
       },
       {
-
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
         },
         "definition": "label_values(up, server)",
         "includeAll": false,
-        "label": "Servidor",
+        "label": "Server",
         "name": "server",
         "options": [],
         "query": "label_values(up, server)",
@@ -1081,5 +1079,5 @@
   "timezone": "browser",
   "title": "System - Disk I/O",
   "uid": "adpgjzb",
-  "version": 5
+  "version": 7
 }

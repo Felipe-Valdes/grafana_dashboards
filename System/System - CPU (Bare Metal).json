@@ -44,9 +44,14 @@
       },
       "pluginVersion": "12.3.2",
       "title": "",
+      "transparent": true,
       "type": "text"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -63,7 +68,7 @@
             "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
-            "gradientMode": "opacity",
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -78,7 +83,7 @@
             },
             "showPoints": "never",
             "showValues": false,
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -143,7 +148,6 @@
             "uid": "${datasource}"
           },
           "expr": "(1 - avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[1m]))) * 100",
-          "interval": "5s",
           "legendFormat": "CPU Usage",
           "refId": "Uso"
         }
@@ -152,6 +156,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -168,7 +176,7 @@
             "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
-            "gradientMode": "opacity",
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -183,7 +191,7 @@
             },
             "showPoints": "never",
             "showValues": false,
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -193,8 +201,6 @@
             }
           },
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -203,12 +209,8 @@
                 "value": 0
               },
               {
-                "color": "orange",
-                "value": 75
-              },
-              {
                 "color": "red",
-                "value": 85
+                "value": 80
               }
             ]
           },
@@ -252,7 +254,6 @@
             "uid": "${datasource}"
           },
           "expr": "avg(node_hwmon_temp_celsius{server=\"$server\", chip=\"platform_coretemp_0\"})",
-          "interval": "5s",
           "legendFormat": "Temp CPU",
           "refId": "Temp"
         }
@@ -261,15 +262,16 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "decimals": 2,
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -312,7 +314,7 @@
           "values": false
         },
         "showPercentChange": false,
-        "textMode": "value",
+        "textMode": "auto",
         "wideLayout": true
       },
       "pluginVersion": "12.3.2",
@@ -330,15 +332,16 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "decimals": 2,
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -381,7 +384,7 @@
           "values": false
         },
         "showPercentChange": false,
-        "textMode": "value",
+        "textMode": "auto",
         "wideLayout": true
       },
       "pluginVersion": "12.3.2",
@@ -399,14 +402,16 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -445,7 +450,7 @@
           "values": false
         },
         "showPercentChange": false,
-        "textMode": "value",
+        "textMode": "auto",
         "wideLayout": true
       },
       "pluginVersion": "12.3.2",
@@ -464,17 +469,12 @@
     },
     {
       "datasource": {
-        "type": "prometheus"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -483,16 +483,11 @@
                 "value": 0
               },
               {
-                "color": "orange",
-                "value": 70
-              },
-              {
                 "color": "red",
-                "value": 90
+                "value": 80
               }
             ]
-          },
-          "unit": "percent"
+          }
         },
         "overrides": []
       },
@@ -512,13 +507,11 @@
             "lastNotNull"
           ],
           "fields": "",
-          "limit": 16,
           "values": true
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
-        "sizing": "auto",
-        "text": {}
+        "sizing": "auto"
       },
       "pluginVersion": "12.3.2",
       "targets": [
@@ -527,10 +520,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "editorMode": "code",
           "expr": "(1 - irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[1m])) * 100",
-          "instant": true,
-          "legendFormat": "H{{cpu}}",
+          "legendFormat": "CPU{{cpu}}",
           "refId": "A"
         }
       ],
@@ -538,41 +529,23 @@
       "type": "gauge"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-blue",
+                "color": "green",
                 "value": 0
               },
               {
-                "color": "blue",
-                "value": 25
-              },
-              {
-                "color": "green",
-                "value": 400
-              },
-              {
-                "color": "yellow",
-                "value": 70
-              },
-              {
-                "color": "orange",
-                "value": 80
-              },
-              {
                 "color": "red",
-                "value": 90
+                "value": 80
               }
             ]
           },
@@ -598,7 +571,7 @@
             "lastNotNull"
           ],
           "fields": "",
-          "values": true
+          "values": false
         },
         "showPercentChange": false,
         "textMode": "value_and_name",
@@ -612,7 +585,6 @@
             "uid": "${datasource}"
           },
           "expr": "node_hwmon_temp_celsius{server=\"$server\", chip=\"platform_coretemp_0\", sensor=~\"temp[2-9]\"}",
-          "instant": true,
           "legendFormat": "Core {{sensor}}",
           "refId": "A"
         }
@@ -621,41 +593,23 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-blue",
+                "color": "green",
                 "value": 0
               },
               {
-                "color": "blue",
-                "value": 1
-              },
-              {
-                "color": "green",
-                "value": 600
-              },
-              {
-                "color": "yellow",
-                "value": 1200
-              },
-              {
-                "color": "orange",
-                "value": 1800
-              },
-              {
                 "color": "red",
-                "value": 2200
+                "value": 80
               }
             ]
           },
@@ -681,7 +635,7 @@
             "lastNotNull"
           ],
           "fields": "",
-          "values": true
+          "values": false
         },
         "showPercentChange": false,
         "textMode": "value_and_name",
@@ -695,7 +649,6 @@
             "uid": "${datasource}"
           },
           "expr": "node_hwmon_fan_rpm{server=\"$server\", chip=\"platform_nct6775_656\"}",
-          "instant": true,
           "legendFormat": "{{sensor}}",
           "refId": "A"
         }
@@ -704,6 +657,10 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -767,6 +724,10 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -814,7 +775,7 @@
           "values": false
         },
         "showPercentChange": false,
-        "textMode": "value",
+        "textMode": "auto",
         "wideLayout": true
       },
       "pluginVersion": "12.3.2",
@@ -832,20 +793,27 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "fixedColor": "yellow",
             "mode": "fixed"
           },
-          "decimals": 3,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
+                "color": "green",
                 "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
@@ -864,7 +832,7 @@
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "center",
-        "orientation": "vertical",
+        "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
@@ -874,7 +842,7 @@
           "values": false
         },
         "showPercentChange": false,
-        "textMode": "value",
+        "textMode": "auto",
         "wideLayout": true
       },
       "pluginVersion": "12.3.2",
@@ -885,7 +853,6 @@
             "uid": "${datasource}"
           },
           "expr": "node_hwmon_in_volts{server=\"$server\", chip=\"platform_nct6775_656\", sensor=\"in0\"}",
-          "instant": true,
           "refId": "A"
         }
       ],
@@ -893,6 +860,10 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -909,7 +880,7 @@
             "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
-            "gradientMode": "opacity",
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -924,7 +895,7 @@
             },
             "showPoints": "never",
             "showValues": false,
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -933,7 +904,6 @@
               "mode": "off"
             }
           },
-          "decimals": 3,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -944,7 +914,7 @@
               },
               {
                 "color": "red",
-                "value": 1.35
+                "value": 80
               }
             ]
           },
@@ -996,6 +966,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1007,8 +981,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "cyan",
+                "color": "green",
                 "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
@@ -1037,7 +1015,7 @@
           "values": false
         },
         "showPercentChange": false,
-        "textMode": "value",
+        "textMode": "auto",
         "wideLayout": true
       },
       "pluginVersion": "12.3.2",
@@ -1055,6 +1033,10 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1089,7 +1071,7 @@
       "options": {
         "colorMode": "value",
         "graphMode": "none",
-        "justifyMode": "auto",
+        "justifyMode": "center",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
@@ -1100,7 +1082,7 @@
           "values": false
         },
         "showPercentChange": false,
-        "textMode": "value",
+        "textMode": "auto",
         "wideLayout": true
       },
       "pluginVersion": "12.3.2",
@@ -1118,6 +1100,10 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1182,12 +1168,13 @@
     }
   ],
   "preload": false,
+  "refresh": "",
   "schemaVersion": 42,
   "tags": [],
   "templating": {
     "list": [
       {
-        "hide": 0,
+        "description": "Selecciona el origen de datos",
         "label": "Data Source",
         "name": "datasource",
         "options": [],
@@ -1202,9 +1189,8 @@
           "uid": "${datasource}"
         },
         "definition": "label_values(up, server)",
-        "hide": 0,
         "includeAll": false,
-        "label": "Servidor",
+        "label": "Server",
         "name": "server",
         "options": [],
         "query": "label_values(up, server)",
@@ -1220,8 +1206,8 @@
     "to": "now"
   },
   "timepicker": {},
-  "timezone": "browser",
+  "timezone": "",
   "title": "System - CPU (Bare Metal)",
   "uid": "sm-baremetal-cpu",
-  "version": 3
+  "version": 6
 }

@@ -797,7 +797,7 @@
         },
         "definition": "label_values(up, server)",
         "includeAll": false,
-        "label": "Servidor",
+        "label": "Server",
         "name": "server",
         "options": [],
         "query": "label_values(up, server)",
@@ -816,5 +816,5 @@
   "timezone": "",
   "title": "System - Memory",
   "uid": "addthfz",
-  "version": 5
+  "version": 6
 }

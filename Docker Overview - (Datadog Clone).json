@@ -18,6 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 7,
   "links": [],
   "panels": [
     {
@@ -79,7 +80,7 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 3,
+        "w": 2,
         "x": 4,
         "y": 0
       },
@@ -147,8 +148,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 5,
-        "x": 7,
+        "w": 3,
+        "x": 6,
         "y": 0
       },
       "id": 999,
@@ -208,7 +209,7 @@
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 12,
+        "x": 9,
         "y": 0
       },
       "id": 1,
@@ -270,8 +271,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 3,
-        "x": 15,
+        "w": 2,
+        "x": 12,
         "y": 0
       },
       "id": 343,
@@ -342,6 +343,10 @@
               {
                 "id": "custom.align",
                 "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 429
               }
             ]
           }
@@ -349,8 +354,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 6,
-        "x": 18,
+        "w": 10,
+        "x": 14,
         "y": 0
       },
       "id": 2113,
@@ -472,63 +477,6 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "#32373a",
-            "mode": "fixed"
-          },
-          "decimals": 1,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#32373a",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 3,
-        "x": 7,
-        "y": 3
-      },
-      "id": 500,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "sum(container_fs_usage_bytes{server=\"$server\", device=~\"/dev/.*\"})",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Docker Disk",
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
             "fixedColor": "#515354",
             "mode": "fixed"
           },
@@ -550,7 +498,7 @@
       "gridPos": {
         "h": 3,
         "w": 4,
-        "x": 10,
+        "x": 7,
         "y": 3
       },
       "id": 2112,
@@ -603,8 +551,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 4,
-        "x": 14,
+        "w": 3,
+        "x": 11,
         "y": 3
       },
       "id": 2111,
@@ -2767,5 +2715,5 @@
   "timezone": "browser",
   "title": "Docker Overview - (Datadog Clone)",
   "uid": "ad6lcp6",
-  "version": 18
+  "version": 21
 }

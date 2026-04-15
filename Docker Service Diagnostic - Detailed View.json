@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 8,
+  "id": 0,
   "links": [],
   "panels": [
     {
@@ -260,24 +260,24 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "orange",
-            "mode": "fixed"
+            "mode": "thresholds"
           },
+          "decimals": 0,
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "#32373a",
                 "value": 0
               },
               {
                 "color": "red",
-                "value": 80
+                "value": 1
               }
             ]
-          },
-          "unit": "ops"
+          }
         },
         "overrides": []
       },
@@ -287,7 +287,7 @@
         "x": 12,
         "y": 0
       },
-      "id": 2116,
+      "id": 343,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -312,11 +312,13 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(container_fs_reads_total{server=\"$server\", name=\"$container\"}[1m]) + rate(container_fs_writes_total{server=\"$server\", name=\"$container\"}[1m]))",
+          "editorMode": "code",
+          "expr": "max(changes(container_start_time_seconds{server=\"$server\", container=~\"$container.*\"}[$__range])) or max(changes(container_start_time_seconds{server=\"$server\", name=~\"$container.*\"}[$__range])) or vector(0)",
+          "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Disk IOPS",
+      "title": "Restarts",
       "type": "stat"
     },
     {
@@ -555,76 +557,6 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 1,
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#32373a",
-                "value": 0
-              },
-              {
-                "color": "orange",
-                "value": 70
-              },
-              {
-                "color": "red",
-                "value": 90
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 3,
-        "x": 6,
-        "y": 3
-      },
-      "id": 500,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "(container_fs_usage_bytes{server=\"$server\", name=\"$container\"} / container_fs_limit_bytes{server=\"$server\", name=\"$container\"}) * 100",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Disk Usage",
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
             "mode": "palette-classic"
           },
           "decimals": 1,
@@ -653,7 +585,7 @@
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 9,
+        "x": 6,
         "y": 3
       },
       "id": 999,
@@ -725,7 +657,7 @@
       "gridPos": {
         "h": 3,
         "w": 4,
-        "x": 12,
+        "x": 9,
         "y": 3
       },
       "id": 3004,
@@ -766,34 +698,34 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "orange",
+            "mode": "fixed"
           },
-          "decimals": 0,
           "mappings": [],
-          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "#32373a",
+                "color": "green",
                 "value": 0
               },
               {
                 "color": "red",
-                "value": 1
+                "value": 80
               }
             ]
-          }
+          },
+          "unit": "ops"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 3,
-        "w": 2,
-        "x": 16,
+        "w": 4,
+        "x": 13,
         "y": 3
       },
-      "id": 343,
+      "id": 2116,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -818,75 +750,11 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "editorMode": "code",
-          "expr": "max(changes(container_start_time_seconds{server=\"$server\", container=~\"$container.*\"}[$__range])) or max(changes(container_start_time_seconds{server=\"$server\", name=~\"$container.*\"}[$__range])) or vector(0)",
-          "instant": true,
+          "expr": "sum(rate(container_fs_reads_total{server=\"$server\", name=\"$container\"}[1m]) + rate(container_fs_writes_total{server=\"$server\", name=\"$container\"}[1m]))",
           "refId": "A"
         }
       ],
-      "title": "Restarts",
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "ABA19F",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 3,
-        "x": 18,
-        "y": 3
-      },
-      "id": 3002,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "container_tasks_state{server=\"$server\", name=\"$container\", state=\"zombie\"}",
-          "refId": "A"
-        }
-      ],
-      "title": "Zombie Procs",
+      "title": "Disk IOPS",
       "type": "stat"
     },
     {
@@ -912,7 +780,7 @@
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 21,
+        "x": 17,
         "y": 3
       },
       "id": 2111,
@@ -946,6 +814,68 @@
         }
       ],
       "title": "Crashes (OOM)",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "ABA19F",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 3
+      },
+      "id": 3002,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "container_tasks_state{server=\"$server\", name=\"$container\", state=\"zombie\"}",
+          "refId": "A"
+        }
+      ],
+      "title": "Zombie Procs",
       "type": "stat"
     },
     {
@@ -1356,10 +1286,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "Prometheus",
-          "value": "PBFA97CFB590B2093"
-        },
         "label": "Data Source",
         "name": "datasource",
         "options": [],
@@ -1369,6 +1295,10 @@
         "type": "datasource"
       },
       {
+        "current": {
+          "text": "master",
+          "value": "master"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -1410,5 +1340,5 @@
   "timezone": "browser",
   "title": "Docker Service Diagnostic - Detailed View",
   "uid": "adnqj4l",
-  "version": 21
+  "version": 23
 }

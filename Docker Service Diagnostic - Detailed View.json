@@ -1356,6 +1356,10 @@
   "templating": {
     "list": [
       {
+        "current": {
+          "text": "Prometheus",
+          "value": "PBFA97CFB590B2093"
+        },
         "label": "Data Source",
         "name": "datasource",
         "options": [],
@@ -1406,5 +1410,5 @@
   "timezone": "browser",
   "title": "Docker Service Diagnostic - Detailed View",
   "uid": "adnqj4l",
-  "version": 18
+  "version": 21
 }

@@ -18,7 +18,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 7,
   "links": [],
   "panels": [
     {
@@ -109,7 +108,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\"}[1m])) * 100",
+          "expr": "(sum(rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\"}[1m])) / count(node_cpu_seconds_total{server=\"$server\", mode=\"system\"})) * 100",
           "instant": true,
           "refId": "A"
         }
@@ -177,7 +176,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(container_network_receive_bytes_total{server=\"$server\"}[1m]) + rate(container_network_transmit_bytes_total{server=\"$server\"}[1m]))",
+          "expr": "sum(rate(container_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*\"}[1m]) + rate(container_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*\"}[1m]))",
           "instant": true,
           "refId": "A"
         }
@@ -186,10 +185,6 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -242,26 +237,14 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(count by (name) (container_last_seen{server=\"$server\", name!=\"\"}))",
+          "expr": "count(container_last_seen{server=\"$server\", name!=\"\"})",
           "instant": true,
           "legendFormat": "Value",
-          "range": true,
+          "range": false,
           "refId": "A"
         }
       ],
       "title": "UP Containers",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "mode": "reduceRow",
-            "reducers": [
-              "sum"
-            ]
-          }
-        }
-      ],
       "type": "stat"
     },
     {
@@ -434,11 +417,11 @@
               },
               {
                 "color": "orange",
-                "value": 17179869184
+                "value": 6442450944
               },
               {
                 "color": "red",
-                "value": 25769803776
+                "value": 7516192768
               }
             ]
           },
@@ -477,7 +460,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(container_memory_usage_bytes{server=\"$server\", name!=\"\"})",
+          "expr": "sum(container_memory_rss{server=\"$server\", name!=\"\"})",
           "instant": true,
           "refId": "A"
         }
@@ -494,8 +477,6 @@
           },
           "decimals": 1,
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -505,7 +486,7 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "bytes"
         },
         "overrides": []
       },
@@ -536,7 +517,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "(sum(container_fs_usage_bytes{server=\"$server\", device=~\"/dev/.*\"}) / sum(container_fs_limit_bytes{server=\"$server\", device=~\"/dev/.*\"})) * 100",
+          "expr": "sum(container_fs_usage_bytes{server=\"$server\", device=~\"/dev/.*\"})",
           "instant": true,
           "refId": "A"
         }
@@ -1038,21 +1019,12 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (image) (rate(container_cpu_user_seconds_total{server=\"$server\", image!=\"\"}[1m]) * 100)",
-          "legendFormat": "{{image}}",
+          "expr": "sum by (container_label_com_docker_compose_service) (rate(container_cpu_user_seconds_total{server=\"$server\", container_label_com_docker_compose_service!=\"\"}[1m]) * 100)",
+          "legendFormat": "{{container_label_com_docker_compose_service}}",
           "refId": "A"
         }
       ],
       "title": "CPU user by image",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "/^(?:.*\\/)?([^:]+)(?::.*)?$/",
-            "renamePattern": "$1"
-          }
-        }
-      ],
       "type": "timeseries"
     },
     {
@@ -1686,7 +1658,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 14,
+        "h": 7,
         "w": 8,
         "x": 0,
         "y": 34
@@ -1724,7 +1696,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sort_desc(sum by (name) (irate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\"}[1m])))",
+          "expr": "sort_desc(sum by (name) (irate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", device!~\"lo|veth.*\"}[1m])))",
           "instant": true,
           "legendFormat": "{{name}}",
           "refId": "A"
@@ -1928,13 +1900,93 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\"}[1m])",
+          "expr": "sum by (name) (irate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\"}[1m]))",
           "legendFormat": "TX: {{name}}",
           "refId": "A"
         }
       ],
       "title": "NETWORK - TX by Container",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Ver detalle de ${__series.name}",
+              "url": "/d/adnqj4l?var-datasource=${datasource}&var-server=${server}&var-container=${__series.name}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 41
+      },
+      "id": 2116,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "limit": 500,
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sort_desc(sum by (name) (irate(container_network_receive_bytes_total{server=\"$server\", name!=\"\", device!~\"lo|veth.*\"}[1m])))",
+          "instant": true,
+          "legendFormat": "{{name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "NETWORK - Most RX-intensive containers",
+      "type": "bargauge"
     },
     {
       "datasource": {
@@ -2043,14 +2095,11 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "red",
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -2061,16 +2110,16 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
+            "fillOpacity": 10,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
@@ -2096,11 +2145,11 @@
               },
               {
                 "color": "red",
-                "value": 80
+                "value": 1
               }
             ]
           },
-          "unit": "Bps"
+          "unit": "short"
         },
         "overrides": []
       },
@@ -2110,7 +2159,7 @@
         "x": 16,
         "y": 41
       },
-      "id": 210,
+      "id": 2114,
       "options": {
         "legend": {
           "calcs": [],
@@ -2120,8 +2169,8 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
       "pluginVersion": "12.3.2",
@@ -2131,21 +2180,12 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (image) (irate(container_fs_reads_bytes_total{server=\"$server\", image!=\"\"}[1m]))",
-          "legendFormat": "Read: {{image}}",
+          "expr": "sum by (name) (rate(container_network_receive_errors_total{server=\"$server\", name!=\"\"}[1m]) + rate(container_network_transmit_errors_total{server=\"$server\", name!=\"\"}[1m]))",
+          "legendFormat": "Errors: {{name}}",
           "refId": "A"
         }
       ],
-      "title": "Avg. I/O bytes read by image",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "/^Read: (?:.*\\/)?([^:]+)(?::.*)?$/",
-            "renamePattern": "Read: $1"
-          }
-        }
-      ],
+      "title": "NETWORK - HTTP Errors (4xx/5xx)",
       "type": "timeseries"
     },
     {
@@ -2335,6 +2375,167 @@
       "type": "timeseries"
     },
     {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "iops"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 48
+      },
+      "id": 2419,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (name) (rate(container_fs_writes_total{server=\"$server\", name!=\"\"}[1m]))",
+          "legendFormat": "Writes: {{name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "I/O - Write Operations (IOPS)",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 57
+      },
+      "id": 2115,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sort_desc(sum by (name) (irate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\"}[1m])))",
+          "instant": true,
+          "legendFormat": "{{name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "I/O - Most Read-intensive containers",
+      "type": "bargauge"
+    },
+    {
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -2399,10 +2600,10 @@
       "gridPos": {
         "h": 9,
         "w": 8,
-        "x": 16,
-        "y": 48
+        "x": 8,
+        "y": 57
       },
-      "id": 221,
+      "id": 2117,
       "options": {
         "legend": {
           "calcs": [],
@@ -2423,21 +2624,105 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (image) (irate(container_fs_reads_bytes_total{server=\"$server\", image!=\"\"}[1m]))",
-          "legendFormat": "Read: {{image}}",
+          "expr": "sum by (container_label_com_docker_compose_service) (irate(container_fs_reads_bytes_total{server=\"$server\", container_label_com_docker_compose_service!=\"\"}[1m]))",
+          "legendFormat": "Read: {{container_label_com_docker_compose_service}}",
           "refId": "A"
         }
       ],
       "title": "Avg. I/O bytes read by image",
-      "transformations": [
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "iops"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 57
+      },
+      "id": 891,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
         {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "/^Read: (?:.*\\/)?([^:]+)(?::.*)?$/",
-            "renamePattern": "Read: $1"
-          }
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (name) (rate(container_fs_reads_total{server=\"$server\", name!=\"\"}[1m]))",
+          "legendFormat": "Reads: {{name}}",
+          "refId": "A"
         }
       ],
+      "title": "I/O - Read Operations (IOPS)",
       "type": "timeseries"
     }
   ],
@@ -2482,5 +2767,5 @@
   "timezone": "browser",
   "title": "Docker Overview - (Datadog Clone)",
   "uid": "ad6lcp6",
-  "version": 11
+  "version": 18
 }

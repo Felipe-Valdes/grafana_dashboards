@@ -104,7 +104,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "max(container_fs_limit_bytes{server=\"$server\", id=\"/\"})",
+          "expr": "node_filesystem_size_bytes{server=\"$server\", mountpoint=\"/\"}",
           "refId": "A"
         }
       ],
@@ -177,7 +177,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "(sum(node_filesystem_size_bytes{server=\"$server\", device=~\"/dev/.*\"} - node_filesystem_free_bytes{server=\"$server\", device=~\"/dev/.*\"}) / sum(container_fs_limit_bytes{server=\"$server\", device=~\"/dev/sda.*|/dev/mapper/.*\", id=\"/\"})) * 100",
+          "expr": "100 - (sum(node_filesystem_avail_bytes{server=\"$server\", mountpoint=\"/\"}) / sum(node_filesystem_size_bytes{server=\"$server\", mountpoint=\"/\"}) * 100)",
           "refId": "A"
         }
       ],
@@ -329,6 +329,13 @@
               {
                 "id": "unit",
                 "value": "percentunit"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
               }
             ]
           }
@@ -352,7 +359,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "node_filesystem_size_bytes{server=\"$server\", device=~\"/dev/.*\", fstype!=\"tmpfs\"}",
+          "expr": "node_filesystem_size_bytes{server=\"$server\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
           "format": "table",
           "refId": "Total"
         },
@@ -361,7 +368,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "node_filesystem_size_bytes{server=\"$server\", device=~\"/dev/.*\", fstype!=\"tmpfs\"} - node_filesystem_free_bytes{server=\"$server\", device=~\"/dev/.*\", fstype!=\"tmpfs\"}",
+          "expr": "node_filesystem_size_bytes{server=\"$server\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"} - node_filesystem_free_bytes{server=\"$server\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
           "format": "table",
           "refId": "Used"
         }
@@ -371,7 +378,7 @@
         {
           "id": "seriesToColumns",
           "options": {
-            "byField": "device"
+            "byField": "mountpoint"
           }
         },
         {
@@ -381,28 +388,28 @@
               "Time": true,
               "__name__ 1": true,
               "__name__ 2": true,
+              "device 2": true,
               "fstype 2": true,
               "instance 1": true,
               "instance 2": true,
               "job 1": true,
               "job 2": true,
-              "mountpoint 2": true,
               "server 1": true,
               "server 2": true
             },
             "indexByName": {
               "Total": 3,
               "Used": 4,
-              "device": 0,
+              "device 1": 0,
               "fstype 1": 2,
-              "mountpoint 1": 1
+              "mountpoint": 1
             },
             "renameByName": {
               "Total": "Total Capacity",
               "Used": "Used Space",
-              "device": "Device",
+              "device 1": "Device",
               "fstype 1": "FS Type",
-              "mountpoint 1": "Mount Point"
+              "mountpoint": "Mount Point"
             }
           }
         },
@@ -470,8 +477,12 @@
                 "value": 0
               },
               {
+                "color": "orange",
+                "value": 70
+              },
+              {
                 "color": "red",
-                "value": 80
+                "value": 90
               }
             ]
           },
@@ -514,7 +525,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(node_disk_io_time_seconds_total{server=\"$server\"}[1m]) * 100",
+          "expr": "rate(node_disk_io_time_seconds_total{server=\"$server\", device!~\"ram.*|loop.*\"}[5m]) * 100",
           "legendFormat": "{{device}}",
           "refId": "A"
         }
@@ -577,7 +588,7 @@
               }
             ]
           },
-          "unit": "binbps"
+          "unit": "binBps"
         },
         "overrides": []
       },
@@ -616,7 +627,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(node_disk_read_bytes_total{server=\"$server\", device!~\"dm-.*|ram.*|loop.*\"}[1m])",
+          "expr": "irate(node_disk_read_bytes_total{server=\"$server\", device!~\"ram.*|loop.*\"}[1m])",
           "legendFormat": "{{device}}",
           "refId": "A"
         }
@@ -639,7 +650,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 10,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -664,6 +675,7 @@
               "mode": "off"
             }
           },
+          "decimals": 1,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -678,7 +690,7 @@
               }
             ]
           },
-          "unit": "ms"
+          "unit": "binBps"
         },
         "overrides": []
       },
@@ -688,7 +700,7 @@
         "x": 8,
         "y": 11
       },
-      "id": 3,
+      "id": 5,
       "options": {
         "legend": {
           "calcs": [
@@ -717,21 +729,12 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(node_disk_read_time_seconds_total{server=\"$server\"}[1m]) / rate(node_disk_reads_completed_total{server=\"$server\"}[1m]) * 1000",
-          "legendFormat": "Read {{device}}",
+          "expr": "irate(node_disk_written_bytes_total{server=\"$server\", device!~\"ram.*|loop.*\"}[1m])",
+          "legendFormat": "{{device}}",
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "rate(node_disk_write_time_seconds_total{server=\"$server\"}[1m]) / rate(node_disk_writes_completed_total{server=\"$server\"}[1m]) * 1000",
-          "legendFormat": "Write {{device}}",
-          "refId": "B"
         }
       ],
-      "title": "Disk Latency (ms, by device)",
+      "title": "Disk Write (by device)",
       "type": "timeseries"
     },
     {
@@ -783,8 +786,12 @@
                 "value": 0
               },
               {
+                "color": "orange",
+                "value": 10
+              },
+              {
                 "color": "red",
-                "value": 80
+                "value": 25
               }
             ]
           },
@@ -793,7 +800,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 10,
         "w": 8,
         "x": 16,
         "y": 17
@@ -827,8 +834,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "avg by (instance) (irate(node_cpu_seconds_total{server=\"$server\", mode=\"iowait\"}[1m])) * 100",
-          "legendFormat": "{{instance}}",
+          "expr": "avg by (server) (irate(node_cpu_seconds_total{server=\"$server\", mode=\"iowait\"}[1m])) * 100",
+          "legendFormat": "{{server}}",
           "refId": "A"
         }
       ],
@@ -894,7 +901,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 8,
         "x": 0,
         "y": 19
@@ -951,7 +958,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -976,7 +983,6 @@
               "mode": "off"
             }
           },
-          "decimals": 1,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -986,22 +992,26 @@
                 "value": 0
               },
               {
+                "color": "orange",
+                "value": 20
+              },
+              {
                 "color": "red",
-                "value": 80
+                "value": 50
               }
             ]
           },
-          "unit": "binbps"
+          "unit": "ms"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 8,
         "x": 8,
         "y": 19
       },
-      "id": 5,
+      "id": 3,
       "options": {
         "legend": {
           "calcs": [
@@ -1030,12 +1040,21 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(node_disk_written_bytes_total{server=\"$server\", device!~\"dm-.*|ram.*|loop.*\"}[1m])",
-          "legendFormat": "{{device}}",
+          "expr": "(rate(node_disk_read_time_seconds_total{server=\"$server\"}[1m]) / rate(node_disk_reads_completed_total{server=\"$server\"}[1m]) * 1000) or vector(0)",
+          "legendFormat": "Read {{device}}",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "(rate(node_disk_write_time_seconds_total{server=\"$server\"}[1m]) / rate(node_disk_writes_completed_total{server=\"$server\"}[1m]) * 1000) or vector(0)",
+          "legendFormat": "Write {{device}}",
+          "refId": "B"
         }
       ],
-      "title": "Disk Write (by device)",
+      "title": "Disk Latency (ms, by device)",
       "type": "timeseries"
     }
   ],
@@ -1079,5 +1098,5 @@
   "timezone": "browser",
   "title": "System - Disk I/O",
   "uid": "adpgjzb",
-  "version": 7
+  "version": 8
 }

@@ -205,7 +205,11 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "avg(irate(node_cpu_seconds_total{mode=\"steal\"}[1m])) * 100",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "avg by (server) (irate(node_cpu_seconds_total{server=\"$server\", mode=\"steal\"}[1m])) * 100",
           "refId": "A"
         }
       ],
@@ -402,7 +406,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"iowait\"}[1m])) * 100",
+          "expr": "avg by (server) (irate(node_cpu_seconds_total{server=\"$server\", mode=\"iowait\"}[1m])) * 100",
           "refId": "A"
         }
       ],
@@ -471,7 +475,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "100 - (avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[1m])) * 100)",
+          "expr": "100 - (avg by (server) (irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[1m])) * 100)",
           "legendFormat": "CPU %",
           "refId": "A"
         }
@@ -483,8 +487,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "orange",
-            "mode": "fixed"
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -495,8 +498,12 @@
                 "value": 0
               },
               {
+                "color": "orange",
+                "value": 5000
+              },
+              {
                 "color": "red",
-                "value": 80
+                "value": 10000
               }
             ]
           },
@@ -535,7 +542,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(node_intr_total{server=\"$server\"}[1m])",
+          "expr": "sum by (server) (irate(node_intr_total{server=\"$server\"}[1m]))",
           "refId": "A"
         }
       ],
@@ -705,5 +712,5 @@
   "timezone": "browser",
   "title": "System - CPU",
   "uid": "adlz285",
-  "version": 12
+  "version": 13
 }

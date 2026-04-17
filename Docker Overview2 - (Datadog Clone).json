@@ -18,7 +18,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 7,
   "links": [],
   "panels": [
     {
@@ -64,145 +63,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 1,
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "orange",
-                "value": 70
-              },
-              {
-                "color": "red",
-                "value": 90
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 3,
-        "x": 4,
-        "y": 1
-      },
-      "id": 2422,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "(sum(rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\"}[1m])) / count(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"})) * 100",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Total CPU",
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "decimals": 1,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "orange",
-                "value": 100000000
-              },
-              {
-                "color": "red",
-                "value": 500000000
-              }
-            ]
-          },
-          "unit": "bps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 7,
-        "y": 1
-      },
-      "id": 999,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "avg_over_time(sum(rate(container_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*\"}[5m]) + rate(container_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*\"}[5m]))[24h:5m])",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Docker Network Traffic (24h)",
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "rgb(150, 150, 150)",
+            "fixedColor": "green",
             "mode": "fixed"
           },
           "decimals": 0,
@@ -222,7 +83,7 @@
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 11,
+        "x": 4,
         "y": 1
       },
       "id": 1,
@@ -259,6 +120,207 @@
         }
       ],
       "title": "UP Containers",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 7,
+        "y": 1
+      },
+      "hideTimeOverride": true,
+      "id": 2422,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "text": {}
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "(sum(rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\"}[1m])) / count(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"})) * 100",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "1m",
+      "title": "Docker CPU Usage (%)",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "purple",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 10,
+        "y": 1
+      },
+      "id": 2423,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(container_memory_usage_bytes{server=\"$server\", name!=\"\"})",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Docker Total Memory",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "semi-dark-blue",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 14,
+        "y": 1
+      },
+      "id": 999,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(rate(container_network_receive_bytes_total{server=\"$server\", name!=\"\"}[1m]) + rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\"}[1m]))",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Docker Network Traffic",
+      "transparent": true,
       "type": "stat"
     },
     {
@@ -310,7 +372,7 @@
         ]
       },
       "gridPos": {
-        "h": 6,
+        "h": 9,
         "w": 6,
         "x": 18,
         "y": 1
@@ -318,7 +380,13 @@
       "id": 2113,
       "options": {
         "cellHeight": "sm",
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Service/Image"
+          }
+        ]
       },
       "pluginVersion": "12.3.2",
       "targets": [
@@ -360,6 +428,7 @@
           ]
         }
       ],
+      "transparent": true,
       "type": "table"
     },
     {
@@ -368,26 +437,21 @@
           "color": {
             "mode": "thresholds"
           },
-          "decimals": 1,
+          "decimals": 0,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
+                "color": "dark-green",
                 "value": 0
               },
               {
-                "color": "orange",
-                "value": 6442450944
-              },
-              {
                 "color": "red",
-                "value": 7516192768
+                "value": 1
               }
             ]
-          },
-          "unit": "bytes"
+          }
         },
         "overrides": []
       },
@@ -397,10 +461,10 @@
         "x": 4,
         "y": 4
       },
-      "id": 2423,
+      "id": 2425,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -422,19 +486,149 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(container_memory_rss{server=\"$server\", name!=\"\"})",
+          "expr": "count(container_last_seen{server=\"$server\", name!=\"\"}) - count(container_state_status{server=\"$server\", status=\"running\"}) or vector(0)",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Total RAM",
+      "title": "Containers Not Up",
+      "transparent": true,
       "type": "stat"
     },
     {
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "#515354",
+            "fixedColor": "orange",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1048576
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 10,
+        "y": 4
+      },
+      "id": 2447,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(container_memory_swap{server=\"$server\", name!=\"\"})",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Docker Swap Memory",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "light-blue",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 14,
+        "y": 4
+      },
+      "hideTimeOverride": true,
+      "id": 2426,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(increase(container_network_receive_bytes_total{server=\"$server\", name!=\"\", device!~\"lo|veth.*\"}[1h])) + sum(increase(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", device!~\"lo|veth.*\"}[1h]))",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "1h",
+      "title": "Docker Data Transferred (1h)",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
             "mode": "fixed"
           },
           "decimals": 1,
@@ -455,8 +649,8 @@
       "gridPos": {
         "h": 3,
         "w": 4,
-        "x": 7,
-        "y": 4
+        "x": 0,
+        "y": 7
       },
       "id": 2112,
       "options": {
@@ -484,6 +678,7 @@
         }
       ],
       "title": "Avg. Container Uptime",
+      "transparent": true,
       "type": "stat"
     },
     {
@@ -514,8 +709,8 @@
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 11,
-        "y": 4
+        "x": 4,
+        "y": 7
       },
       "id": 2424,
       "options": {
@@ -547,6 +742,190 @@
         }
       ],
       "title": "Last Deployment",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 7,
+        "y": 7
+      },
+      "id": 2440,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "count(container_last_seen{server=\"$server\", image!=\"\"})",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Docker Images",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "gray",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "gray",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 10,
+        "y": 7
+      },
+      "id": 3095,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", device!=\"\"}[$__rate_interval])) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Docker Disk Write Rate",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "gray",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "gray",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 14,
+        "y": 7
+      },
+      "id": 3096,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(increase(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", device!=\"\"}[1h])) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Docker Writes (Last 1h)",
+      "transparent": true,
       "type": "stat"
     },
     {
@@ -555,7 +934,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 10
       },
       "id": 200,
       "panels": [
@@ -643,7 +1022,7 @@
             "h": 13,
             "w": 5,
             "x": 0,
-            "y": 8
+            "y": 11
           },
           "id": 5,
           "options": {
@@ -756,7 +1135,7 @@
             "h": 13,
             "w": 19,
             "x": 5,
-            "y": 8
+            "y": 11
           },
           "id": 171,
           "options": {
@@ -792,344 +1171,343 @@
       "type": "row"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 11
       },
       "id": 300,
-      "panels": [
-        {
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false
-              },
-              "decimals": 1,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "orange",
-                    "value": 70
-                  },
-                  {
-                    "color": "red",
-                    "value": 90
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Process/Service"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 190
-                  },
-                  {
-                    "id": "links",
-                    "value": [
-                      {
-                        "targetBlank": true,
-                        "title": "Ver detalle de ${__data.fields['Process/Service']}",
-                        "url": "/d/adnqj4l?var-datasource=${datasource}&var-server=${server}&var-container=${__data.fields['Process/Service']}"
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Usage %"
-                },
-                "properties": [
-                  {
-                    "id": "unit",
-                    "value": "percent"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "basic",
-                      "type": "gauge"
-                    }
-                  },
-                  {
-                    "id": "custom.width",
-                    "value": 121
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Usage (RSS)"
-                },
-                "properties": [
-                  {
-                    "id": "unit",
-                    "value": "decbytes"
-                  },
-                  {
-                    "id": "custom.width",
-                    "value": 120
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Cache"
-                },
-                "properties": [
-                  {
-                    "id": "unit",
-                    "value": "decbytes"
-                  },
-                  {
-                    "id": "custom.width",
-                    "value": 150
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Swap"
-                },
-                "properties": [
-                  {
-                    "id": "unit",
-                    "value": "decbytes"
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": 0
-                        },
-                        {
-                          "color": "orange",
-                          "value": 1
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 14,
-            "w": 5,
-            "x": 0,
-            "y": 9
-          },
-          "id": 7,
-          "options": {
-            "cellHeight": "md",
-            "frameIndex": 0,
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Usage %"
-              }
-            ]
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "(sum by (name) (container_memory_rss{server=\"$server\", name!=\"\"}) / on() group_left() machine_memory_bytes{server=\"$server\"}) * 100",
-              "format": "table",
-              "instant": true,
-              "refId": "Percent"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "sum by (name) (container_memory_rss{server=\"$server\", name!=\"\"})",
-              "format": "table",
-              "instant": true,
-              "refId": "RSS"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "sum by (name) (container_memory_cache{server=\"$server\", name!=\"\"})",
-              "format": "table",
-              "instant": true,
-              "refId": "Cache"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "sum by (name) (container_memory_swap{server=\"$server\", name!=\"\"})",
-              "format": "table",
-              "instant": true,
-              "refId": "Swap"
-            }
-          ],
-          "title": "Container Memory Usage",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "server": true
-                },
-                "indexByName": {
-                  "Cache": 3,
-                  "Process/Service": 0,
-                  "Swap": 4,
-                  "Usage %": 1,
-                  "Usage (RSS)": 2
-                },
-                "renameByName": {
-                  "Value #Cache": "Cache",
-                  "Value #Percent": "Usage %",
-                  "Value #RSS": "Usage (RSS)",
-                  "Value #Swap": "Swap",
-                  "name": "Process/Service"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 12,
-                "gradientMode": "opacity",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 2,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 2,
-              "mappings": [],
-              "max": 100,
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "percent"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 14,
-            "w": 19,
-            "x": 5,
-            "y": 9
-          },
-          "id": 11,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "(sum by (name) (container_memory_rss{server=\"$server\", name!~\"|POD\"}) / on() group_left() machine_memory_bytes{server=\"$server\"}) * 100",
-              "legendFormat": "{{name}}",
-              "refId": "A"
-            }
-          ],
-          "title": "Containers Top Memory RSS Usage (%)",
-          "type": "timeseries"
-        }
-      ],
+      "panels": [],
       "title": "Memory",
       "type": "row"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Process/Service"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 190
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Ver detalle de ${__data.fields['Process/Service']}",
+                    "url": "/d/adnqj4l?var-datasource=${datasource}&var-server=${server}&var-container=${__data.fields['Process/Service']}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Usage %"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Usage (Total)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decbytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cache"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decbytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Swap"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decbytes"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "orange",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 5,
+        "x": 0,
+        "y": 12
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "frameIndex": 1,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Usage %"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "(sum by (name) (container_memory_usage_bytes{server=\"$server\", name!=\"\"}) / on() group_left() machine_memory_bytes{server=\"$server\"}) * 100",
+          "format": "table",
+          "instant": true,
+          "refId": "Percent"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (name) (container_memory_usage_bytes{server=\"$server\", name!=\"\"})",
+          "format": "table",
+          "instant": true,
+          "refId": "Total"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (name) (container_memory_cache{server=\"$server\", name!=\"\"})",
+          "format": "table",
+          "instant": true,
+          "refId": "Cache"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum by (name) (container_memory_swap{server=\"$server\", name!=\"\"})",
+          "format": "table",
+          "instant": true,
+          "refId": "Swap"
+        }
+      ],
+      "title": "Container Memory Usage (Total)",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "server": true
+            },
+            "indexByName": {
+              "Cache": 3,
+              "Process/Service": 0,
+              "Swap": 4,
+              "Usage %": 1,
+              "Usage (Total)": 2
+            },
+            "renameByName": {
+              "Value #Cache": "Cache",
+              "Value #Percent": "Usage %",
+              "Value #Swap": "Swap",
+              "Value #Total": "Usage (Total)",
+              "name": "Process/Service"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 12,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 19,
+        "x": 5,
+        "y": 12
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "(sum by (name) (container_memory_usage_bytes{server=\"$server\", name!~\"|POD\"}) / on() group_left() machine_memory_bytes{server=\"$server\"}) * 100",
+          "legendFormat": "{{name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Containers Top Memory Total Usage (%)",
+      "type": "timeseries"
     },
     {
       "collapsed": true,
@@ -1137,7 +1515,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 26
       },
       "id": 400,
       "panels": [
@@ -1212,7 +1590,7 @@
             "h": 11,
             "w": 5,
             "x": 0,
-            "y": 103
+            "y": 54
           },
           "id": 9,
           "options": {
@@ -1323,7 +1701,7 @@
             "h": 11,
             "w": 19,
             "x": 5,
-            "y": 103
+            "y": 54
           },
           "id": 13,
           "options": {
@@ -1425,7 +1803,7 @@
             "h": 12,
             "w": 5,
             "x": 0,
-            "y": 114
+            "y": 65
           },
           "id": 2421,
           "options": {
@@ -1536,7 +1914,7 @@
             "h": 12,
             "w": 19,
             "x": 5,
-            "y": 114
+            "y": 65
           },
           "id": 191,
           "options": {
@@ -1577,7 +1955,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 27
       },
       "id": 500,
       "panels": [
@@ -1652,7 +2030,7 @@
             "h": 12,
             "w": 5,
             "x": 0,
-            "y": 104
+            "y": 55
           },
           "id": 230,
           "options": {
@@ -1763,7 +2141,7 @@
             "h": 12,
             "w": 19,
             "x": 5,
-            "y": 104
+            "y": 55
           },
           "id": 220,
           "options": {
@@ -1865,7 +2243,7 @@
             "h": 11,
             "w": 5,
             "x": 0,
-            "y": 116
+            "y": 67
           },
           "id": 2115,
           "options": {
@@ -1976,7 +2354,7 @@
             "h": 11,
             "w": 19,
             "x": 5,
-            "y": 116
+            "y": 67
           },
           "id": 201,
           "options": {
@@ -2061,5 +2439,5 @@
   "timezone": "browser",
   "title": "Docker Overview2 - (Datadog Clone)",
   "uid": "ad6lcp6",
-  "version": 52
+  "version": 64
 }

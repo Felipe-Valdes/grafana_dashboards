@@ -5,7 +5,7 @@
         "builtIn": 1,
         "datasource": {
           "type": "grafana",
-          "uid": "-- Mixed --"
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": true,
@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 17,
+  "id": 18,
   "links": [],
   "panels": [
     {
@@ -52,7 +52,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden;\">\n  <img src=\"https://www.svgrepo.com/show/448221/docker.svg\" style=\"height: 80%; width: auto; object-fit: contain;\" />\n</div>",
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden;\">\n  <img src=\"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/linux.svg\" style=\"height: 80%; width: auto; filter: invert(0.8);\" />\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -61,7 +61,11 @@
       "type": "text"
     },
     {
-      "description": "Ranking completo de consumo de CPU respecto a la capacidad total del host. Haz clic en el nombre para ver detalles.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Ranking de consumo de CPU por servidor respecto a su capacidad total. Haz clic en el nombre para ver detalles.",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -102,20 +106,20 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "name"
+              "options": "server"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Container Name"
+                "value": "Server Name"
               },
               {
                 "id": "links",
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "Ver detalle de ${__data.fields.name}",
-                    "url": "/d/adnqj4l?var-datasource=${datasource}&var-server=${server}&var-container=${__data.fields.name}"
+                    "title": "Ver detalle de ${__data.fields.server}",
+                    "url": "/d/infra-base-template?var-datasource=${datasource}&var-server=${__data.fields.server}"
                   }
                 ]
               }
@@ -164,15 +168,15 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "expr": "(sum by (name) (rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])) / scalar(count(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}))) * 100",
+          "expr": "(1 - avg by (server) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m]))) * 100",
           "format": "table",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Containers - CPU Usage",
+      "title": "Servers - CPU Usage",
       "transformations": [
         {
           "id": "organize",
@@ -182,7 +186,7 @@
             },
             "indexByName": {
               "Value": 1,
-              "name": 0
+              "server": 0
             }
           }
         }
@@ -190,7 +194,11 @@
       "type": "table"
     },
     {
-      "description": "Ranking completo de consumo de RAM respecto al total del host. Haz clic en el nombre para ver detalles o en el encabezado para ordenar.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Ranking de consumo de RAM por servidor. Haz clic en el nombre para ver detalles.",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -231,20 +239,20 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "name"
+              "options": "server"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Container Name"
+                "value": "Server Name"
               },
               {
                 "id": "links",
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "Ver detalle de ${__data.fields.name}",
-                    "url": "/d/adnqj4l?var-datasource=${datasource}&var-server=${server}&var-container=${__data.fields.name}"
+                    "title": "Ver detalle de ${__data.fields.server}",
+                    "url": "/d/infra-base-template?var-datasource=${datasource}&var-server=${__data.fields.server}"
                   }
                 ]
               }
@@ -293,25 +301,27 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "expr": "(sum by (name) (container_memory_working_set_bytes{server=\"$server\", name!=\"\", container!=\"POD\"}) / on() group_left() machine_memory_bytes{server=\"$server\"}) * 100",
+          "expr": "((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * 100",
           "format": "table",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Containers - Memory Usage",
+      "title": "Servers - Memory Usage",
       "transformations": [
         {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Time": true
+              "Time": true,
+              "instance": true,
+              "job": true
             },
             "indexByName": {
               "Value": 1,
-              "name": 0
+              "server": 0
             }
           }
         }
@@ -325,11 +335,17 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "noData": {
+                  "color": "gray",
+                  "text": "0"
+                }
+              },
+              "type": "special"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -339,7 +355,7 @@
               },
               {
                 "color": "green",
-                "value": 0
+                "value": 1
               }
             ]
           }
@@ -367,10 +383,6 @@
           "values": false
         },
         "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 60
-        },
         "textMode": "value",
         "wideLayout": true
       },
@@ -379,27 +391,37 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "count(container_tasks_state{server=\"$server\", name!=\"\", state=\"running\", container!=\"POD\"}) - count(container_last_seen{server=\"$server\", name!=\"\", container!=\"POD\"}) + count(container_tasks_state{server=\"$server\", name!=\"\", state=\"running\", container!=\"POD\"})",
+          "expr": "count(up{job=~\"node.*\"} == 1) or vector(0)",
+          "format": "time_series",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Running Containers",
+      "title": "Running Servers",
       "transparent": true,
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "noValue": "0",
+          "mappings": [
+            {
+              "options": {
+                "noData": {
+                  "color": "green",
+                  "text": "0"
+                }
+              },
+              "type": "special"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -437,10 +459,6 @@
           "values": false
         },
         "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 60
-        },
         "textMode": "value",
         "wideLayout": true
       },
@@ -449,23 +467,23 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "code",
-          "expr": "count(container_last_seen{server=\"$server\", name!=\"\", container!=\"POD\"}) - count(container_tasks_state{server=\"$server\", name!=\"\", state=\"running\"})",
+          "expr": "count(up{job=\"node_exporter\"} == 0) or vector(0)",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Issued Containers",
+      "title": "Issued Servers",
       "transparent": true,
       "type": "stat"
     },
     {
       "datasource": {
-        "type": "prometheus"
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
       },
-      "description": "Carga agregada de red (Suma de RX + TX). Haz clic en el nombre para ver detalles.",
+      "description": "Carga agregada de red por servidor (Suma de RX + TX). Haz clic en el nombre para ver detalles.",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -506,20 +524,20 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "name"
+              "options": "server"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Container Name"
+                "value": "Server Name"
               },
               {
                 "id": "links",
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "Ver detalle de ${__data.fields.name}",
-                    "url": "/d/adnqj4l?var-datasource=${datasource}&var-server=${server}&var-container=${__data.fields.name}"
+                    "title": "Ver detalle de ${__data.fields.server}",
+                    "url": "/d/infra-base-template?var-datasource=${datasource}&var-server=${__data.fields.server}"
                   }
                 ]
               }
@@ -568,16 +586,15 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "code",
-          "expr": "sum by (name) (rate(container_network_receive_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]))",
+          "expr": "sum by (server) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]) + rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]))",
           "format": "table",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Containers - Network Throughput",
+      "title": "Servers - Network Throughput",
       "transformations": [
         {
           "id": "organize",
@@ -587,7 +604,7 @@
             },
             "indexByName": {
               "Value": 1,
-              "name": 0
+              "server": 0
             }
           }
         }
@@ -595,7 +612,11 @@
       "type": "table"
     },
     {
-      "description": "Carga total de disco (Suma de Lectura + Escritura). Haz clic en el nombre para ver detalles.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Porcentaje de ocupación del disco principal (/). Haz clic en el nombre para ver detalles.",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -611,7 +632,7 @@
           },
           "decimals": 2,
           "mappings": [],
-          "max": 104857600,
+          "max": 100,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -622,34 +643,34 @@
               },
               {
                 "color": "orange",
-                "value": 10485760
+                "value": 70
               },
               {
                 "color": "red",
-                "value": 52428800
+                "value": 90
               }
             ]
           },
-          "unit": "binBps"
+          "unit": "percent"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "name"
+              "options": "server"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Container Name"
+                "value": "Server Name"
               },
               {
                 "id": "links",
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "Ver detalle de ${__data.fields.name}",
-                    "url": "/d/adnqj4l?var-datasource=${datasource}&var-server=${server}&var-container=${__data.fields.name}"
+                    "title": "Ver detalle de ${__data.fields.server}",
+                    "url": "/d/infra-base-template?var-datasource=${datasource}&var-server=${__data.fields.server}"
                   }
                 ]
               }
@@ -664,13 +685,13 @@
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "mode": "basic",
+                  "mode": "gradient",
                   "type": "gauge"
                 }
               },
               {
                 "id": "displayName",
-                "value": "Total I/O (Read+Write)"
+                "value": "% Disk Usage"
               }
             ]
           }
@@ -689,7 +710,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Total I/O (Read+Write)"
+            "displayName": "% Disk Usage"
           }
         ]
       },
@@ -698,26 +719,32 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]))",
+          "expr": "100 - (node_filesystem_avail_bytes{mountpoint=\"/\"} / node_filesystem_size_bytes{mountpoint=\"/\"} * 100)",
           "format": "table",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Containers - Disk I/O Throughput",
+      "title": "Servers - Disk Usage (%)",
       "transformations": [
         {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Time": true
+              "Time": true,
+              "device": true,
+              "fstype": true,
+              "instance": true,
+              "job": true,
+              "mountpoint": true
             },
             "indexByName": {
               "Value": 1,
-              "name": 0
-            }
+              "server": 0
+            },
+            "renameByName": {}
           }
         }
       ],
@@ -730,27 +757,12 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "fixedColor": "DARKGRAY",
-            "mode": "fixed"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "0",
-                "result": {
-                  "color": "red",
-                  "text": "Offline"
-                }
-              },
-              "type": "value"
-            }
-          ],
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "DARKGRAY",
                 "value": 0
               }
             ]
@@ -780,10 +792,6 @@
           "values": false
         },
         "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 40
-        },
         "textMode": "value",
         "wideLayout": true
       },
@@ -792,37 +800,31 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "code",
-          "expr": "avg(time() - container_start_time_seconds{server=\"$server\", name!=\"\"})",
+          "expr": "avg(time() - node_boot_time_seconds) or vector(0)",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Avg Container Uptime",
+      "title": "Avg Server Uptime",
       "transparent": true,
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "fixedColor": "DARKGRAY",
-            "mode": "fixed"
-          },
-          "decimals": 0,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "DARKGRAY",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -851,10 +853,6 @@
           "values": false
         },
         "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 40
-        },
         "textMode": "value",
         "wideLayout": true
       },
@@ -863,15 +861,14 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "code",
-          "expr": "(time() - max(container_start_time_seconds{server=\"$server\", name!=\"\", container!=\"POD\"})) * 1000",
+          "expr": "(time() - max(node_boot_time_seconds)) * 1000",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Last Container Deployment",
+      "title": "Last Server Reboot",
       "transparent": true,
       "type": "stat"
     },
@@ -889,7 +886,11 @@
       "type": "row"
     },
     {
-      "description": "Tendencia histórica del uso de CPU del contenedor:\n- Container CPU Trend: Muestra la evolución del consumo de recursos de cómputo específicos del contenedor seleccionado.\n- Interpretación: Permite identificar si un microservicio está experimentando picos inusuales o si requiere un ajuste en sus 'limits' y 'requests' de Docker.\n- Valores esperados: Uso estable dentro de los límites definidos. Un valor cercano al 100% (o al límite del contenedor) indica que el servicio podría presentar latencias por estrangulamiento de CPU (CPU Throttling).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Tendencia histórica del uso de CPU por servidor:\n- Server CPU Trend: Muestra la evolución del consumo de recursos de cómputo de los hosts físicos/virtuales.\n- Interpretación: Permite identificar picos de carga en el sistema operativo host o procesos fuera de contenedores.\n- Valores esperados: Uso estable. Valores persistentes sobre el 80% indican necesidad de escalado horizontal o vertical del hardware.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1021,25 +1022,23 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "code",
-          "expr": "topk(20, sum by (name) (rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 100))",
-          "legendFormat": "{{name}}",
+          "expr": "topk(20, (1 - avg by (server) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m]))) * 100)",
+          "legendFormat": "{{server}}",
           "refId": "A"
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "code",
-          "expr": "avg(sum by (name) (rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 100))",
+          "expr": "avg(1 - rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100",
           "legendFormat": "AVERAGE",
           "refId": "B"
         }
       ],
-      "title": "Top 20 Containers - CPU Usage (%)",
+      "title": "Top 20 Servers - CPU Usage (%)",
       "type": "timeseries"
     },
     {
@@ -1056,7 +1055,7 @@
       "type": "row"
     },
     {
-      "description": "Tendencia histórica del uso de Memoria RAM del contenedor:\n- RAM Usage Trend: Muestra la evolución del consumo de memoria física (Working Set) de los microservicios con mayor carga.\n- Interpretación: Permite identificar fugas de memoria (memory leaks) o si el contenedor está cerca de ser finalizado por el OOM Killer (Out Of Memory).\n- Valores esperados: Consumo estable. Un crecimiento constante sin liberaciones sugiere la necesidad de optimizar el código o aumentar los límites de RAM asignados.",
+      "description": "Tendencia histórica del uso de RAM por servidor:\n- RAM Usage Trend: Muestra la evolución del consumo de memoria física respecto al total del host.\n- Interpretación: Permite identificar fugas de memoria a nivel de sistema operativo o procesos que no están limitados por contenedores.\n- Valores esperados: Consumo estable. Un crecimiento constante sin liberación (pendiente positiva) sugiere la necesidad de revisión de servicios zombies o procesos de sistema.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1098,6 +1097,8 @@
           },
           "decimals": 2,
           "mappings": [],
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1111,7 +1112,7 @@
               }
             ]
           },
-          "unit": "bytes"
+          "unit": "percent"
         },
         "overrides": [
           {
@@ -1144,10 +1145,6 @@
               {
                 "id": "custom.lineInterpolation",
                 "value": "stepAfter"
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
               }
             ]
           }
@@ -1186,25 +1183,23 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "code",
-          "expr": "topk(20, sum by (name) (container_memory_working_set_bytes{server=\"$server\", name!=\"\", container!=\"POD\"}))",
-          "legendFormat": "{{name}}",
+          "expr": "topk(20, ((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * 100)",
+          "legendFormat": "{{server}}",
           "refId": "A"
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "code",
-          "expr": "avg(sum by (name) (container_memory_working_set_bytes{server=\"$server\", name!=\"\", container!=\"POD\"}))",
+          "expr": "avg(((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * 100)",
           "legendFormat": "AVERAGE",
           "refId": "B"
         }
       ],
-      "title": "Top 20 Containers - Memory Usage",
+      "title": "Top 20 Servers - Memory Usage (%)",
       "type": "timeseries"
     },
     {
@@ -1221,7 +1216,7 @@
       "type": "row"
     },
     {
-      "description": "Monitoreo de red en modo espejo:\n- Parte Superior (>0): Tráfico de entrada (IN).\n- Parte Inferior (<0): Tráfico de salida (OUT).\n- Interpretación: Permite visualizar el balance de carga simétrico/asimétrico de los microservicios del hospital.",
+      "description": "Monitoreo de red de hosts en modo espejo:\n- Parte Superior (>0): Tráfico de entrada (IN) total del servidor.\n- Parte Inferior (<0): Tráfico de salida (OUT) total del servidor.\n- Interpretación: Útil para detectar anomalías de tráfico (DDoS, exfiltración) o saturación de interfaces físicas.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1229,7 +1224,7 @@
           },
           "custom": {
             "axisBorderShow": false,
-            "axisCenteredZero": false,
+            "axisCenteredZero": true,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
@@ -1300,10 +1295,9 @@
                 "id": "custom.lineStyle",
                 "value": {
                   "dash": [
-                    0.5,
+                    2,
                     5
-                  ],
-                  "fill": "dot"
+                  ]
                 }
               },
               {
@@ -1333,10 +1327,9 @@
                 "id": "custom.lineStyle",
                 "value": {
                   "dash": [
-                    0.5,
+                    2,
                     5
-                  ],
-                  "fill": "dot"
+                  ]
                 }
               },
               {
@@ -1380,41 +1373,41 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "expr": "topk(7, sum by (name) (rate(container_network_receive_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
-          "legendFormat": "IN: {{name}}",
+          "expr": "topk(7, sum by (server) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]) * 8))",
+          "legendFormat": "IN: {{server}}",
           "refId": "A"
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "expr": "topk(7, sum by (name) (rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * -8))",
-          "legendFormat": "OUT: {{name}}",
+          "expr": "topk(7, sum by (server) (rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]) * -8))",
+          "legendFormat": "OUT: {{server}}",
           "refId": "B"
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "expr": "avg(sum by (name) (rate(container_network_receive_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
+          "expr": "avg(sum by (server) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]) * 8))",
           "legendFormat": "AVG_IN",
           "refId": "C"
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "expr": "avg(sum by (name) (rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * -8))",
+          "expr": "avg(sum by (server) (rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]) * -8))",
           "legendFormat": "AVG_OUT",
           "refId": "D"
         }
       ],
-      "title": "Top 10 Containers - Network Traffic (Mirror)",
+      "title": "Top 10 Servers - Network Traffic (Mirror)",
       "type": "timeseries"
     },
     {
@@ -1431,7 +1424,7 @@
       "type": "row"
     },
     {
-      "description": "Monitoreo de lectura y escritura en disco:\n- Parte Superior (>0): Velocidad de Lectura (Read).\n- Parte Inferior (<0): Velocidad de Escritura (Write).\n- Interpretación: Permite identificar si un contenedor es intensivo en lectura (ej. base de datos consultada) o escritura (ej. logs o backups).",
+      "description": "Monitoreo de throughput de disco físico:\n- Parte Superior (>0): Velocidad de Lectura (Read).\n- Parte Inferior (<0): Velocidad de Escritura (Write).\n- Interpretación: Identifica servidores con cuellos de botella en almacenamiento o procesos de base de datos/backups intensivos.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1439,7 +1432,7 @@
           },
           "custom": {
             "axisBorderShow": false,
-            "axisCenteredZero": false,
+            "axisCenteredZero": true,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
@@ -1510,10 +1503,9 @@
                 "id": "custom.lineStyle",
                 "value": {
                   "dash": [
-                    0.5,
+                    2,
                     5
-                  ],
-                  "fill": "dot"
+                  ]
                 }
               },
               {
@@ -1543,10 +1535,9 @@
                 "id": "custom.lineStyle",
                 "value": {
                   "dash": [
-                    0.5,
+                    2,
                     5
-                  ],
-                  "fill": "dot"
+                  ]
                 }
               },
               {
@@ -1590,45 +1581,41 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "code",
-          "expr": "topk(7, sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
-          "legendFormat": "Read: {{name}}",
+          "expr": "topk(7, sum by (server) (rate(node_disk_read_bytes_total[1m])))",
+          "legendFormat": "Read: {{server}}",
           "refId": "A"
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "code",
-          "expr": "topk(7, sum by (name) (rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * -1))",
-          "legendFormat": "Write: {{name}}",
+          "expr": "topk(7, sum by (server) (rate(node_disk_written_bytes_total[1m]) * -1))",
+          "legendFormat": "Write: {{server}}",
           "refId": "B"
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "code",
-          "expr": "avg(sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
+          "expr": "avg(sum by (server) (rate(node_disk_read_bytes_total[1m])))",
           "legendFormat": "AVG_READ",
           "refId": "C"
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "code",
-          "expr": "avg(sum by (name) (rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * -1))",
+          "expr": "avg(sum by (server) (rate(node_disk_written_bytes_total[1m]) * -1))",
           "legendFormat": "AVG_WRITE",
           "refId": "D"
         }
       ],
-      "title": "Top 10 Containers - Disk I/O Traffic (Mirror)",
+      "title": "Top 10 Servers - Disk I/O Traffic (Mirror)",
       "type": "timeseries"
     }
   ],
@@ -1648,28 +1635,7 @@
         "options": [],
         "query": "prometheus",
         "refresh": 1,
-        "regex": "",
         "type": "datasource"
-      },
-      {
-        "current": {
-          "text": "master",
-          "value": "master"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(up, server)",
-        "includeAll": false,
-        "label": "Server",
-        "name": "server",
-        "options": [],
-        "query": "label_values(up, server)",
-        "refresh": 1,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
       }
     ]
   },
@@ -1678,8 +1644,8 @@
     "to": "now"
   },
   "timepicker": {},
-  "timezone": "browser",
-  "title": "Docker Overview2 - (Datadog Clone)",
-  "uid": "ad6lcp6",
-  "version": 13
+  "timezone": "",
+  "title": "Infraestructure - Fleet Overview",
+  "uid": "ad5x9bl",
+  "version": 10
 }

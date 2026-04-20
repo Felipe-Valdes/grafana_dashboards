@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 7,
+  "id": 79,
   "links": [],
   "panels": [
     {
@@ -1160,7 +1160,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "red",
+            "fixedColor": "DEEPSKYBLUE",
             "mode": "fixed"
           },
           "custom": {
@@ -1203,12 +1203,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "DEEPSKYBLUE",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 1
               }
             ]
           },
@@ -1262,7 +1258,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "orange",
+            "fixedColor": "LIGHTSKYBLUE",
             "mode": "fixed"
           },
           "custom": {
@@ -1306,12 +1302,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "LIGHTSKYBLUE",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -1359,7 +1351,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -1401,18 +1393,45 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "CORNFLOWERBLUE",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
           "unit": "percent"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "User"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "CORNFLOWERBLUE",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "System"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "DARKGRAY",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -1463,7 +1482,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "red",
+            "fixedColor": "SLATEGRAY",
             "mode": "fixed"
           },
           "custom": {
@@ -1507,12 +1526,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "SLATEGRAY",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -1560,7 +1575,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "CADETBLUE",
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -1603,12 +1619,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "CADETBLUE",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -1777,7 +1789,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -1820,12 +1832,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "MEDIUMPURPLE",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -1841,7 +1849,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "blue",
+                  "fixedColor": "MEDIUMPURPLE",
                   "mode": "fixed"
                 }
               }
@@ -1856,7 +1864,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "green",
+                  "fixedColor": "REBECCAPURPLE",
                   "mode": "fixed"
                 }
               }
@@ -1921,7 +1929,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "blue",
+            "fixedColor": "MEDIUMPURPLE",
             "mode": "fixed"
           },
           "custom": {
@@ -1965,12 +1973,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "MEDIUMPURPLE",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -1986,7 +1990,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "red",
+                  "fixedColor": "DARKSLATEGRAY",
                   "mode": "fixed"
                 }
               },
@@ -1997,6 +2001,21 @@
               {
                 "id": "custom.fillOpacity",
                 "value": 15
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Container Usage"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "MEDIUMPURPLE",
+                  "mode": "fixed"
+                }
               }
             ]
           }
@@ -2063,7 +2082,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "purple",
+            "fixedColor": "MEDIUMVIOLETRED",
             "mode": "fixed"
           },
           "custom": {
@@ -2519,7 +2538,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "yellow",
+            "fixedColor": "CADETBLUE",
             "mode": "fixed"
           },
           "custom": {
@@ -2562,12 +2581,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "CADETBLUE",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -2615,11 +2630,11 @@
       "type": "timeseries"
     },
     {
-      "description": "Monitoreo de integridad y saturación en la capa de red del contenedor:\n- Errors: Paquetes recibidos o transmitidos con fallos de integridad, indicando posibles problemas en el stack de red virtual o el puente (bridge) de Docker.\n- Drops: Paquetes descartados por falta de recursos o saturación de buffers. A menudo es síntoma de cuellos de botella en el procesamiento del contenedor o límites de red alcanzados.\n- Interpretación: En un entorno estable, ambos valores deben ser cero. Cualquier incremento es una señal de alerta sobre la calidad de la comunicación o la capacidad de procesamiento de red asignada.\n- Valores esperados: 0 constante. Picos persistentes requieren revisión de la configuración de red del host o del aislamiento del contenedor.",
+      "description": "Monitoreo de integridad y saturación en la capa de red del contenedor:\n- Errors: Paquetes recibidos o transmitidos con fallos de integridad, indicando posibles problemas en el stack de red virtual o el puente (bridge) de Docker.\n- Drops: Paquetes descartados por falta de recursos o saturación de buffers. A menudo es síntoma de cuellos de botella en el procesamiento del contenedor o límites de red alcanzados.\n- Interpretación: En un entorno estable, ambos valores deben ser cero. Cualquier incremento es una señal de alerta sobre la calidad de la comunicación o la capacidad de procesamiento de red asignada.\n- Valores esperados: 0 constante. Picos persistententes requieren revisión de la configuración de red del host o del aislamiento del contenedor.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -2661,12 +2676,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "DARKORCHID",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -2682,7 +2693,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "orange",
+                  "fixedColor": "DARKORCHID",
                   "mode": "fixed"
                 }
               }
@@ -2697,7 +2708,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "red",
+                  "fixedColor": "MEDIUMVIOLETRED",
                   "mode": "fixed"
                 }
               }
@@ -2750,7 +2761,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "orange",
+            "fixedColor": "DARKCYAN",
             "mode": "fixed"
           },
           "custom": {
@@ -2794,12 +2805,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "DARKCYAN",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -3201,7 +3208,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3243,18 +3250,45 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "STEELBLUE",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
           "unit": "binbps"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Read:.*/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "STEELBLUE",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Write:.*/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "DARKSLATEBLUE",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 12,
@@ -3305,7 +3339,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3347,12 +3381,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "STEELBLUE",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -3368,7 +3398,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "yellow",
+                  "fixedColor": "STEELBLUE",
                   "mode": "fixed"
                 }
               }
@@ -3383,7 +3413,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "green",
+                  "fixedColor": "DARKSLATEBLUE",
                   "mode": "fixed"
                 }
               }
@@ -3440,7 +3470,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3482,18 +3512,45 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "STEELBLUE",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
           "unit": "iops"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Read:.*/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "STEELBLUE",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Write:.*/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "DARKSLATEBLUE",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 11,
@@ -3544,7 +3601,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3586,18 +3643,45 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "STEELBLUE",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
           "unit": "decbytes"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Read Block:.*/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "STEELBLUE",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Write Block:.*/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "DARKSLATEBLUE",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 11,
@@ -3684,8 +3768,8 @@
       },
       {
         "current": {
-          "text": "grafana",
-          "value": "grafana"
+          "text": "alertmanager",
+          "value": "alertmanager"
         },
         "datasource": {
           "type": "prometheus",
@@ -3701,16 +3785,48 @@
         "regex": "",
         "sort": 1,
         "type": "query"
+      },
+      {
+        "current": {
+          "text": "1",
+          "value": "1"
+        },
+        "label": "Intensity",
+        "name": "threshold",
+        "options": [
+          {
+            "selected": true,
+            "text": "Low",
+            "value": "1"
+          },
+          {
+            "selected": false,
+            "text": "Medium",
+            "value": "2"
+          },
+          {
+            "selected": false,
+            "text": "High",
+            "value": "3"
+          },
+          {
+            "selected": false,
+            "text": "Critical",
+            "value": "4"
+          }
+        ],
+        "query": "Low : 1, Medium : 2, High : 3, Critical : 4",
+        "type": "custom"
       }
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Docker Service Diagnostic - Detailed View",
+  "title": "container_overview",
   "uid": "adnqj4l",
-  "version": 37
+  "version": 2
 }

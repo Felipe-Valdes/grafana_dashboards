@@ -174,7 +174,8 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "(1 - avg by (server) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m]))) * 100",
+          "editorMode": "code",
+          "expr": "(1 - avg by (server) (rate(node_cpu_seconds_total{mode=\"idle\"}[$__rate_interval]))) * 100",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -311,6 +312,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "expr": "((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * 100",
           "format": "table",
           "instant": true,
@@ -600,7 +602,8 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum by (server) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]) + rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]))",
+          "editorMode": "code",
+          "expr": "sum by (server) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]) + rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -737,6 +740,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "expr": "100 - (node_filesystem_avail_bytes{mountpoint=\"/\"} / node_filesystem_size_bytes{mountpoint=\"/\"} * 100)",
           "format": "table",
           "instant": true,
@@ -1232,7 +1236,7 @@
       "type": "row"
     },
     {
-      "description": "Monitoreo de red de hosts en modo espejo:\n- Parte Superior (>0): Tráfico de entrada (IN) total del servidor.\n- Parte Inferior (<0): Tráfico de salida (OUT) total del servidor.\n- Interpretación: Útil para detectar anomalías de tráfico (DDoS, exfiltración) o saturación de interfaces físicas.",
+      "description": "Monitoreo de red de hosts en modo espejo:\n- Parte Superior (>0): Tráfico de entrada (IN) total del servidor.\n- Parte Inferior (<0): Tráfico de salida (OUT) total del servidor.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1261,7 +1265,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
+            "showPoints": "auto",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -1272,7 +1276,6 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1290,6 +1293,18 @@
           "unit": "bps"
         },
         "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/(OUT:|AVG_OUT).*/"
+            },
+            "properties": [
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
+              }
+            ]
+          },
           {
             "matcher": {
               "id": "byName",
@@ -1368,10 +1383,6 @@
           "calcs": [
             "lastNotNull",
             "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
             "max"
           ],
           "displayMode": "table",
@@ -1380,45 +1391,29 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
           "expr": "topk(7, sum by (server) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]) * 8))",
           "legendFormat": "IN: {{server}}",
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "topk(7, sum by (server) (rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]) * -8))",
+          "expr": "topk(7, sum by (server) (rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]) * 8))",
           "legendFormat": "OUT: {{server}}",
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
           "expr": "avg(sum by (server) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]) * 8))",
           "legendFormat": "AVG_IN",
           "refId": "C"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "avg(sum by (server) (rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]) * -8))",
+          "expr": "avg(sum by (server) (rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[1m]) * 8))",
           "legendFormat": "AVG_OUT",
           "refId": "D"
         }
@@ -1440,7 +1435,7 @@
       "type": "row"
     },
     {
-      "description": "Monitoreo de throughput de disco físico:\n- Parte Superior (>0): Velocidad de Lectura (Read).\n- Parte Inferior (<0): Velocidad de Escritura (Write).\n- Interpretación: Identifica servidores con cuellos de botella en almacenamiento o procesos de base de datos/backups intensivos.",
+      "description": "Monitoreo de throughput de disco físico:\n- Parte Superior (>0): Velocidad de Lectura (Read).\n- Parte Inferior (<0): Velocidad de Escritura (Write).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1469,7 +1464,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
+            "showPoints": "auto",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -1480,7 +1475,6 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1498,6 +1492,18 @@
           "unit": "Bps"
         },
         "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/(Write:|AVG_WRITE).*/"
+            },
+            "properties": [
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
+              }
+            ]
+          },
           {
             "matcher": {
               "id": "byName",
@@ -1576,10 +1582,6 @@
           "calcs": [
             "lastNotNull",
             "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
             "max"
           ],
           "displayMode": "table",
@@ -1588,45 +1590,29 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
           "expr": "topk(7, sum by (server) (rate(node_disk_read_bytes_total[1m])))",
           "legendFormat": "Read: {{server}}",
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "topk(7, sum by (server) (rate(node_disk_written_bytes_total[1m]) * -1))",
+          "expr": "topk(7, sum by (server) (rate(node_disk_written_bytes_total[1m])))",
           "legendFormat": "Write: {{server}}",
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
           "expr": "avg(sum by (server) (rate(node_disk_read_bytes_total[1m])))",
           "legendFormat": "AVG_READ",
           "refId": "C"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "avg(sum by (server) (rate(node_disk_written_bytes_total[1m]) * -1))",
+          "expr": "avg(sum by (server) (rate(node_disk_written_bytes_total[1m])))",
           "legendFormat": "AVG_WRITE",
           "refId": "D"
         }
@@ -1656,12 +1642,12 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "infra_fleet",
   "uid": "ad5x9bl",
-  "version": 1
+  "version": 3
 }

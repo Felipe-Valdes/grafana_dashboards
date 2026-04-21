@@ -878,7 +878,7 @@
           },
           "decimals": 2,
           "mappings": [],
-          "max": 104857600,
+          "max": 131072000,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -893,11 +893,11 @@
               },
               {
                 "color": "orange",
-                "value": 78643200
+                "value": 83886080
               },
               {
                 "color": "red",
-                "value": 94371840
+                "value": 104857600
               }
             ]
           },
@@ -3204,11 +3204,10 @@
       "type": "timeseries"
     },
     {
-      "description": "Tasa de transferencia de datos por dispositivo de bloque:\n- Read (Eje Positivo): Velocidad de lectura en Bytes/s.\n- Write (Eje Negativo): Velocidad de escritura en Bytes/s.\n- Interpretación: Permite diferenciar el tráfico entre distintos volúmenes o particiones montadas en el contenedor. Útil para identificar cuellos de botella en dispositivos específicos del host.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3244,14 +3243,17 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "STEELBLUE",
+                "color": "green",
                 "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
@@ -3285,6 +3287,10 @@
                   "fixedColor": "DARKSLATEBLUE",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
               }
             ]
           }
@@ -3314,7 +3320,7 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "multi",
+          "mode": "single",
           "sort": "none"
         }
       },
@@ -3326,7 +3332,7 @@
           "refId": "A"
         },
         {
-          "expr": "sum by (device) (rate(container_fs_writes_bytes_total{server=\"$server\", name=\"$container\"}[1m])) * -1",
+          "expr": "sum by (device) (rate(container_fs_writes_bytes_total{server=\"$server\", name=\"$container\"}[1m]))",
           "legendFormat": "Write: {{device}}",
           "refId": "B"
         }
@@ -3335,11 +3341,10 @@
       "type": "timeseries"
     },
     {
-      "description": "Frecuencia promedio de operaciones de entrada/salida (I/O):\n- Read IOPS (Eje Superior): Operaciones de lectura por segundo.\n- Write IOPS (Eje Inferior): Operaciones de escritura por segundo.\n- Interpretación: Permite visualizar la intensidad transaccional del contenedor. Valores altos constantes en escritura sugieren una alta generación de logs o actividad de base de datos.\n- Unidad: Operaciones por segundo (IOPS).",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3375,14 +3380,17 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "STEELBLUE",
+                "color": "green",
                 "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
@@ -3416,6 +3424,10 @@
                   "fixedColor": "DARKSLATEBLUE",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
               }
             ]
           }
@@ -3445,7 +3457,7 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "multi",
+          "mode": "single",
           "sort": "none"
         }
       },
@@ -3457,7 +3469,7 @@
           "refId": "A"
         },
         {
-          "expr": "sum(rate(container_fs_writes_total{server=\"$server\", name=\"$container\"}[1m])) * -1",
+          "expr": "sum(rate(container_fs_writes_total{server=\"$server\", name=\"$container\"}[1m]))",
           "legendFormat": "Write IOPS",
           "refId": "B"
         }
@@ -3466,11 +3478,10 @@
       "type": "timeseries"
     },
     {
-      "description": "Frecuencia de operaciones de E/S por dispositivo:\n- Read IOPS (Eje Superior): Operaciones de lectura por segundo.\n- Write IOPS (Eje Inferior): Operaciones de escritura por segundo.\n- Análisis: Permite separar el rendimiento del sistema de archivos 'overlay' (Docker) del rendimiento de volúmenes persistentes montados.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3506,14 +3517,17 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "STEELBLUE",
+                "color": "green",
                 "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
@@ -3547,6 +3561,10 @@
                   "fixedColor": "DARKSLATEBLUE",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
               }
             ]
           }
@@ -3588,7 +3606,7 @@
           "refId": "A"
         },
         {
-          "expr": "sum by (device) (rate(container_fs_writes_total{server=\"$server\", name=\"$container\"}[1m])) * -1",
+          "expr": "sum by (device) (rate(container_fs_writes_total{server=\"$server\", name=\"$container\"}[1m]))",
           "legendFormat": "Write: {{device}}",
           "refId": "B"
         }
@@ -3597,11 +3615,10 @@
       "type": "timeseries"
     },
     {
-      "description": "Tamaño promedio de bloque transferido por cada dispositivo:\n- Read Block Size (Eje Superior): Bytes promedio por cada operación de lectura.\n- Write Block Size (Eje Inferior): Bytes promedio por cada operación de escritura.\n- Interpretación: Valores altos indican transferencias secuenciales eficientes. Valores bajos indican alta fragmentación o exceso de metadatos.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3637,14 +3654,17 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "STEELBLUE",
+                "color": "green",
                 "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
@@ -3678,6 +3698,10 @@
                   "fixedColor": "DARKSLATEBLUE",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
               }
             ]
           }
@@ -3707,7 +3731,7 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "multi",
+          "mode": "single",
           "sort": "none"
         }
       },
@@ -3719,7 +3743,7 @@
           "refId": "A"
         },
         {
-          "expr": "(sum by (device) (rate(container_fs_writes_bytes_total{server=\"$server\", name=\"$container\"}[1m])) / sum by (device) (rate(container_fs_writes_total{server=\"$server\", name=\"$container\"}[1m]))) * -1",
+          "expr": "sum by (device) (rate(container_fs_writes_bytes_total{server=\"$server\", name=\"$container\"}[1m])) / sum by (device) (rate(container_fs_writes_total{server=\"$server\", name=\"$container\"}[1m]))",
           "legendFormat": "Write Block: {{device}}",
           "refId": "B"
         }
@@ -3768,8 +3792,8 @@
       },
       {
         "current": {
-          "text": "alertmanager",
-          "value": "alertmanager"
+          "text": "grafana",
+          "value": "grafana"
         },
         "datasource": {
           "type": "prometheus",
@@ -3828,5 +3852,5 @@
   "timezone": "browser",
   "title": "container_overview",
   "uid": "adnqj4l",
-  "version": 2
+  "version": 9
 }

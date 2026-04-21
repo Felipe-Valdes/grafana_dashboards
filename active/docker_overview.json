@@ -61,6 +61,9 @@
       "type": "text"
     },
     {
+      "datasource": {
+        "type": "prometheus"
+      },
       "description": "Ranking completo de consumo de CPU respecto a la capacidad total del host. Haz clic en el nombre para ver detalles.",
       "fieldConfig": {
         "defaults": {
@@ -170,7 +173,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "(sum by (name) (rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])) / scalar(count(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}))) * 100",
+          "editorMode": "code",
+          "expr": "(sum by (name) (rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval])) / scalar(count(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}))) * 100",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -194,6 +198,10 @@
       "type": "table"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "Ranking completo de consumo de RAM respecto al total del host. Haz clic en el nombre para ver detalles o en el encabezado para ordenar.",
       "fieldConfig": {
         "defaults": {
@@ -303,7 +311,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "(sum by (name) (container_memory_working_set_bytes{server=\"$server\", name!=\"\", container!=\"POD\"}) / on() group_left() machine_memory_bytes{server=\"$server\"}) * 100",
+          "editorMode": "code",
+          "expr": "(sum by (name) (avg_over_time(container_memory_working_set_bytes{server=\"$server\", name!=\"\", container!=\"POD\"}[$__interval])) / on() group_left() machine_memory_bytes{server=\"$server\"}) * 100",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -583,7 +592,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (name) (rate(container_network_receive_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]))",
+          "expr": "sum by (name) (\n  rate(container_network_receive_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]) \n  + \n  rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval])\n)",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -607,6 +616,10 @@
       "type": "table"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "Carga total de disco (Suma de Lectura + Escritura). Haz clic en el nombre para ver detalles.",
       "fieldConfig": {
         "defaults": {
@@ -716,7 +729,8 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]))",
+          "editorMode": "code",
+          "expr": "sum by (name) (\n  rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]) \n  + \n  rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval])\n)",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -1237,7 +1251,7 @@
       "type": "row"
     },
     {
-      "description": "Monitoreo de red en modo espejo:\n- Parte Superior (>0): Tráfico de entrada (IN).\n- Parte Inferior (<0): Tráfico de salida (OUT).\n- Interpretación: Permite visualizar el balance de carga simétrico/asimétrico de los microservicios del hospital.",
+      "description": "Monitoreo de red en modo espejo:\n- Parte Superior (>0): Tráfico de entrada (IN).\n- Parte Inferior (<0): Tráfico de salida (OUT).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1245,7 +1259,7 @@
           },
           "custom": {
             "axisBorderShow": false,
-            "axisCenteredZero": false,
+            "axisCenteredZero": true,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
@@ -1266,7 +1280,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
+            "showPoints": "auto",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -1277,7 +1291,6 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1295,6 +1308,18 @@
           "unit": "bps"
         },
         "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/(OUT:|AVG_OUT).*/"
+            },
+            "properties": [
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
+              }
+            ]
+          },
           {
             "matcher": {
               "id": "byName",
@@ -1375,10 +1400,6 @@
           "calcs": [
             "lastNotNull",
             "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
             "max"
           ],
           "displayMode": "table",
@@ -1387,45 +1408,29 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
           "expr": "topk(7, sum by (name) (rate(container_network_receive_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
           "legendFormat": "IN: {{name}}",
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "topk(7, sum by (name) (rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * -8))",
+          "expr": "topk(7, sum by (name) (rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
           "legendFormat": "OUT: {{name}}",
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
           "expr": "avg(sum by (name) (rate(container_network_receive_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
           "legendFormat": "AVG_IN",
           "refId": "C"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "avg(sum by (name) (rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * -8))",
+          "expr": "avg(sum by (name) (rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
           "legendFormat": "AVG_OUT",
           "refId": "D"
         }
@@ -1447,7 +1452,7 @@
       "type": "row"
     },
     {
-      "description": "Monitoreo de lectura y escritura en disco:\n- Parte Superior (>0): Velocidad de Lectura (Read).\n- Parte Inferior (<0): Velocidad de Escritura (Write).\n- Interpretación: Permite identificar si un contenedor es intensivo en lectura (ej. base de datos consultada) o escritura (ej. logs o backups).",
+      "description": "Monitoreo de lectura y escritura en disco:\n- Parte Superior (>0): Velocidad de Lectura (Read).\n- Parte Inferior (<0): Velocidad de Escritura (Write).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1455,7 +1460,7 @@
           },
           "custom": {
             "axisBorderShow": false,
-            "axisCenteredZero": false,
+            "axisCenteredZero": true,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
@@ -1476,7 +1481,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
+            "showPoints": "auto",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -1487,7 +1492,6 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1505,6 +1509,18 @@
           "unit": "Bps"
         },
         "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/(Write:|AVG_WRITE).*/"
+            },
+            "properties": [
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
+              }
+            ]
+          },
           {
             "matcher": {
               "id": "byName",
@@ -1585,10 +1601,6 @@
           "calcs": [
             "lastNotNull",
             "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
             "max"
           ],
           "displayMode": "table",
@@ -1597,49 +1609,29 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
           "expr": "topk(7, sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
           "legendFormat": "Read: {{name}}",
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "topk(7, sum by (name) (rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * -1))",
+          "expr": "topk(7, sum by (name) (rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
           "legendFormat": "Write: {{name}}",
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
           "expr": "avg(sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
           "legendFormat": "AVG_READ",
           "refId": "C"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "avg(sum by (name) (rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * -1))",
+          "expr": "avg(sum by (name) (rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
           "legendFormat": "AVG_WRITE",
           "refId": "D"
         }
@@ -1697,5 +1689,5 @@
   "timezone": "browser",
   "title": "docker_overview",
   "uid": "ad6lcp5",
-  "version": 2
+  "version": 4
 }

@@ -40,7 +40,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 3,
+        "w": 4,
         "x": 0,
         "y": 1
       },
@@ -60,46 +60,10 @@
       "type": "text"
     },
     {
-      "description": "Tendencia histórica del uso de procesador:\n- CPU Trend: Muestra la evolución del consumo de recursos de cómputo a lo largo del tiempo, consolidando todos los estados del procesador (user, system, iowait).\n- Interpretación: Permite identificar ciclos de carga, como procesos batch nocturnos o picos de demanda durante horas laborales, facilitando la planificación de capacidad.\n- Valores esperados: En una infraestructura estable, la tendencia debe mostrar picos controlados. Un crecimiento sostenido de la línea base hacia el 100% indica que el servidor está llegando al final de su vida útil para la carga actual y requiere una actualización de hardware.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "DODGERBLUE",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "left",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "mode": "thresholds"
           },
           "decimals": 2,
           "mappings": [],
@@ -109,12 +73,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "STEELBLUE",
                 "value": 0
               },
               {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
                 "color": "red",
-                "value": 80
+                "value": 90
               }
             ]
           },
@@ -123,186 +95,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 3,
+        "h": 3,
+        "w": 4,
+        "x": 4,
         "y": 1
       },
-      "id": 529,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "100 - (avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[1m])) * 100)",
-          "legendFormat": "CPU Usage",
-          "refId": "A"
-        }
-      ],
-      "title": "CPU Usage Trend",
-      "type": "timeseries"
-    },
-    {
-      "description": "Tendencia de consumo de memoria RAM:\n- Memory Trend: Visualiza el comportamiento de la memoria ocupada frente a la capacidad total disponible en el tiempo.\n- Interpretación: Es la herramienta principal para detectar 'Memory Leaks' (fugas de memoria); si la línea de consumo sube constantemente sin bajar nunca, una aplicación está reteniendo RAM de forma indebida.\n- Valores esperados: Se espera un comportamiento de dientes de sierra (subidas y bajadas). Si la tendencia se mantiene sobre el 90% de forma persistente, el sistema empezará a utilizar Swap, lo que degradará la velocidad de todas las aplicaciones hospedadas.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "MEDIUMPURPLE",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "left",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 11,
-        "x": 13,
-        "y": 1
-      },
-      "id": 531,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "((node_memory_MemTotal_bytes{server=\"$server\"} - node_memory_MemAvailable_bytes{server=\"$server\"}) / node_memory_MemTotal_bytes{server=\"$server\"}) * 100",
-          "legendFormat": "Memory Usage",
-          "refId": "A"
-        }
-      ],
-      "title": "Memory Usage Trend",
-      "type": "timeseries"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "DARKGRAY",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-grey",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 600
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 0,
-        "y": 5
-      },
-      "id": 4,
+      "id": 692,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -311,7 +109,64 @@
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "last"
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "(1 - (node_filesystem_avail_bytes{server=\"$server\", mountpoint=\"/\"} / node_filesystem_size_bytes{server=\"$server\", mountpoint=\"/\"})) * 100",
+          "legendFormat": "Usage %",
+          "refId": "A"
+        }
+      ],
+      "title": "Disk Usage (%)",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "DARKCYAN",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
+      "id": 693,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
@@ -319,7 +174,7 @@
         "showPercentChange": false,
         "text": {
           "titleSize": 12,
-          "valueSize": 24
+          "valueSize": 40
         },
         "textMode": "value",
         "wideLayout": true
@@ -327,17 +182,146 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
+          "expr": "node_filesystem_avail_bytes{server=\"$server\", mountpoint=\"/\"}",
+          "legendFormat": "Free",
+          "refId": "C"
+        }
+      ],
+      "title": "Free Space",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
-          "expr": "time() - node_boot_time_seconds{server=\"$server\"}",
+          "decimals": 2,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "MEDIUMPURPLE",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 13,
+        "y": 1
+      },
+      "id": 541,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 12,
+          "valueSize": 52
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "((node_memory_MemTotal_bytes{server=\"$server\"} - node_memory_MemAvailable_bytes{server=\"$server\"}) / node_memory_MemTotal_bytes{server=\"$server\"}) * 100",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "System Uptime",
-      "transparent": true,
+      "title": "Memory Usage (%)",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "MEDIUMPURPLE",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "id": 707,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 12,
+          "valueSize": 52
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "node_memory_MemAvailable_bytes{server=\"$server\"}",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Free Memory (Available)",
       "type": "stat"
     },
     {
@@ -379,10 +363,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 2,
+        "h": 3,
         "w": 3,
-        "x": 0,
-        "y": 7
+        "x": 20,
+        "y": 1
       },
       "id": 537,
       "options": {
@@ -401,7 +385,7 @@
         "showPercentChange": false,
         "text": {
           "titleSize": 12,
-          "valueSize": 24
+          "valueSize": 40
         },
         "textMode": "auto",
         "wideLayout": true
@@ -419,270 +403,14 @@
         }
       ],
       "title": "Last CPU Usage (%)",
-      "transparent": true,
       "type": "stat"
     },
     {
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "MEDIUMPURPLE",
-                "value": 0
-              },
-              {
-                "color": "yellow",
-                "value": 60
-              },
-              {
-                "color": "orange",
-                "value": 75
-              },
-              {
-                "color": "red",
-                "value": 90
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 0,
-        "y": 9
-      },
-      "id": 541,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 24
-        },
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "((node_memory_MemTotal_bytes{server=\"$server\"} - node_memory_MemAvailable_bytes{server=\"$server\"}) / node_memory_MemTotal_bytes{server=\"$server\"}) * 100",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Last Mem Usage (%)",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "description": "Análisis de Tendencia Espejo del Tráfico de Red:\n- Network Traffic Trend Mirror: Visualización bidireccional que contrasta el flujo de entrada (Inbound) frente al de salida (Outbound) en tiempo real.\n- Interpretación: La simetría o asimetría del 'espejo' permite diagnosticar rápidamente el perfil de carga; por ejemplo, una salida masiva de datos sin una entrada proporcional podría indicar una exfiltración o un respaldo pesado.\n- Valores esperados: Se busca estabilidad en los patrones cíclicos de tráfico. Picos inusuales en un solo sentido del espejo actúan como indicadores tempranos de saturación de interfaces o cuellos de botella en la segmentación de red.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": true,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "left",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "binBps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "OUT"
-            },
-            "properties": [
-              {
-                "id": "custom.transform",
-                "value": "negative-Y"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "TEAL",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "IN"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "LIGHTSEAGREEN",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 3,
-        "y": 9
-      },
-      "id": 641,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(rate(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
-          "legendFormat": "IN",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(rate(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
-          "legendFormat": "OUT",
-          "refId": "B"
-        }
-      ],
-      "title": "Network Traffic Trend (Mirror)",
-      "type": "timeseries"
-    },
-    {
-      "description": "Monitoreo de Latencia de Operaciones de Disco (I/O Latency):\n- Disk Latency: Métrica de tiempo de respuesta que mide el retraso entre una solicitud de entrada/salida y su finalización por parte del almacenamiento.\n- Interpretación: Actúa como el principal indicador de degradación del rendimiento; valores elevados (I/O Wait) sugieren saturación del bus de datos, fallos físicos inminentes o contención de recursos en entornos virtualizados.\n- Valores esperados: Debe mantenerse en rangos bajos y consistentes (milisegundos). Incrementos sostenidos o picos erráticos son señales tempranas de cuellos de botella que impactan directamente en la disponibilidad de las aplicaciones y la estabilidad del sistema operativo.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": true,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "fixedColor": "SLATEGRAY",
+            "mode": "fixed"
           },
           "decimals": 2,
           "mappings": [],
@@ -701,70 +429,31 @@
           },
           "unit": "ms"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Write Latency"
-            },
-            "properties": [
-              {
-                "id": "custom.transform",
-                "value": "negative-Y"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "DARKSLATEGRAY",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Read Latency"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "STEELBLUE",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 11,
-        "x": 13,
-        "y": 9
+        "h": 3,
+        "w": 3,
+        "x": 5,
+        "y": 4
       },
-      "id": 642,
+      "id": 695,
       "options": {
-        "legend": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
           "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
+            "lastNotNull"
           ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
       "pluginVersion": "12.3.2",
       "targets": [
@@ -773,22 +462,78 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "avg(rate(node_disk_read_time_seconds_total{server=\"$server\"}[$__rate_interval]) * 1000)",
-          "legendFormat": "Read Latency",
+          "expr": "avg(rate(node_disk_write_time_seconds_total{server=\"$server\"}[$__rate_interval]) / rate(node_disk_writes_completed_total{server=\"$server\"}[$__rate_interval])) * 1000",
+          "legendFormat": "Avg Write Latency",
           "refId": "A"
+        }
+      ],
+      "title": "Write Disk Latency",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "SLATEGRAY",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 20
+              }
+            ]
+          },
+          "unit": "ms"
         },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 8,
+        "y": 4
+      },
+      "id": 700,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "avg(rate(node_disk_write_time_seconds_total{server=\"$server\"}[$__rate_interval]) * 1000)",
-          "legendFormat": "Write Latency",
-          "refId": "B"
+          "expr": "avg(rate(node_disk_read_time_seconds_total{server=\"$server\"}[$__rate_interval]) / rate(node_disk_reads_completed_total{server=\"$server\"}[$__rate_interval])) * 1000",
+          "legendFormat": "Avg Read Latency",
+          "refId": "A"
         }
       ],
-      "title": "Disk Latency Trend (Mirror)",
-      "type": "timeseries"
+      "title": "Read Disk Latency",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -829,10 +574,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 2,
+        "h": 3,
         "w": 3,
-        "x": 0,
-        "y": 11
+        "x": 20,
+        "y": 4
       },
       "id": 539,
       "options": {
@@ -851,7 +596,7 @@
         "showPercentChange": false,
         "text": {
           "titleSize": 12,
-          "valueSize": 24
+          "valueSize": 52
         },
         "textMode": "auto",
         "wideLayout": true
@@ -868,8 +613,193 @@
           "refId": "A"
         }
       ],
-      "title": "Swap Usage (%)",
-      "transparent": true,
+      "title": "Last Swap Usage (%)",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-grey",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 600
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 5
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 12,
+          "valueSize": 44
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "time() - node_boot_time_seconds{server=\"$server\"}",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "System Uptime",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "DARKSLATEBLUE",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 6,
+        "y": 7
+      },
+      "id": 684,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 12,
+          "valueSize": 42
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "sum(node_disk_written_bytes_total{server=\"$server\"}) - sum(node_disk_written_bytes_total{server=\"$server\"} @ start())",
+          "legendFormat": "Total Written",
+          "refId": "A"
+        }
+      ],
+      "title": "Disk Data Written",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "DARKGRAY",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 8
+      },
+      "id": 694,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "node_filesystem_size_bytes{server=\"$server\", mountpoint=\"/\"}",
+          "legendFormat": "Total",
+          "refId": "B"
+        }
+      ],
+      "title": "Total Disk Capacity",
       "type": "stat"
     },
     {
@@ -912,10 +842,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 0,
-        "y": 13
+        "h": 3,
+        "w": 6,
+        "x": 5,
+        "y": 10
       },
       "id": 538,
       "options": {
@@ -934,7 +864,7 @@
         "showPercentChange": false,
         "text": {
           "titleSize": 12,
-          "valueSize": 24
+          "valueSize": 38
         },
         "textMode": "auto",
         "wideLayout": true
@@ -949,27 +879,545 @@
         }
       ],
       "title": "Network Traffic Avg",
-      "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "MEDIUMPURPLE",
+            "mode": "fixed"
           },
           "decimals": 2,
           "mappings": [],
-          "max": 100,
-          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "DARKPURPLE",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 11
+      },
+      "id": 706,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 12,
+          "valueSize": 52
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "node_memory_MemTotal_bytes{server=\"$server\"}",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Memory",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "TEAL",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 13
+      },
+      "id": 702,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "diff"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 28
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "sum(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Outbound (Session)",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "LIGHTSEAGREEN",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 8,
+        "y": 13
+      },
+      "id": 701,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "diff"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 28
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "sum(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Inbound (Session)",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "CADETBLUE",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "CADETBLUE",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 14
+      },
+      "id": 715,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "max(node_network_speed_bytes{server=\"$server\", device!~\"lo|veth.*\"}) * 8",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Network Interface Speed",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "DODGERBLUE",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "SLATEGRAY",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 17
+      },
+      "id": 720,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "count(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"})",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "CPU Cores",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 703,
+      "panels": [],
+      "title": "Container - Track",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Conteo de incidentes de saturación de memoria RAM:\n- Métrica: Cuantifica las muestras de 15s donde la memoria disponible (MemAvailable) cae por debajo del umbral de seguridad definido en ${threshold}.\n- Lógica de niveles: Evalúa el estrés hídrico de la RAM en cuatro niveles: 1:50%, 2:60%, 3:75%, y 4:90% de uso total.\n- Interpretación: Valores altos indican una presión constante sobre la memoria volátil, lo que aumenta el riesgo de activación del OOM Killer (Out Of Memory) o un uso excesivo de Swap, degradando el I/O del sistema.\n- Nota Técnica: Se utiliza la métrica MemAvailable en lugar de MemFree para una precisión real, considerando buffers y caché recuperables.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "white",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 7,
+        "x": 0,
+        "y": 21
+      },
+      "id": 668,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(sum_over_time(((100 - (node_memory_MemAvailable_bytes{server=\"$server\"} / node_memory_MemTotal_bytes{server=\"$server\"} * 100)) > bool (((${threshold} == bool 1) * 50) + ((${threshold} == bool 2) * 60) + ((${threshold} == bool 3) * 75) + ((${threshold} == bool 4) * 90)))[$__range:15s])) or on() vector(0)",
+          "format": "time_series",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Memory Incidents (Level: ${threshold:text})",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Conteo de incidentes de alta latencia en disco (R/W):\n- Métrica: Cuantifica las muestras donde la latencia combinada supera el umbral definido.\n- Lógica de niveles: Evalúa la latencia en milisegundos: 1:10ms, 2:20ms, 3:50ms, 4:100ms.\n- Interpretación: Un número alto indica que el disco está sufriendo retrasos persistentes en las operaciones de E/S.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "white",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 7,
+        "y": 21
+      },
+      "id": 679,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(sum_over_time((\n  (avg(rate(node_disk_read_time_seconds_total{server=\"$server\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{server=\"$server\"}[$__rate_interval])) * 1000)\n  > bool (\n    ((${threshold} == bool 1) * 50) +\n    ((${threshold} == bool 2) * 60) +\n    ((${threshold} == bool 3) * 75) +\n    ((${threshold} == bool 4) * 90)\n  )\n)[$__range:15s])) or on() vector(0)",
+          "format": "time_series",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Disk Latency Incidents (Level: ${threshold:text})",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Promedio de incidentes de saturación (Suma de tráfico IN y OUT):\n- Métrica: Cuantifica las muestras donde la suma de tasa de recepción y transmisión supera el umbral definido.\n- Lógica de niveles: Evalúa el tráfico total en cuatro niveles (60MB/s, 80MB/s, 100MB/s, 125MB/s).\n- Interpretación: Indica si el ancho de banda total de la interfaz está siendo comprometido por flujos bidireccionales.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "white",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 7,
+        "x": 13,
+        "y": 21
+      },
+      "id": 698,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(sum_over_time(((\n  sum(rate(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])) + \n  sum(rate(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))\n) > bool (\n  ((${threshold} == bool 1) * 62914560) +\n  ((${threshold} == bool 2) * 83886080) +\n  ((${threshold} == bool 3) * 104857600) +\n  ((${threshold} == bool 4) * 125829120)\n))[$__range:15s])) or on() vector(0)",
+          "format": "time_series",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Network Traffic IN/OUT (Level: ${threshold:text})",
+      "type": "stat"
+    },
+    {
+      "description": "Registro cronológico de eventos de presión de memoria con zoom dinámico.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "links": [
+            {
+              "targetBlank": false,
+              "title": "Analizar incidente (-15s)",
+              "url": "/d/infra-base-template/sys_overview?orgId=1&from=${__value.time:raw}-15000&to=${__value.time:raw}+5000"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "MEDIUMPURPLE",
                 "value": 0
               },
               {
@@ -988,357 +1436,22 @@
           },
           "unit": "percent"
         },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 0,
-        "y": 15
-      },
-      "id": 540,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 24
-        },
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "editorMode": "code",
-          "expr": "100 - (node_filesystem_avail_bytes{server=\"$server\", mountpoint=\"/\"} / node_filesystem_size_bytes{server=\"$server\", mountpoint=\"/\"} * 100)",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Disk Usage (%)",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 17
-      },
-      "id": 200,
-      "panels": [],
-      "title": "CPU",
-      "type": "row"
-    },
-    {
-      "description": "Tendencia histórica del uso de procesador:\n- CPU Trend: Muestra la evolución del consumo de recursos de cómputo a lo largo del tiempo, consolidando todos los estados del procesador (user, system, iowait).\n- Interpretación: Permite identificar ciclos de carga, como procesos batch nocturnos o picos de demanda durante horas laborales, facilitando la planificación de capacidad.\n- Valores esperados: En una infraestructura estable, la tendencia debe mostrar picos controlados. Un crecimiento sostenido de la línea base hacia el 100% indica que el servidor está llegando al final de su vida útil para la carga actual y requiere una actualización de hardware.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "DODGERBLUE",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 18
-      },
-      "id": 203,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "100 - (avg by (server) (irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[$__range])) * 100)",
-          "interval": "",
-          "legendFormat": "CPU Usage",
-          "refId": "Uso"
-        }
-      ],
-      "title": "CPU Usage",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Desglose de carga por núcleo lógico:\n- Usage per Core: Muestra el porcentaje de utilización individual para cada uno de los núcleos del procesador.\n- Interpretación: Permite identificar si el software está aprovechando el paralelismo del hardware o si un solo proceso 'monohilo' está saturando un núcleo mientras los demás permanecen ociosos.\n- Valores esperados: La carga debe estar distribuida de forma relativamente uniforme entre todos los núcleos. Un núcleo al 100% mientras los otros están al 5% sugiere una mala optimización del software o un proceso bloqueado que está afectando la latencia de las solicitudes individuales.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 16,
-        "w": 12,
-        "x": 12,
-        "y": 18
-      },
-      "id": 542,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "editorMode": "code",
-          "expr": "100 - (irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[$__rate_interval]) * 100)",
-          "legendFormat": "Core {{cpu}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "CPU Usage per Core",
-      "type": "timeseries"
-    },
-    {
-      "description": "Monitoreo de la eficiencia del procesamiento:\n- Context Switches: Veces por segundo que el CPU cambia de un proceso a otro debido a la planificación del kernel o llamadas al sistema.\n- Interrupts: Eventos generados por el hardware (red, disco, periféricos) que obligan al CPU a detener sus tareas actuales para atender la solicitud.\n- Valores esperados: En servidores de producción, se consideran normales rangos entre 5,000 y 10,000 ops/s por núcleo físico. Ambas métricas deben mantener una relación proporcional con la carga de trabajo; un aumento de interrupciones sin un incremento correlacionado en los switches suele ser síntoma de saturación de red o fallos en controladores de hardware.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "DODGERBLUE",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "pps"
-        },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Switches"
+              "options": "Value"
             },
             "properties": [
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "DODGERBLUE",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Interrupts"
-            },
-            "properties": [
+                "id": "displayName",
+                "value": "Memory Usage (%)"
+              },
               {
-                "id": "color",
+                "id": "custom.cellOptions",
                 "value": {
-                  "fixedColor": "SLATEGRAY",
-                  "mode": "fixed"
+                  "mode": "gradient",
+                  "type": "gauge"
                 }
               }
             ]
@@ -1347,429 +1460,310 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 7,
         "x": 0,
-        "y": 26
+        "y": 24
       },
-      "id": 543,
+      "id": 669,
       "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        }
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
       },
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "irate(node_context_switches_total{server=\"$server\"}[$__rate_interval])",
-          "legendFormat": "Switches",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "(100 - (node_memory_MemAvailable_bytes{server=\"$server\"} / node_memory_MemTotal_bytes{server=\"$server\"} * 100)) > (((${threshold} == bool 1) * 50) + ((${threshold} == bool 2) * 60) + ((${threshold} == bool 3) * 75) + ((${threshold} == bool 4) * 90))",
+          "format": "table",
+          "instant": false,
           "refId": "A"
-        },
-        {
-          "expr": "irate(node_intr_total{server=\"$server\"}[$__rate_interval])",
-          "legendFormat": "Interrupts",
-          "refId": "B"
         }
       ],
-      "title": "Context Switches & Interrupts",
-      "type": "timeseries"
+      "title": "Memory Usage Incident History (Level: ${threshold:text})",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "instance": true,
+              "job": true,
+              "server": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 1
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
-      "description": "Carga promedio del sistema normalizada:\n- System Load: Representa el número de procesos que están utilizando el CPU o que se encuentran en cola esperando recursos del sistema.\n- Interpretación: Mide el estrés general de la infraestructura; valores altos indican que la demanda de las aplicaciones supera la capacidad de procesamiento disponible en ese momento.\n- Valores esperados: Se considera óptimo operar bajo el 70% de la capacidad por núcleo (ej. en un servidor de 10 núcleos, un Load de 7.0 equivale al 70%). El límite crítico es el 100% (Load 10.0 en el mismo ejemplo); superar esta cifra significa que el sistema está saturado y los procesos experimentarán latencia por tiempos de espera en cola.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Registro cronológico de eventos de alta latencia en disco:\n- Trazabilidad: Listado de cada muestra que superó el umbral de latencia (R/W) seleccionado.\n- Análisis de Impacto: Observación de la latencia exacta en milisegundos (ms) en el momento del incidente.\n- Utilidad: Identificación de patrones de degradación de E/S y correlación con picos de carga.",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "fixedColor": "DARKGRAY",
-            "mode": "fixed"
-          },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
             },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
+            "footer": {
+              "reducers": []
             },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "inspect": false
           },
-          "decimals": 3,
+          "decimals": 2,
           "mappings": [],
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "DARKGRAY",
+                "color": "CADETBLUE",
                 "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
               }
             ]
           },
-          "unit": "none"
+          "unit": "ms"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Latency (ms)"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 165
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
         "w": 6,
-        "x": 0,
-        "y": 34
+        "x": 7,
+        "y": 24
       },
-      "id": 548,
+      "id": 699,
       "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "p95",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
       },
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "avg_over_time(node_load1{server=\"$server\"}[$__interval])",
-          "legendFormat": "System Load",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "(avg(rate(node_disk_read_time_seconds_total{server=\"$server\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{server=\"$server\"}[$__rate_interval])) * 1000) \n> \n(\n  ((${threshold} == bool 1) * 50) + \n  ((${threshold} == bool 2) * 60) + \n  ((${threshold} == bool 3) * 75) + \n  ((${threshold} == bool 4) * 90)\n)",
+          "format": "table",
+          "instant": false,
           "refId": "A"
         }
       ],
-      "title": "System Load",
-      "type": "timeseries"
+      "title": "Disk Latency Incident History (Level: ${threshold:text})",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "instance": true,
+              "job": true,
+              "server": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 1
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
-      "description": "Tiempo de espera de entrada y salida:\n- I/O Wait: Porcentaje de tiempo que el CPU permanece ocioso mientras espera que se completen operaciones de disco o red.\n- Interpretación: Es el principal indicador de cuellos de botella en el almacenamiento físico o latencia en el acceso a datos.\n- Valores esperados: Debe mantenerse bajo el 1-2%. Picos o valores sostenidos altos sugieren que el disco es demasiado lento para la velocidad de procesamiento del sistema.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Registro cronológico de eventos de alta carga de red (Suma IN/OUT):\n- Trazabilidad: Listado de cada muestra donde el tráfico total superó el umbral seleccionado.\n- Análisis de Intensidad: Observación del throughput combinado en el momento del incidente.\n- Utilidad: Identificación de ráfagas bidireccionales que saturan la interfaz de red.",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "fixedColor": "SLATEGRAY",
-            "mode": "fixed"
-          },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
             },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
+            "footer": {
+              "reducers": []
             },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "inspect": false
           },
-          "decimals": 3,
+          "decimals": 2,
           "mappings": [],
+          "max": 125829120,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "SLATEGRAY",
+                "color": "CADETBLUE",
                 "value": 0
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 6,
-        "y": 34
-      },
-      "id": 550,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "p95",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"iowait\"}[$__rate_interval])) * 100",
-          "legendFormat": "I/O Wait",
-          "refId": "A"
-        }
-      ],
-      "title": "CPU I/O Wait",
-      "type": "timeseries"
-    },
-    {
-      "description": "Interrupciones de software:\n- SoftIRQs: Tiempo dedicado por el CPU a procesar tareas de alta prioridad que pueden posponerse brevemente, como el manejo de paquetes de red.\n- Interpretación: Refleja la carga de trabajo administrativo del kernel, especialmente relacionada con el tráfico de red intenso.\n- Valores esperados: En servidores de aplicaciones normales, este valor es ínfimo (bajo 0.5%). Un aumento significativo suele indicar una tormenta de paquetes de red o una configuración ineficiente de los descriptores de red.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "LIGHTSEAGREEN",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 3,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
+              },
               {
-                "color": "LIGHTSEAGREEN",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 12,
-        "y": 34
-      },
-      "id": 552,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "p95",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"softirq\"}[$__rate_interval])) * 100",
-          "legendFormat": "SoftIRQs",
-          "refId": "A"
-        }
-      ],
-      "title": "CPU SoftIRQs",
-      "type": "timeseries"
-    },
-    {
-      "description": "Tiempo de CPU robado por el hipervisor:\n- Steal Time: Porcentaje de tiempo que el CPU virtual desea ejecutar tareas, pero el hipervisor físico no le asigna recursos.\n- Interpretación: Mide el impacto de la vecindad en entornos virtualizados o nubes públicas.\n- Valores esperados: En una infraestructura propia y bien gestionada, este valor debe ser 0%. Cualquier cifra superior indica que otras máquinas virtuales en el mismo host físico están consumiendo los recursos que corresponden a este servidor.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "DARKVIOLET",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 3,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
+                "color": "yellow",
+                "value": 75497472
+              },
               {
-                "color": "DARKVIOLET",
-                "value": 0
+                "color": "orange",
+                "value": 94371840
+              },
+              {
+                "color": "red",
+                "value": 113246208
               }
             ]
           },
-          "unit": "percent"
+          "unit": "binBps"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total Traffic (ms)"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 165
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
         "w": 6,
-        "x": 18,
-        "y": 34
+        "x": 13,
+        "y": 24
       },
-      "id": 611,
+      "id": 678,
       "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "p95",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "sortBy": "Max",
-          "sortDesc": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
       },
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"steal\"}[$__rate_interval])) * 100",
-          "legendFormat": "Steal Time",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "(\n  sum(rate(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])) + \n  sum(rate(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))\n) \n> \n(\n((${threshold} == bool 1) * 62914560) +\n  ((${threshold} == bool 2) * 83886080) + \n  ((${threshold} == bool 3) * 104857600) + \n  ((${threshold} == bool 4) * 125829120)\n)",
+          "format": "table",
+          "instant": false,
           "refId": "A"
         }
       ],
-      "title": "CPU Steal Time",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 42
-      },
-      "id": 645,
-      "panels": [],
-      "title": "CPU - Efficiency",
-      "type": "row"
+      "title": "Network Traffic Incident History (Level: ${threshold:text})",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "instance": true,
+              "job": true,
+              "server": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 1
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "datasource": {
@@ -1799,10 +1793,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 3,
         "w": 5,
         "x": 0,
-        "y": 43
+        "y": 32
       },
       "id": 667,
       "options": {
@@ -1865,7 +1859,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "DODGERBLUE",
                 "value": 0
               },
               {
@@ -1907,10 +1901,10 @@
         ]
       },
       "gridPos": {
-        "h": 10,
+        "h": 7,
         "w": 7,
-        "x": 5,
-        "y": 43
+        "x": 0,
+        "y": 35
       },
       "id": 666,
       "options": {
@@ -1937,7 +1931,7 @@
           "refId": "A"
         }
       ],
-      "title": "CPU Efficiency Incident History",
+      "title": "CPU Efficiency Incident History (Level: ${threshold:text})",
       "transformations": [
         {
           "id": "organize",
@@ -1957,12 +1951,740 @@
       "type": "table"
     },
     {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 42
+      },
+      "id": 200,
+      "panels": [
+        {
+          "description": "Tendencia histórica del uso de procesador:\n- CPU Trend: Muestra la evolución del consumo de recursos de cómputo a lo largo del tiempo, consolidando todos los estados del procesador (user, system, iowait).\n- Interpretación: Permite identificar ciclos de carga, como procesos batch nocturnos o picos de demanda durante horas laborales, facilitando la planificación de capacidad.\n- Valores esperados: En una infraestructura estable, la tendencia debe mostrar picos controlados. Un crecimiento sostenido de la línea base hacia el 100% indica que el servidor está llegando al final de su vida útil para la carga actual y requiere una actualización de hardware.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "DODGERBLUE",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 39
+          },
+          "id": 203,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "100 - (avg by (server) (irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[$__range])) * 100)",
+              "interval": "",
+              "legendFormat": "CPU Usage",
+              "refId": "Uso"
+            }
+          ],
+          "title": "CPU Usage",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Desglose de carga por núcleo lógico:\n- Usage per Core: Muestra el porcentaje de utilización individual para cada uno de los núcleos del procesador.\n- Interpretación: Permite identificar si el software está aprovechando el paralelismo del hardware o si un solo proceso 'monohilo' está saturando un núcleo mientras los demás permanecen ociosos.\n- Valores esperados: La carga debe estar distribuida de forma relativamente uniforme entre todos los núcleos. Un núcleo al 100% mientras los otros están al 5% sugiere una mala optimización del software o un proceso bloqueado que está afectando la latencia de las solicitudes individuales.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 16,
+            "w": 12,
+            "x": 12,
+            "y": 39
+          },
+          "id": 542,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "p99",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "editorMode": "code",
+              "expr": "100 - (irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[$__rate_interval]) * 100)",
+              "legendFormat": "Core {{cpu}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "CPU Usage per Core",
+          "type": "timeseries"
+        },
+        {
+          "description": "Monitoreo de la eficiencia del procesamiento:\n- Context Switches: Veces por segundo que el CPU cambia de un proceso a otro debido a la planificación del kernel o llamadas al sistema.\n- Interrupts: Eventos generados por el hardware (red, disco, periféricos) que obligan al CPU a detener sus tareas actuales para atender la solicitud.\n- Valores esperados: En servidores de producción, se consideran normales rangos entre 5,000 y 10,000 ops/s por núcleo físico. Ambas métricas deben mantener una relación proporcional con la carga de trabajo; un aumento de interrupciones sin un incremento correlacionado en los switches suele ser síntoma de saturación de red o fallos en controladores de hardware.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "DODGERBLUE",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "pps"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Switches"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "DODGERBLUE",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Interrupts"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "SLATEGRAY",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 342
+          },
+          "id": 543,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "expr": "irate(node_context_switches_total{server=\"$server\"}[$__rate_interval])",
+              "legendFormat": "Switches",
+              "refId": "A"
+            },
+            {
+              "expr": "irate(node_intr_total{server=\"$server\"}[$__rate_interval])",
+              "legendFormat": "Interrupts",
+              "refId": "B"
+            }
+          ],
+          "title": "Context Switches & Interrupts",
+          "type": "timeseries"
+        },
+        {
+          "description": "Carga promedio del sistema normalizada:\n- System Load: Representa el número de procesos que están utilizando el CPU o que se encuentran en cola esperando recursos del sistema.\n- Interpretación: Mide el estrés general de la infraestructura; valores altos indican que la demanda de las aplicaciones supera la capacidad de procesamiento disponible en ese momento.\n- Valores esperados: Se considera óptimo operar bajo el 70% de la capacidad por núcleo (ej. en un servidor de 10 núcleos, un Load de 7.0 equivale al 70%). El límite crítico es el 100% (Load 10.0 en el mismo ejemplo); superar esta cifra significa que el sistema está saturado y los procesos experimentarán latencia por tiempos de espera en cola.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "DARKGRAY",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 3,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "DARKGRAY",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 0,
+            "y": 350
+          },
+          "id": 548,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "p95",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "expr": "avg_over_time(node_load1{server=\"$server\"}[$__interval])",
+              "legendFormat": "System Load",
+              "refId": "A"
+            }
+          ],
+          "title": "System Load",
+          "type": "timeseries"
+        },
+        {
+          "description": "Tiempo de espera de entrada y salida:\n- I/O Wait: Porcentaje de tiempo que el CPU permanece ocioso mientras espera que se completen operaciones de disco o red.\n- Interpretación: Es el principal indicador de cuellos de botella en el almacenamiento físico o latencia en el acceso a datos.\n- Valores esperados: Debe mantenerse bajo el 1-2%. Picos o valores sostenidos altos sugieren que el disco es demasiado lento para la velocidad de procesamiento del sistema.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "SLATEGRAY",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 3,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "SLATEGRAY",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 6,
+            "y": 350
+          },
+          "id": 550,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "p95",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "expr": "avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"iowait\"}[$__rate_interval])) * 100",
+              "legendFormat": "I/O Wait",
+              "refId": "A"
+            }
+          ],
+          "title": "CPU I/O Wait",
+          "type": "timeseries"
+        },
+        {
+          "description": "Interrupciones de software:\n- SoftIRQs: Tiempo dedicado por el CPU a procesar tareas de alta prioridad que pueden posponerse brevemente, como el manejo de paquetes de red.\n- Interpretación: Refleja la carga de trabajo administrativo del kernel, especialmente relacionada con el tráfico de red intenso.\n- Valores esperados: En servidores de aplicaciones normales, este valor es ínfimo (bajo 0.5%). Un aumento significativo suele indicar una tormenta de paquetes de red o una configuración ineficiente de los descriptores de red.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "LIGHTSEAGREEN",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 3,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "LIGHTSEAGREEN",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 12,
+            "y": 350
+          },
+          "id": 552,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "p95",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "expr": "avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"softirq\"}[$__rate_interval])) * 100",
+              "legendFormat": "SoftIRQs",
+              "refId": "A"
+            }
+          ],
+          "title": "CPU SoftIRQs",
+          "type": "timeseries"
+        },
+        {
+          "description": "Tiempo de CPU robado por el hipervisor:\n- Steal Time: Porcentaje de tiempo que el CPU virtual desea ejecutar tareas, pero el hipervisor físico no le asigna recursos.\n- Interpretación: Mide el impacto de la vecindad en entornos virtualizados o nubes públicas.\n- Valores esperados: En una infraestructura propia y bien gestionada, este valor debe ser 0%. Cualquier cifra superior indica que otras máquinas virtuales en el mismo host físico están consumiendo los recursos que corresponden a este servidor.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "DARKVIOLET",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 3,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "DARKVIOLET",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 18,
+            "y": 350
+          },
+          "id": 611,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "p95",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true,
+              "sortBy": "Max",
+              "sortDesc": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "expr": "avg(irate(node_cpu_seconds_total{server=\"$server\", mode=\"steal\"}[$__rate_interval])) * 100",
+              "legendFormat": "Steal Time",
+              "refId": "A"
+            }
+          ],
+          "title": "CPU Steal Time",
+          "type": "timeseries"
+        }
+      ],
+      "title": "CPU",
+      "type": "row"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 43
       },
       "id": 300,
       "panels": [],
@@ -2036,7 +2758,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 54
+        "y": 44
       },
       "id": 613,
       "options": {
@@ -2198,7 +2920,7 @@
         "h": 17,
         "w": 12,
         "x": 12,
-        "y": 54
+        "y": 44
       },
       "id": 612,
       "options": {
@@ -2356,7 +3078,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 62
+        "y": 52
       },
       "id": 618,
       "options": {
@@ -2456,7 +3178,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 71
+        "y": 61
       },
       "id": 524,
       "options": {
@@ -2552,7 +3274,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 71
+        "y": 61
       },
       "id": 620,
       "options": {
@@ -2588,349 +3310,924 @@
       "type": "timeseries"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 82
-      },
-      "id": 651,
-      "panels": [],
-      "title": "Memory - Efficiency",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Conteo de incidentes de saturación de memoria RAM:\n- Métrica: Cuantifica las muestras de 15s donde la memoria disponible (MemAvailable) cae por debajo del umbral de seguridad definido en ${threshold}.\n- Lógica de niveles: Evalúa el estrés hídrico de la RAM en cuatro niveles: 1:50%, 2:60%, 3:75%, y 4:90% de uso total.\n- Interpretación: Valores altos indican una presión constante sobre la memoria volátil, lo que aumenta el riesgo de activación del OOM Killer (Out Of Memory) o un uso excesivo de Swap, degradando el I/O del sistema.\n- Nota Técnica: Se utiliza la métrica MemAvailable en lugar de MemFree para una precisión real, considerando buffers y caché recuperables.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "white",
-            "mode": "fixed"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "transparent",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 4,
-        "x": 0,
-        "y": 83
-      },
-      "id": 668,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum(sum_over_time(((100 - (node_memory_MemAvailable_bytes{server=\"$server\"} / node_memory_MemTotal_bytes{server=\"$server\"} * 100)) > bool (((${threshold} == bool 1) * 50) + ((${threshold} == bool 2) * 60) + ((${threshold} == bool 3) * 75) + ((${threshold} == bool 4) * 90)))[$__range:15s])) or on() vector(0)",
-          "format": "time_series",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Total Memory Incidents (Level: ${threshold:text})",
-      "type": "stat"
-    },
-    {
-      "description": "Registro cronológico de eventos de presión de memoria:\n- Trazabilidad: Listado temporal de cada muestra que superó el umbral literal seleccionado, manteniendo paridad con el panel de conteo general.\n- Análisis de Intensidad: Permite observar la magnitud del consumo en el momento exacto del incidente (ej. identificar si el uso rozó el 91% o si llegó al 99%).\n- Utilidad: Facilita la correlación entre picos de consumo de RAM y procesos específicos o fugas de memoria (memory leaks) que no se liberan correctamente en el tiempo.",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "decimals": 2,
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "MEDIUMPURPLE",
-                "value": 0
-              },
-              {
-                "color": "yellow",
-                "value": 60
-              },
-              {
-                "color": "orange",
-                "value": 75
-              },
-              {
-                "color": "red",
-                "value": 90
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Memory Usage (%)"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "gradient",
-                  "type": "gauge"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 7,
-        "x": 4,
-        "y": 83
-      },
-      "id": 669,
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Time"
-          }
-        ]
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "(100 - (node_memory_MemAvailable_bytes{server=\"$server\"} / node_memory_MemTotal_bytes{server=\"$server\"} * 100)) > (((${threshold} == bool 1) * 50) + ((${threshold} == bool 2) * 60) + ((${threshold} == bool 3) * 75) + ((${threshold} == bool 4) * 90))",
-          "format": "table",
-          "instant": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Memory Usage Incident History (Level: ${threshold:text})",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "instance": true,
-              "job": true,
-              "server": true
-            },
-            "indexByName": {
-              "Time": 0,
-              "Value": 1
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 93
+        "y": 72
       },
       "id": 400,
-      "panels": [],
+      "panels": [
+        {
+          "description": "Monitoreo de fallos en la capa de enlace y transporte:\n- Errors: Paquetes que llegaron corruptos o con fallos de integridad (checksum).\n- Dropped: Paquetes descartados por el kernel, generalmente debido a saturación en los buffers de recepción.\n- Interpretación: En condiciones óptimas, este gráfico debe ser una línea plana en cero. Cualquier incremento indica degradación física, problemas de negociación de dúplex o falta de recursos de CPU para procesar interrupciones de red.\n- Valores esperados: 0 constante. Picos aislados pueden ocurrir, pero una tendencia creciente requiere revisión inmediata de la infraestructura o del stack de red.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 3,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "DARKORCHID",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "pps"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Network Errors"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "DARKORCHID",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Packets Dropped"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "MEDIUMVIOLETRED",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 250
+          },
+          "id": 626,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "p99",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "expr": "sum(irate(node_network_receive_errs_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval]) + irate(node_network_transmit_errs_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval]))",
+              "legendFormat": "Network Errors",
+              "refId": "A"
+            },
+            {
+              "expr": "sum(irate(node_network_receive_drop_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval]) + irate(node_network_transmit_drop_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval]))",
+              "legendFormat": "Packets Dropped",
+              "refId": "B"
+            }
+          ],
+          "title": "Network Errors & Drops",
+          "type": "timeseries"
+        },
+        {
+          "description": "Estado de sesiones de transporte TCP:\n- TCP Established: Indica el número de sesiones TCP activas que han completado el saludo de tres vías (3-way handshake) y están en estado de transferencia de datos.\n- Interpretación: Es un indicador directo de la concurrencia del sistema; refleja cuántos usuarios o servicios externos mantienen una conexión abierta y funcional con el servidor.\n- Valores esperados: Se espera un comportamiento estable basado en la demanda de las aplicaciones. Un aumento repentino sin incremento de tráfico real puede sugerir un ataque de denegación de servicio (DoS) o aplicaciones que no están cerrando correctamente los sockets, lo que podría agotar los recursos del sistema.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "LIGHTSEAGREEN",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "LIGHTSEAGREEN",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 250
+          },
+          "id": 403,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "p99",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "sum by (server) (node_netstat_Tcp_CurrEstab{server=\"$server\"})",
+              "legendFormat": "Established Sessions",
+              "refId": "A"
+            }
+          ],
+          "title": "TCP Established Connections",
+          "type": "timeseries"
+        },
+        {
+          "description": "Análisis de Tendencia Espejo del Tráfico de Red:\n- Network Traffic Trend Mirror: Visualización bidireccional que contrasta el flujo de entrada (Inbound) frente al de salida (Outbound) en tiempo real.\n- Interpretación: La simetría o asimetría del 'espejo' permite diagnosticar rápidamente el perfil de carga; por ejemplo, una salida masiva de datos sin una entrada proporcional podría indicar una exfiltración o un respaldo pesado.\n- Valores esperados: Se busca estabilidad en los patrones cíclicos de tráfico. Picos inusuales en un solo sentido del espejo actúan como indicadores tempranos de saturación de interfaces o cuellos de botella en la segmentación de red.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": true,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "left",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "binBps"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "OUT"
+                },
+                "properties": [
+                  {
+                    "id": "custom.transform",
+                    "value": "negative-Y"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "TEAL",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "IN"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "LIGHTSEAGREEN",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 10,
+            "x": 0,
+            "y": 259
+          },
+          "id": 643,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "sum(rate(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
+              "legendFormat": "IN",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "sum(rate(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
+              "legendFormat": "OUT",
+              "refId": "B"
+            }
+          ],
+          "title": "Network Traffic (Mirror)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Acumulación total de datos entrantes en el periodo:\n- Inbound Accumulation: Sumatoria progresiva de bytes recibidos desde el inicio del rango de tiempo seleccionado hasta el presente.\n- Interpretación: La visualización requiere que existan datos en el punto de inicio para establecer el 'cero' relativo. Una vez establecido, la pendiente muestra la velocidad de carga: a mayor inclinación, más datos por segundo fueron procesados.\n- Valores esperados: Pendiente ascendente o plana. Si el panel muestra 'No Data', significa que el rango de tiempo seleccionado es mayor al historial de datos disponible, priorizando la exactitud técnica sobre la estimación.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "LIGHTSEAGREEN",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 7,
+            "x": 10,
+            "y": 259
+          },
+          "id": 623,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max",
+                "diff"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "editorMode": "code",
+              "expr": "sum(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*\"}) - sum(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*\"} @ start())",
+              "legendFormat": "Total Inbound Data",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Total Inbound Data (Session Accumulation)",
+          "type": "timeseries"
+        },
+        {
+          "description": "Acumulación total de datos salientes en el periodo:\n- Outbound Accumulation: Sumatoria progresiva de bytes transmitidos desde el inicio del rango de tiempo seleccionado hasta el presente.\n- Interpretación: Permite cuantificar el volumen de información que el servidor ha enviado hacia el exterior. La pendiente indica la tasa de transferencia; si la línea se vuelve casi vertical, el servidor está realizando un envío masivo de datos.\n- Valores esperados: Pendiente ascendente o plana. Al igual que el panel de entrada, prioriza la exactitud técnica mostrando 'No Data' si el periodo consultado excede el historial disponible en Prometheus.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "TEAL",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 7,
+            "x": 17,
+            "y": 259
+          },
+          "id": 624,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "max",
+                "diff"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "expr": "sum(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*\"}) - sum(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*\"} @ start())",
+              "legendFormat": "Total Outbound Data",
+              "refId": "A"
+            }
+          ],
+          "title": "Total Outbound Data (Session Accumulation)",
+          "type": "timeseries"
+        },
+        {
+          "description": "Tasa promedio de paquetes por segundo:\n- Packet Rate (PPS): Mide la cantidad de unidades de datos (paquetes) que entran y salen de las interfaces de red por segundo.\n- Interpretación: A diferencia del ancho de banda (bytes), el PPS indica la carga de procesamiento; muchos paquetes pequeños (ej. consultas DNS o ACK de TCP) obligan al CPU a gestionar más interrupciones de red.\n- Valores esperados: Debe existir una correlación con el tráfico en bytes. Si el PPS sube drásticamente mientras los bytes se mantienen bajos, podría indicar un escaneo de puertos, un ataque de inundación o un problema de segmentación en la red.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "CADETBLUE",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "CADETBLUE",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "pps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 267
+          },
+          "id": 625,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "p99",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "expr": "avg(irate(node_network_receive_packets_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval]) + irate(node_network_transmit_packets_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval]))",
+              "legendFormat": "Average Packets/s",
+              "refId": "A"
+            }
+          ],
+          "title": "Packet Rate (PPS)",
+          "type": "timeseries"
+        },
+        {
+          "description": "Tasa de resolución de nombres de dominio:\n- DNS Queries/sec: Mide la frecuencia de solicitudes de resolución de nombres (conversión de dominios a IPs) que el servidor realiza o procesa por segundo.\n- Interpretación: Refleja la actividad de descubrimiento de red; cada vez que un contenedor o servicio intenta comunicarse con otro mediante un nombre (ej. 'db-service'), se genera una consulta aquí.\n- Valores esperados: La tasa debe ser baja y presentar picos solo durante el inicio de servicios o tareas programadas. Picos constantes o fallidos indican problemas de conectividad con los DNS externos o una mala configuración en la caché de resolución del sistema operativo.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "TEAL",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 3,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "TEAL",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "reqps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 267
+          },
+          "id": 404,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "p99",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "sum by (server) (irate(node_netstat_Udp_OutDatagrams{server=\"$server\"}[2m]))",
+              "legendFormat": "DNS Queries / sec",
+              "refId": "A"
+            }
+          ],
+          "title": "DNS Service Resolution Rate",
+          "type": "timeseries"
+        },
+        {
+          "description": "Flujo de tráfico bidireccional por interfaz:\n- Inbound/Outbound: Representa la tasa de transferencia de datos entrantes (valores positivos) y salientes (proyectados visualmente como negativos) del servidor.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": true,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "binBps"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/OUT:.*/"
+                },
+                "properties": [
+                  {
+                    "id": "custom.transform",
+                    "value": "negative-Y"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 275
+          },
+          "id": 402,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "p99",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "expr": "rate(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval])",
+              "legendFormat": "IN: {{device}}",
+              "refId": "A"
+            },
+            {
+              "expr": "rate(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval])",
+              "legendFormat": "OUT: {{device}}",
+              "refId": "B"
+            }
+          ],
+          "title": "Network Traffic: Inbound vs Outbound (Mirror)",
+          "type": "timeseries"
+        }
+      ],
       "title": "Networking",
       "type": "row"
     },
     {
-      "description": "Monitoreo de fallos en la capa de enlace y transporte:\n- Errors: Paquetes que llegaron corruptos o con fallos de integridad (checksum).\n- Dropped: Paquetes descartados por el kernel, generalmente debido a saturación en los buffers de recepción.\n- Interpretación: En condiciones óptimas, este gráfico debe ser una línea plana en cero. Cualquier incremento indica degradación física, problemas de negociación de dúplex o falta de recursos de CPU para procesar interrupciones de red.\n- Valores esperados: 0 constante. Picos aislados pueden ocurrir, pero una tendencia creciente requiere revisión inmediata de la infraestructura o del stack de red.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 15,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 3,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "DARKORCHID",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "pps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Network Errors"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "DARKORCHID",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Packets Dropped"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "MEDIUMVIOLETRED",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
+      "collapsed": false,
       "gridPos": {
-        "h": 9,
-        "w": 12,
+        "h": 1,
+        "w": 24,
         "x": 0,
-        "y": 94
+        "y": 73
       },
-      "id": 626,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "sum(irate(node_network_receive_errs_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval]) + irate(node_network_transmit_errs_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval]))",
-          "legendFormat": "Network Errors",
-          "refId": "A"
-        },
-        {
-          "expr": "sum(irate(node_network_receive_drop_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval]) + irate(node_network_transmit_drop_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval]))",
-          "legendFormat": "Packets Dropped",
-          "refId": "B"
-        }
-      ],
-      "title": "Network Errors & Drops",
-      "type": "timeseries"
+      "id": 500,
+      "panels": [],
+      "title": "Disk I/O",
+      "type": "row"
     },
     {
-      "description": "Estado de sesiones de transporte TCP:\n- TCP Established: Indica el número de sesiones TCP activas que han completado el saludo de tres vías (3-way handshake) y están en estado de transferencia de datos.\n- Interpretación: Es un indicador directo de la concurrencia del sistema; refleja cuántos usuarios o servicios externos mantienen una conexión abierta y funcional con el servidor.\n- Valores esperados: Se espera un comportamiento estable basado en la demanda de las aplicaciones. Un aumento repentino sin incremento de tráfico real puede sugerir un ataque de denegación de servicio (DoS) o aplicaciones que no están cerrando correctamente los sockets, lo que podría agotar los recursos del sistema.",
+      "description": "Visualización híbrida: Áreas apiladas para Uso y Espacio Libre, con una línea de referencia superior para la Capacidad Total del volumen.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "LIGHTSEAGREEN",
             "mode": "fixed"
           },
           "custom": {
@@ -2942,641 +4239,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 60,
             "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "LIGHTSEAGREEN",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
-        "y": 94
-      },
-      "id": 403,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum by (server) (node_netstat_Tcp_CurrEstab{server=\"$server\"})",
-          "legendFormat": "Established Sessions",
-          "refId": "A"
-        }
-      ],
-      "title": "TCP Established Connections",
-      "type": "timeseries"
-    },
-    {
-      "description": "Análisis de Tendencia Espejo del Tráfico de Red:\n- Network Traffic Trend Mirror: Visualización bidireccional que contrasta el flujo de entrada (Inbound) frente al de salida (Outbound) en tiempo real.\n- Interpretación: La simetría o asimetría del 'espejo' permite diagnosticar rápidamente el perfil de carga; por ejemplo, una salida masiva de datos sin una entrada proporcional podría indicar una exfiltración o un respaldo pesado.\n- Valores esperados: Se busca estabilidad en los patrones cíclicos de tráfico. Picos inusuales en un solo sentido del espejo actúan como indicadores tempranos de saturación de interfaces o cuellos de botella en la segmentación de red.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": true,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "left",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "binBps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "OUT"
-            },
-            "properties": [
-              {
-                "id": "custom.transform",
-                "value": "negative-Y"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "TEAL",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "IN"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "LIGHTSEAGREEN",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 0,
-        "y": 103
-      },
-      "id": 643,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(rate(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
-          "legendFormat": "IN",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(rate(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
-          "legendFormat": "OUT",
-          "refId": "B"
-        }
-      ],
-      "title": "Network Traffic (Mirror)",
-      "type": "timeseries"
-    },
-    {
-      "description": "Acumulación total de datos entrantes en el periodo:\n- Inbound Accumulation: Sumatoria progresiva de bytes recibidos desde el inicio del rango de tiempo seleccionado hasta el presente.\n- Interpretación: La visualización requiere que existan datos en el punto de inicio para establecer el 'cero' relativo. Una vez establecido, la pendiente muestra la velocidad de carga: a mayor inclinación, más datos por segundo fueron procesados.\n- Valores esperados: Pendiente ascendente o plana. Si el panel muestra 'No Data', significa que el rango de tiempo seleccionado es mayor al historial de datos disponible, priorizando la exactitud técnica sobre la estimación.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "LIGHTSEAGREEN",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 15,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 7,
-        "x": 10,
-        "y": 103
-      },
-      "id": 623,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "max",
-            "diff"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "sum(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*\"}) - sum(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*\"} @ start())",
-          "legendFormat": "Total Inbound Data",
-          "refId": "A"
-        }
-      ],
-      "title": "Total Inbound Data (Session Accumulation)",
-      "type": "timeseries"
-    },
-    {
-      "description": "Acumulación total de datos salientes en el periodo:\n- Outbound Accumulation: Sumatoria progresiva de bytes transmitidos desde el inicio del rango de tiempo seleccionado hasta el presente.\n- Interpretación: Permite cuantificar el volumen de información que el servidor ha enviado hacia el exterior. La pendiente indica la tasa de transferencia; si la línea se vuelve casi vertical, el servidor está realizando un envío masivo de datos.\n- Valores esperados: Pendiente ascendente o plana. Al igual que el panel de entrada, prioriza la exactitud técnica mostrando 'No Data' si el periodo consultado excede el historial disponible en Prometheus.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "TEAL",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 15,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 7,
-        "x": 17,
-        "y": 103
-      },
-      "id": 624,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "max",
-            "diff"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "sum(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*\"}) - sum(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*\"} @ start())",
-          "legendFormat": "Total Outbound Data",
-          "refId": "A"
-        }
-      ],
-      "title": "Total Outbound Data (Session Accumulation)",
-      "type": "timeseries"
-    },
-    {
-      "description": "Tasa promedio de paquetes por segundo:\n- Packet Rate (PPS): Mide la cantidad de unidades de datos (paquetes) que entran y salen de las interfaces de red por segundo.\n- Interpretación: A diferencia del ancho de banda (bytes), el PPS indica la carga de procesamiento; muchos paquetes pequeños (ej. consultas DNS o ACK de TCP) obligan al CPU a gestionar más interrupciones de red.\n- Valores esperados: Debe existir una correlación con el tráfico en bytes. Si el PPS sube drásticamente mientras los bytes se mantienen bajos, podría indicar un escaneo de puertos, un ataque de inundación o un problema de segmentación en la red.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "CADETBLUE",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "CADETBLUE",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "pps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 111
-      },
-      "id": 625,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "avg(irate(node_network_receive_packets_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval]) + irate(node_network_transmit_packets_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval]))",
-          "legendFormat": "Average Packets/s",
-          "refId": "A"
-        }
-      ],
-      "title": "Packet Rate (PPS)",
-      "type": "timeseries"
-    },
-    {
-      "description": "Tasa de resolución de nombres de dominio:\n- DNS Queries/sec: Mide la frecuencia de solicitudes de resolución de nombres (conversión de dominios a IPs) que el servidor realiza o procesa por segundo.\n- Interpretación: Refleja la actividad de descubrimiento de red; cada vez que un contenedor o servicio intenta comunicarse con otro mediante un nombre (ej. 'db-service'), se genera una consulta aquí.\n- Valores esperados: La tasa debe ser baja y presentar picos solo durante el inicio de servicios o tareas programadas. Picos constantes o fallidos indican problemas de conectividad con los DNS externos o una mala configuración en la caché de resolución del sistema operativo.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "TEAL",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 3,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "TEAL",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "reqps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 111
-      },
-      "id": 404,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum by (server) (irate(node_netstat_Udp_OutDatagrams{server=\"$server\"}[2m]))",
-          "legendFormat": "DNS Queries / sec",
-          "refId": "A"
-        }
-      ],
-      "title": "DNS Service Resolution Rate",
-      "type": "timeseries"
-    },
-    {
-      "description": "Flujo de tráfico bidireccional por interfaz:\n- Inbound/Outbound: Representa la tasa de transferencia de datos entrantes (valores positivos) y salientes (proyectados visualmente como negativos) del servidor.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": true,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -3594,13 +4258,15 @@
             "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "none"
+              "mode": "normal"
             },
             "thresholdsStyle": {
               "mode": "off"
             }
           },
+          "decimals": 2,
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -3611,333 +4277,6 @@
               {
                 "color": "red",
                 "value": 80
-              }
-            ]
-          },
-          "unit": "binBps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/OUT:.*/"
-            },
-            "properties": [
-              {
-                "id": "custom.transform",
-                "value": "negative-Y"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 119
-      },
-      "id": 402,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "rate(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval])",
-          "legendFormat": "IN: {{device}}",
-          "refId": "A"
-        },
-        {
-          "expr": "rate(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*\"}[$__rate_interval])",
-          "legendFormat": "OUT: {{device}}",
-          "refId": "B"
-        }
-      ],
-      "title": "Network Traffic: Inbound vs Outbound (Mirror)",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 129
-      },
-      "id": 652,
-      "panels": [],
-      "title": "Networking - Efficicency",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Conteo de saturación del ancho de banda de red:\n- Métrica: Sumatoria de incidentes donde el tráfico combinado (RX/TX) excede la capacidad nominal definida por el nivel ${threshold}.\n- Filtros Aplicados: Excluye interfaces virtuales (veth, docker, br) y de loopback para reportar únicamente el tráfico físico real del servidor.\n- Interpretación: Un conteo elevado sugiere que la infraestructura está operando cerca de su límite de throughput, lo que puede causar pérdida de paquetes, aumento de latencia en peticiones externas o cuellos de botella en la replicación de datos.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "white",
-            "mode": "fixed"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "transparent",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 5,
-        "x": 0,
-        "y": 130
-      },
-      "id": 670,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum(\n  sum_over_time(\n    (\n      (\n        sum(rate(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])) \n        + \n        sum(rate(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))\n      ) \n      > bool (\n        ((${threshold} == bool 1) * 52428800) +   \n        ((${threshold} == bool 2) * 62914560) +   \n        ((${threshold} == bool 3) * 83886080) +   \n        ((${threshold} == bool 4) * 104857600)    \n      )\n    )[$__range:15s]\n  )\n) or on() vector(0)",
-          "format": "time_series",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Total Network Incidents (Level: ${threshold:text})",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Historial de picos de tráfico de red:\n- Detalle de Transferencia: Registro detallado de cada muestra de tráfico (en bytes por segundo) que sobrepasó los límites establecidos.\n- Visualización: Utiliza una escala de colores basada en binBps para diferenciar visualmente entre una carga moderada y una saturación crítica del enlace.\n- Diagnóstico: Ideal para identificar patrones de tráfico inusuales, ataques de denegación de servicio (DDoS), transferencias de archivos masivas o procesos de respaldo que están consumiendo el ancho de banda fuera de las ventanas de mantenimiento.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "decimals": 2,
-          "mappings": [],
-          "max": 131072000,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "CADETBLUE",
-                "value": 0
-              },
-              {
-                "color": "yellow",
-                "value": 62914560
-              },
-              {
-                "color": "orange",
-                "value": 83886080
-              },
-              {
-                "color": "red",
-                "value": 104857600
-              }
-            ]
-          },
-          "unit": "binBps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Total Traffic"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "gradient",
-                  "type": "gauge"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 7,
-        "x": 5,
-        "y": 130
-      },
-      "id": 671,
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Time"
-          }
-        ]
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "(\n  sum(rate(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])) \n  + \n  sum(rate(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))\n) \n> (\n  ((${threshold} == bool 1) * 52428800) +  \n  ((${threshold} == bool 2) * 62914560) +  \n  ((${threshold} == bool 3) * 83886080) +  \n  ((${threshold} == bool 4) * 104857600)   \n)",
-          "format": "table",
-          "instant": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Network Traffic Incident History (Level: ${threshold:text})",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "instance": true,
-              "job": true,
-              "server": true
-            },
-            "indexByName": {
-              "Time": 0,
-              "Value": 1
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 138
-      },
-      "id": 500,
-      "panels": [],
-      "title": "Disk I/O",
-      "type": "row"
-    },
-    {
-      "description": "Visualización apilada: El bloque gris representa el espacio libre entre el uso (azul) y el total (púrpura).",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 40,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
               }
             ]
           },
@@ -3956,6 +4295,10 @@
                   "fixedColor": "STEELBLUE",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 90
               }
             ]
           },
@@ -3968,9 +4311,17 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "DARKGRAY",
+                  "fixedColor": "DARKCYAN",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 70
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 0
               }
             ]
           },
@@ -3983,7 +4334,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "purple",
+                  "fixedColor": "DARKGRAY",
                   "mode": "fixed"
                 }
               },
@@ -3999,7 +4350,7 @@
               },
               {
                 "id": "custom.lineWidth",
-                "value": 3
+                "value": 2
               }
             ]
           }
@@ -4009,9 +4360,9 @@
         "h": 9,
         "w": 6,
         "x": 0,
-        "y": 139
+        "y": 74
       },
-      "id": 627,
+      "id": 690,
       "options": {
         "legend": {
           "calcs": [
@@ -4031,16 +4382,28 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "expr": "node_filesystem_size_bytes{server=\"$server\", mountpoint=\"/\"} - node_filesystem_avail_bytes{server=\"$server\", mountpoint=\"/\"}",
           "legendFormat": "Storage Usage",
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "expr": "node_filesystem_avail_bytes{server=\"$server\", mountpoint=\"/\"}",
           "legendFormat": "Free Space",
           "refId": "C"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "expr": "node_filesystem_size_bytes{server=\"$server\", mountpoint=\"/\"}",
           "legendFormat": "Total Capacity",
           "refId": "B"
@@ -4065,7 +4428,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 40,
+            "fillOpacity": 50,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -4130,7 +4493,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "DARKGRAY",
+                  "fixedColor": "DARKCYAN",
                   "mode": "fixed"
                 }
               }
@@ -4142,7 +4505,7 @@
         "h": 9,
         "w": 6,
         "x": 6,
-        "y": 139
+        "y": 74
       },
       "id": 628,
       "options": {
@@ -4354,7 +4717,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 139
+        "y": 74
       },
       "id": 508,
       "options": {
@@ -4554,7 +4917,7 @@
         "h": 8,
         "w": 10,
         "x": 0,
-        "y": 148
+        "y": 83
       },
       "id": 644,
       "options": {
@@ -4662,7 +5025,7 @@
         "h": 8,
         "w": 5,
         "x": 10,
-        "y": 148
+        "y": 83
       },
       "id": 505,
       "options": {
@@ -4674,7 +5037,9 @@
           ],
           "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -4791,7 +5156,7 @@
         "h": 8,
         "w": 9,
         "x": 15,
-        "y": 148
+        "y": 83
       },
       "id": 634,
       "options": {
@@ -4924,7 +5289,7 @@
         "h": 7,
         "w": 11,
         "x": 0,
-        "y": 156
+        "y": 91
       },
       "id": 535,
       "options": {
@@ -5025,7 +5390,7 @@
         "h": 7,
         "w": 6,
         "x": 11,
-        "y": 156
+        "y": 91
       },
       "id": 635,
       "options": {
@@ -5121,7 +5486,7 @@
         "h": 7,
         "w": 7,
         "x": 17,
-        "y": 156
+        "y": 91
       },
       "id": 632,
       "options": {
@@ -5249,7 +5614,7 @@
         "h": 13,
         "w": 12,
         "x": 0,
-        "y": 163
+        "y": 98
       },
       "id": 636,
       "options": {
@@ -5382,7 +5747,7 @@
         "h": 13,
         "w": 12,
         "x": 12,
-        "y": 163
+        "y": 98
       },
       "id": 637,
       "options": {
@@ -5539,7 +5904,7 @@
         "h": 14,
         "w": 12,
         "x": 0,
-        "y": 176
+        "y": 111
       },
       "id": 639,
       "options": {
@@ -5674,7 +6039,7 @@
         "h": 14,
         "w": 12,
         "x": 12,
-        "y": 176
+        "y": 111
       },
       "id": 638,
       "options": {
@@ -5709,200 +6074,6 @@
       ],
       "title": "Disk I/O Avg Block Size BY DEVICE (Mirror)",
       "type": "timeseries"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 190
-      },
-      "id": 653,
-      "panels": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 2,
-            "x": 0,
-            "y": 191
-          },
-          "id": 672,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "refId": "A"
-            }
-          ],
-          "title": "New panel",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 3,
-            "x": 2,
-            "y": 191
-          },
-          "id": 673,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "refId": "A"
-            }
-          ],
-          "title": "New panel",
-          "type": "timeseries"
-        }
-      ],
-      "title": "DISK I/O - Efficiency",
-      "type": "row"
     }
   ],
   "preload": false,
@@ -5926,8 +6097,8 @@
       },
       {
         "current": {
-          "text": "athena",
-          "value": "athena"
+          "text": "master",
+          "value": "master"
         },
         "datasource": {
           "type": "prometheus",
@@ -5979,12 +6150,12 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "sys_overview",
   "uid": "infra-base-template",
-  "version": 21
+  "version": 65
 }

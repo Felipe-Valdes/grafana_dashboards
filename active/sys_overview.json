@@ -608,7 +608,7 @@
       "type": "row"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -616,1251 +616,1250 @@
         "y": 1
       },
       "id": 703,
-      "panels": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Conteo de incidentes críticos de CPU:\n- Total CPU Incidents: Registra la cantidad de muestras (intervalos de 15s) donde el uso de CPU superó el umbral de estrés definido por la variable ${threshold}.\n- Lógica de niveles: El panel se adapta dinámicamente según el nivel seleccionado: Nivel 1 (50%), Nivel 2 (60%), Nivel 3 (75%) y Nivel 4 (90%).\n- Interpretación: A diferencia de un promedio, este indicador muestra la persistencia del uso intensivo. Un número elevado de incidentes sugiere que el sistema no solo tiene picos, sino que mantiene un estado de saturación que puede degradar el rendimiento de los servicios.\n- Acción recomendada: Si el conteo es alto en los niveles 3 o 4, se debe identificar el proceso causante del consumo (bottleneck) para evitar el estrangulamiento térmico o la falta de ciclos para procesos críticos.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "white",
-                "mode": "fixed"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "transparent",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 6,
-            "x": 0,
-            "y": 2
-          },
-          "id": 667,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(\n  sum_over_time(\n    (\n      (100 - (avg by (instance) (irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[1m])) * 100)) \n      > bool (\n        ((${threshold} == bool 1) * 50) +\n        ((${threshold} == bool 2) * 60) +\n        ((${threshold} == bool 3) * 75) +\n        ((${threshold} == bool 4) * 90)\n      )\n    )[$__range:15s]\n  )\n) or on() vector(0)",
-              "format": "time_series",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Total CPU Incidents (Level: ${threshold:text})",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Conteo de incidentes de saturación de memoria RAM:\n- Métrica: Cuantifica las muestras de 15s donde la memoria disponible (MemAvailable) cae por debajo del umbral de seguridad definido en ${threshold}.\n- Lógica de niveles: Evalúa el estrés hídrico de la RAM en cuatro niveles: 1:50%, 2:60%, 3:75%, y 4:90% de uso total.\n- Interpretación: Valores altos indican una presión constante sobre la memoria volátil, lo que aumenta el riesgo de activación del OOM Killer (Out Of Memory) o un uso excesivo de Swap, degradando el I/O del sistema.\n- Nota Técnica: Se utiliza la métrica MemAvailable en lugar de MemFree para una precisión real, considerando buffers y caché recuperables.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "white",
-                "mode": "fixed"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "transparent",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 6,
-            "x": 6,
-            "y": 2
-          },
-          "id": 668,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(sum_over_time(((100 - (node_memory_MemAvailable_bytes{server=\"$server\"} / node_memory_MemTotal_bytes{server=\"$server\"} * 100)) > bool (((${threshold} == bool 1) * 50) + ((${threshold} == bool 2) * 60) + ((${threshold} == bool 3) * 75) + ((${threshold} == bool 4) * 90)))[$__range:15s])) or on() vector(0)",
-              "format": "time_series",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Total Memory Incidents (Level: ${threshold:text})",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Conteo de incidentes de alta latencia en disco (R/W):\n- Métrica: Cuantifica las muestras donde la latencia combinada supera el umbral definido.\n- Lógica de niveles: Evalúa la latencia en milisegundos: 1:10ms, 2:20ms, 3:50ms, 4:100ms.\n- Interpretación: Un número alto indica que el disco está sufriendo retrasos persistentes en las operaciones de E/S.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "white",
-                "mode": "fixed"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "transparent",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 6,
-            "x": 12,
-            "y": 2
-          },
-          "id": 679,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(sum_over_time((\n  (avg(rate(node_disk_read_time_seconds_total{server=\"$server\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{server=\"$server\"}[$__rate_interval])) * 1000)\n  > bool (\n    ((${threshold} == bool 1) * 50) +\n    ((${threshold} == bool 2) * 60) +\n    ((${threshold} == bool 3) * 75) +\n    ((${threshold} == bool 4) * 90)\n  )\n)[$__range:15s])) or on() vector(0)",
-              "format": "time_series",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Total Disk Latency Incidents (Level: ${threshold:text})",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Promedio de incidentes de saturación (Suma de tráfico IN y OUT):\n- Métrica: Cuantifica las muestras donde la suma de tasa de recepción y transmisión supera el umbral definido.\n- Lógica de niveles: Evalúa el tráfico total en cuatro niveles (60MB/s, 80MB/s, 100MB/s, 125MB/s).\n- Interpretación: Indica si el ancho de banda total de la interfaz está siendo comprometido por flujos bidireccionales.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "white",
-                "mode": "fixed"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "transparent",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 6,
-            "x": 18,
-            "y": 2
-          },
-          "id": 698,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(sum_over_time(((\n  sum(rate(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])) + \n  sum(rate(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))\n) > bool (\n  ((${threshold} == bool 1) * 62914560) +\n  ((${threshold} == bool 2) * 83886080) +\n  ((${threshold} == bool 3) * 104857600) +\n  ((${threshold} == bool 4) * 125829120)\n))[$__range:15s])) or on() vector(0)",
-              "format": "time_series",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Avg Network Traffic IN/OUT (Level: ${threshold:text})",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Historial detallado de incidentes de CPU:\n- Registro Cronológico: Listado exhaustivo de cada muestra (puntos en el tiempo) donde el uso de CPU excedió el umbral configurado por la variable ${threshold}.\n- Paridad de Datos: Muestra los valores exactos de consumo que generaron los incidentes contabilizados en el panel anterior, permitiendo auditar la severidad de cada evento individualmente.\n- Visualización de Carga: El uso de indicadores visuales (gauges/colores) facilita la identificación rápida de momentos de saturación extrema.\n- Utilidad: Herramienta de diagnóstico forense para correlacionar picos de CPU con eventos externos.",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false
-              },
-              "decimals": 2,
-              "mappings": [],
-              "max": 100,
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "DODGERBLUE",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 60
-                  },
-                  {
-                    "color": "orange",
-                    "value": 75
-                  },
-                  {
-                    "color": "red",
-                    "value": 90
-                  }
-                ]
-              },
-              "unit": "percent"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "CPU Usage (%)"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "gauge"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 6,
-            "x": 0,
-            "y": 29
-          },
-          "id": 666,
-          "options": {
-            "cellHeight": "sm",
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "CPU Usage (%)"
-              }
-            ]
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "(100 - (avg by (instance) (irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[1m])) * 100)) \n> (\n  ((${threshold} == bool 1) * 50) +\n  ((${threshold} == bool 2) * 60) +\n  ((${threshold} == bool 3) * 75) +\n  ((${threshold} == bool 4) * 90)\n)",
-              "format": "table",
-              "instant": false,
-              "refId": "A"
-            }
-          ],
-          "title": "CPU Efficiency Incident History (Level: ${threshold:text})",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "instance": true,
-                  "job": true,
-                  "server": true
-                },
-                "indexByName": {
-                  "Time": 0,
-                  "Value": 1
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "description": "Registro cronológico de eventos de presión de memoria con zoom dinámico.",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false
-              },
-              "links": [
-                {
-                  "targetBlank": false,
-                  "title": "Analizar incidente (-15s)",
-                  "url": "/d/infra-base-template/sys_overview?orgId=1&from=${__value.time:raw}-15000&to=${__value.time:raw}+5000"
-                }
-              ],
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "MEDIUMPURPLE",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 60
-                  },
-                  {
-                    "color": "orange",
-                    "value": 75
-                  },
-                  {
-                    "color": "red",
-                    "value": 90
-                  }
-                ]
-              },
-              "unit": "percent"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Memory Usage (%)"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "gauge"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 6,
-            "x": 6,
-            "y": 29
-          },
-          "id": 669,
-          "options": {
-            "cellHeight": "sm",
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Time"
-              }
-            ]
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "(100 - (node_memory_MemAvailable_bytes{server=\"$server\"} / node_memory_MemTotal_bytes{server=\"$server\"} * 100)) > (((${threshold} == bool 1) * 50) + ((${threshold} == bool 2) * 60) + ((${threshold} == bool 3) * 75) + ((${threshold} == bool 4) * 90))",
-              "format": "table",
-              "instant": false,
-              "refId": "A"
-            }
-          ],
-          "title": "Memory Usage Incident History (Level: ${threshold:text})",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "instance": true,
-                  "job": true,
-                  "server": true
-                },
-                "indexByName": {
-                  "Time": 0,
-                  "Value": 1
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Registro cronológico de eventos de alta latencia en disco:\n- Trazabilidad: Listado de cada muestra que superó el umbral de latencia (R/W) seleccionado.\n- Análisis de Impacto: Observación de la latencia exacta en milisegundos (ms) en el momento del incidente.\n- Utilidad: Identificación de patrones de degradación de E/S y correlación con picos de carga.",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false
-              },
-              "decimals": 2,
-              "mappings": [],
-              "max": 100,
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "CADETBLUE",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 60
-                  },
-                  {
-                    "color": "orange",
-                    "value": 75
-                  },
-                  {
-                    "color": "red",
-                    "value": 90
-                  }
-                ]
-              },
-              "unit": "ms"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Latency (ms)"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "gauge"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Time"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 165
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 6,
-            "x": 12,
-            "y": 29
-          },
-          "id": 699,
-          "options": {
-            "cellHeight": "sm",
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Time"
-              }
-            ]
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "(avg(rate(node_disk_read_time_seconds_total{server=\"$server\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{server=\"$server\"}[$__rate_interval])) * 1000) \n> \n(\n  ((${threshold} == bool 1) * 50) + \n  ((${threshold} == bool 2) * 60) + \n  ((${threshold} == bool 3) * 75) + \n  ((${threshold} == bool 4) * 90)\n)",
-              "format": "table",
-              "instant": false,
-              "refId": "A"
-            }
-          ],
-          "title": "Disk Latency Incident History (Level: ${threshold:text})",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "instance": true,
-                  "job": true,
-                  "server": true
-                },
-                "indexByName": {
-                  "Time": 0,
-                  "Value": 1
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Registro cronológico de eventos de alta carga de red (Suma IN/OUT):\n- Trazabilidad: Listado de cada muestra donde el tráfico total superó el umbral seleccionado.\n- Análisis de Intensidad: Observación del throughput combinado en el momento del incidente.\n- Utilidad: Identificación de ráfagas bidireccionales que saturan la interfaz de red.",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false
-              },
-              "decimals": 2,
-              "mappings": [],
-              "max": 125829120,
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "CADETBLUE",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 75497472
-                  },
-                  {
-                    "color": "orange",
-                    "value": 94371840
-                  },
-                  {
-                    "color": "red",
-                    "value": 113246208
-                  }
-                ]
-              },
-              "unit": "binBps"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "Total Traffic (ms)"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "gauge"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Time"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 165
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 6,
-            "x": 18,
-            "y": 29
-          },
-          "id": 678,
-          "options": {
-            "cellHeight": "sm",
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Time"
-              }
-            ]
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "(\n  sum(rate(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])) + \n  sum(rate(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))\n) \n> \n(\n((${threshold} == bool 1) * 62914560) +\n  ((${threshold} == bool 2) * 83886080) + \n  ((${threshold} == bool 3) * 104857600) + \n  ((${threshold} == bool 4) * 125829120)\n)",
-              "format": "table",
-              "instant": false,
-              "refId": "A"
-            }
-          ],
-          "title": "Network Traffic Incident History (Level: ${threshold:text})",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "instance": true,
-                  "job": true,
-                  "server": true
-                },
-                "indexByName": {
-                  "Time": 0,
-                  "Value": 1
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Ranking de los contenedores con mayor impacto en el sistema:\n- Consumo Normalizado: Muestra el uso de CPU por contenedor calculado sobre el total de cores disponibles.\n- Filtrado Dinámico: Solo lista contenedores que exceden el umbral definido por la variable ${threshold}.\n- Identificación de Carga: Permite localizar rápidamente qué servicio (stack/container) está agotando los recursos del host.\n- Utilidad: Diagnóstico de 'noisy neighbors' y optimización de límites de recursos (limits/requests) en Docker/Podman.",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false
-              },
-              "decimals": 2,
-              "mappings": [],
-              "max": 100,
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "DODGERBLUE",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 60
-                  },
-                  {
-                    "color": "orange",
-                    "value": 75
-                  },
-                  {
-                    "color": "red",
-                    "value": 90
-                  }
-                ]
-              },
-              "unit": "percent"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "CPU Usage (%)"
-                },
-                "properties": [
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "gauge"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 6,
-            "x": 0,
-            "y": 38
-          },
-          "id": 721,
-          "options": {
-            "cellHeight": "sm",
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "CPU Usage (%)"
-              }
-            ]
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "(sum by (name) (rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval])) / scalar(count(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}))) * 100",
-              "format": "table",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Top Container CPU Consumers (Level: ${threshold:text})",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "container": true,
-                  "instance": true,
-                  "server": true
-                },
-                "indexByName": {
-                  "Value": 1,
-                  "name": 0
-                },
-                "renameByName": {
-                  "Value": "CPU Usage (%)",
-                  "name": "Container Name"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Ranking de los contenedores con mayor impacto en el sistema:\n- Consumo Normalizado: Muestra el uso de RAM por contenedor (Working Set) calculado sobre el total de memoria física del host.\n- Filtrado Dinámico: Solo lista contenedores que exceden el umbral definido por la variable ${threshold}.\n- Identificación de Carga: Permite localizar rápidamente qué servicio (stack/container) está agotando los recursos del host.\n- Utilidad: Diagnóstico de 'noisy neighbors' y optimización de límites de recursos (limits/requests) en Docker/Podman.",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false
-              },
-              "decimals": 2,
-              "mappings": [],
-              "max": 100,
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "MEDIUMPURPLE",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 60
-                  },
-                  {
-                    "color": "orange",
-                    "value": 75
-                  },
-                  {
-                    "color": "red",
-                    "value": 90
-                  }
-                ]
-              },
-              "unit": "percent"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "RAM Usage (%)"
-                },
-                "properties": [
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "gauge"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 6,
-            "x": 6,
-            "y": 38
-          },
-          "id": 724,
-          "options": {
-            "cellHeight": "sm",
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "RAM Usage (%)"
-              }
-            ]
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "(sum by (name) (avg_over_time(container_memory_working_set_bytes{server=\"$server\", name!=\"\", container!=\"POD\"}[$__interval])) / on() group_left() machine_memory_bytes{server=\"$server\"}) * 100",
-              "format": "table",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Top Container RAM Consumers (Level: ${threshold:text})",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "container": true,
-                  "instance": true,
-                  "server": true
-                },
-                "indexByName": {
-                  "Value": 1,
-                  "name": 0
-                },
-                "renameByName": {
-                  "Value": "RAM Usage (%)",
-                  "name": "Container Name"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Ranking de los contenedores con mayor actividad de disco:\n- I/O Total: Suma de las tasas de lectura (Reads) y escritura (Writes) en el sistema de archivos del contenedor.\n- Filtrado Dinámico: Identifica contenedores que superan el umbral de rendimiento definido.\n- Identificación de Carga: Crucial para detectar procesos con alta latencia de disco o 'logging' excesivo que impacta el hardware del host.\n- Unidades: Escalado automático en formato binario (IEC).",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false
-              },
-              "decimals": 2,
-              "mappings": [],
-              "max": 157286400,
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "STEELBLUE",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 41943040
-                  },
-                  {
-                    "color": "orange",
-                    "value": 83886080
-                  },
-                  {
-                    "color": "red",
-                    "value": 125829120
-                  }
-                ]
-              },
-              "unit": "binBps"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Disk I/O Traffic"
-                },
-                "properties": [
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "gauge"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 6,
-            "x": 12,
-            "y": 38
-          },
-          "id": 725,
-          "options": {
-            "cellHeight": "sm",
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Disk I/O Traffic"
-              }
-            ]
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]))",
-              "format": "table",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Top Container Disk I/O Consumers (Level: ${threshold:text})",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "container": true,
-                  "instance": true,
-                  "server": true
-                },
-                "indexByName": {
-                  "Value": 1,
-                  "name": 0
-                },
-                "renameByName": {
-                  "Value": "Disk I/O Traffic",
-                  "name": "Container Name"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Ranking de los contenedores con mayor impacto en la red:\n- Tráfico Total: Suma de las tasas de recepción (RX) y transmisión (TX).\n- Filtrado Dinámico: Solo lista contenedores que exceden el umbral de tráfico definido.\n- Identificación de Carga: Útil para detectar servicios realizando backups, ataques de red o transferencias masivas de datos.\n- Unidades: Escalado automático en formato binario (IEC).",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false
-              },
-              "decimals": 2,
-              "mappings": [],
-              "max": 131072000,
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "CADETBLUE",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 62914560
-                  },
-                  {
-                    "color": "orange",
-                    "value": 83886080
-                  },
-                  {
-                    "color": "red",
-                    "value": 104857600
-                  }
-                ]
-              },
-              "unit": "binBps"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Network Traffic"
-                },
-                "properties": [
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "gauge"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 6,
-            "x": 18,
-            "y": 38
-          },
-          "id": 726,
-          "options": {
-            "cellHeight": "sm",
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Network Traffic"
-              }
-            ]
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum by (name) (rate(container_network_receive_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]))",
-              "format": "table",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Top Container Network Consumers (Level: ${threshold:text})",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "container": true,
-                  "instance": true,
-                  "server": true
-                },
-                "indexByName": {
-                  "Value": 1,
-                  "name": 0
-                },
-                "renameByName": {
-                  "Value": "Network Traffic",
-                  "name": "Container Name"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        }
-      ],
+      "panels": [],
       "title": "Container - Track",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Conteo de incidentes críticos de CPU:\n- Total CPU Incidents: Registra la cantidad de muestras (intervalos de 15s) donde el uso de CPU superó el umbral de estrés definido por la variable ${threshold}.\n- Lógica de niveles: El panel se adapta dinámicamente según el nivel seleccionado: Nivel 1 (50%), Nivel 2 (60%), Nivel 3 (75%) y Nivel 4 (90%).\n- Interpretación: A diferencia de un promedio, este indicador muestra la persistencia del uso intensivo. Un número elevado de incidentes sugiere que el sistema no solo tiene picos, sino que mantiene un estado de saturación que puede degradar el rendimiento de los servicios.\n- Acción recomendada: Si el conteo es alto en los niveles 3 o 4, se debe identificar el proceso causante del consumo (bottleneck) para evitar el estrangulamiento térmico o la falta de ciclos para procesos críticos.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "white",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 2
+      },
+      "id": 667,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(\n  sum_over_time(\n    (\n      (100 - (avg by (instance) (irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[1m])) * 100)) \n      > bool (\n        ((${threshold} == bool 1) * 50) +\n        ((${threshold} == bool 2) * 60) +\n        ((${threshold} == bool 3) * 75) +\n        ((${threshold} == bool 4) * 90)\n      )\n    )[$__range:15s]\n  )\n) or on() vector(0)",
+          "format": "time_series",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total CPU Incidents (Level: ${threshold:text})",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Conteo de incidentes de saturación de memoria RAM:\n- Métrica: Cuantifica las muestras de 15s donde la memoria disponible (MemAvailable) cae por debajo del umbral de seguridad definido en ${threshold}.\n- Lógica de niveles: Evalúa el estrés hídrico de la RAM en cuatro niveles: 1:50%, 2:60%, 3:75%, y 4:90% de uso total.\n- Interpretación: Valores altos indican una presión constante sobre la memoria volátil, lo que aumenta el riesgo de activación del OOM Killer (Out Of Memory) o un uso excesivo de Swap, degradando el I/O del sistema.\n- Nota Técnica: Se utiliza la métrica MemAvailable en lugar de MemFree para una precisión real, considerando buffers y caché recuperables.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "white",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 6,
+        "y": 2
+      },
+      "id": 668,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(sum_over_time(((100 - (node_memory_MemAvailable_bytes{server=\"$server\"} / node_memory_MemTotal_bytes{server=\"$server\"} * 100)) > bool (((${threshold} == bool 1) * 50) + ((${threshold} == bool 2) * 60) + ((${threshold} == bool 3) * 75) + ((${threshold} == bool 4) * 90)))[$__range:15s])) or on() vector(0)",
+          "format": "time_series",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Memory Incidents (Level: ${threshold:text})",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Conteo de incidentes de alta latencia en disco (R/W):\n- Métrica: Cuantifica las muestras donde la latencia combinada supera el umbral definido.\n- Lógica de niveles: Evalúa la latencia en milisegundos: 1:10ms, 2:20ms, 3:50ms, 4:100ms.\n- Interpretación: Un número alto indica que el disco está sufriendo retrasos persistentes en las operaciones de E/S.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "white",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 12,
+        "y": 2
+      },
+      "id": 679,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(sum_over_time((\n  (avg(rate(node_disk_read_time_seconds_total{server=\"$server\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{server=\"$server\"}[$__rate_interval])) * 1000)\n  > bool (\n    ((${threshold} == bool 1) * 50) +\n    ((${threshold} == bool 2) * 60) +\n    ((${threshold} == bool 3) * 75) +\n    ((${threshold} == bool 4) * 90)\n  )\n)[$__range:15s])) or on() vector(0)",
+          "format": "time_series",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Disk Latency Incidents (Level: ${threshold:text})",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Promedio de incidentes de saturación (Suma de tráfico IN y OUT):\n- Métrica: Cuantifica las muestras donde la suma de tasa de recepción y transmisión supera el umbral definido.\n- Lógica de niveles: Evalúa el tráfico total en cuatro niveles (60MB/s, 80MB/s, 100MB/s, 125MB/s).\n- Interpretación: Indica si el ancho de banda total de la interfaz está siendo comprometido por flujos bidireccionales.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "white",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 18,
+        "y": 2
+      },
+      "id": 698,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(sum_over_time(((\n  sum(rate(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])) + \n  sum(rate(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))\n) > bool (\n  ((${threshold} == bool 1) * 62914560) +\n  ((${threshold} == bool 2) * 83886080) +\n  ((${threshold} == bool 3) * 104857600) +\n  ((${threshold} == bool 4) * 125829120)\n))[$__range:15s])) or on() vector(0)",
+          "format": "time_series",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Network Traffic IN/OUT (Level: ${threshold:text})",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Historial detallado de incidentes de CPU:\n- Registro Cronológico: Listado exhaustivo de cada muestra (puntos en el tiempo) donde el uso de CPU excedió el umbral configurado por la variable ${threshold}.\n- Paridad de Datos: Muestra los valores exactos de consumo que generaron los incidentes contabilizados en el panel anterior, permitiendo auditar la severidad de cada evento individualmente.\n- Visualización de Carga: El uso de indicadores visuales (gauges/colores) facilita la identificación rápida de momentos de saturación extrema.\n- Utilidad: Herramienta de diagnóstico forense para correlacionar picos de CPU con eventos externos.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "DODGERBLUE",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "CPU Usage (%)"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 6,
+        "x": 0,
+        "y": 5
+      },
+      "id": 666,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "CPU Usage (%)"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "(100 - (avg by (instance) (irate(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}[1m])) * 100)) \n> (\n  ((${threshold} == bool 1) * 50) +\n  ((${threshold} == bool 2) * 60) +\n  ((${threshold} == bool 3) * 75) +\n  ((${threshold} == bool 4) * 90)\n)",
+          "format": "table",
+          "instant": false,
+          "refId": "A"
+        }
+      ],
+      "title": "CPU Efficiency Incident History (Level: ${threshold:text})",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "instance": true,
+              "job": true,
+              "server": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 1
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "description": "Registro cronológico de eventos de presión de memoria con zoom dinámico.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "links": [
+            {
+              "targetBlank": false,
+              "title": "Analizar incidente (-15s)",
+              "url": "/d/infra-base-template/sys_overview?orgId=1&from=${__value.time:raw}-15000&to=${__value.time:raw}+5000"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "MEDIUMPURPLE",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Memory Usage (%)"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 6,
+        "x": 6,
+        "y": 5
+      },
+      "id": 669,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "(100 - (node_memory_MemAvailable_bytes{server=\"$server\"} / node_memory_MemTotal_bytes{server=\"$server\"} * 100)) > (((${threshold} == bool 1) * 50) + ((${threshold} == bool 2) * 60) + ((${threshold} == bool 3) * 75) + ((${threshold} == bool 4) * 90))",
+          "format": "table",
+          "instant": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Memory Usage Incident History (Level: ${threshold:text})",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "instance": true,
+              "job": true,
+              "server": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 1
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Registro cronológico de eventos de alta latencia en disco:\n- Trazabilidad: Listado de cada muestra que superó el umbral de latencia (R/W) seleccionado.\n- Análisis de Impacto: Observación de la latencia exacta en milisegundos (ms) en el momento del incidente.\n- Utilidad: Identificación de patrones de degradación de E/S y correlación con picos de carga.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "CADETBLUE",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Latency (ms)"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 165
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 6,
+        "x": 12,
+        "y": 5
+      },
+      "id": 699,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "(avg(rate(node_disk_read_time_seconds_total{server=\"$server\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{server=\"$server\"}[$__rate_interval])) * 1000) \n> \n(\n  ((${threshold} == bool 1) * 50) + \n  ((${threshold} == bool 2) * 60) + \n  ((${threshold} == bool 3) * 75) + \n  ((${threshold} == bool 4) * 90)\n)",
+          "format": "table",
+          "instant": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Disk Latency Incident History (Level: ${threshold:text})",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "instance": true,
+              "job": true,
+              "server": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 1
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Registro cronológico de eventos de alta carga de red (Suma IN/OUT):\n- Trazabilidad: Listado de cada muestra donde el tráfico total superó el umbral seleccionado.\n- Análisis de Intensidad: Observación del throughput combinado en el momento del incidente.\n- Utilidad: Identificación de ráfagas bidireccionales que saturan la interfaz de red.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 125829120,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "CADETBLUE",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 75497472
+              },
+              {
+                "color": "orange",
+                "value": 94371840
+              },
+              {
+                "color": "red",
+                "value": 113246208
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total Traffic (ms)"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 165
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 6,
+        "x": 18,
+        "y": 5
+      },
+      "id": 678,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "(\n  sum(rate(node_network_receive_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])) + \n  sum(rate(node_network_transmit_bytes_total{server=\"$server\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))\n) \n> \n(\n((${threshold} == bool 1) * 62914560) +\n  ((${threshold} == bool 2) * 83886080) + \n  ((${threshold} == bool 3) * 104857600) + \n  ((${threshold} == bool 4) * 125829120)\n)",
+          "format": "table",
+          "instant": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Network Traffic Incident History (Level: ${threshold:text})",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "instance": true,
+              "job": true,
+              "server": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 1
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Ranking de los contenedores con mayor impacto en el sistema:\n- Consumo Normalizado: Muestra el uso de CPU por contenedor calculado sobre el total de cores disponibles.\n- Filtrado Dinámico: Solo lista contenedores que exceden el umbral definido por la variable ${threshold}.\n- Identificación de Carga: Permite localizar rápidamente qué servicio (stack/container) está agotando los recursos del host.\n- Utilidad: Diagnóstico de 'noisy neighbors' y optimización de límites de recursos (limits/requests) en Docker/Podman.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "DODGERBLUE",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Usage (%)"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 0,
+        "y": 14
+      },
+      "id": 721,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "CPU Usage (%)"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "(sum by (name) (rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval])) / scalar(count(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}))) * 100",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Top Container CPU Consumers)",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "container": true,
+              "instance": true,
+              "server": true
+            },
+            "indexByName": {
+              "Value": 1,
+              "name": 0
+            },
+            "renameByName": {
+              "Value": "CPU Usage (%)",
+              "name": "Container Name"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Ranking de los contenedores con mayor impacto en el sistema:\n- Consumo Normalizado: Muestra el uso de RAM por contenedor (Working Set) calculado sobre el total de memoria física del host.\n- Filtrado Dinámico: Solo lista contenedores que exceden el umbral definido por la variable ${threshold}.\n- Identificación de Carga: Permite localizar rápidamente qué servicio (stack/container) está agotando los recursos del host.\n- Utilidad: Diagnóstico de 'noisy neighbors' y optimización de límites de recursos (limits/requests) en Docker/Podman.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "MEDIUMPURPLE",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Usage (%)"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 6,
+        "y": 14
+      },
+      "id": 724,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Memory Usage (%)"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "(sum by (name) (avg_over_time(container_memory_working_set_bytes{server=\"$server\", name!=\"\", container!=\"POD\"}[$__interval])) / on() group_left() machine_memory_bytes{server=\"$server\"}) * 100",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Top Container Memory Consumers",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "container": true,
+              "instance": true,
+              "server": true
+            },
+            "indexByName": {
+              "Value": 1,
+              "name": 0
+            },
+            "renameByName": {
+              "Value": "Memory Usage (%)",
+              "name": "Container Name"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Ranking de los contenedores con mayor actividad de disco:\n- I/O Total: Suma de las tasas de lectura (Reads) y escritura (Writes) en el sistema de archivos del contenedor.\n- Filtrado Dinámico: Identifica contenedores que superan el umbral de rendimiento definido.\n- Identificación de Carga: Crucial para detectar procesos con alta latencia de disco o 'logging' excesivo que impacta el hardware del host.\n- Unidades: Escalado automático en formato binario (IEC).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 157286400,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "STEELBLUE",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 41943040
+              },
+              {
+                "color": "orange",
+                "value": 83886080
+              },
+              {
+                "color": "red",
+                "value": 125829120
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Disk I/O Traffic"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 12,
+        "y": 14
+      },
+      "id": 725,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Disk I/O Traffic"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]))",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Top Container Disk I/O Consumers)",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "container": true,
+              "instance": true,
+              "server": true
+            },
+            "indexByName": {
+              "Value": 1,
+              "name": 0
+            },
+            "renameByName": {
+              "Value": "Disk I/O Traffic",
+              "name": "Container Name"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Ranking de los contenedores con mayor impacto en la red:\n- Tráfico Total: Suma de las tasas de recepción (RX) y transmisión (TX).\n- Filtrado Dinámico: Solo lista contenedores que exceden el umbral de tráfico definido.\n- Identificación de Carga: Útil para detectar servicios realizando backups, ataques de red o transferencias masivas de datos.\n- Unidades: Escalado automático en formato binario (IEC).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 131072000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "CADETBLUE",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 62914560
+              },
+              {
+                "color": "orange",
+                "value": 83886080
+              },
+              {
+                "color": "red",
+                "value": 104857600
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network Traffic"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 18,
+        "y": 14
+      },
+      "id": 726,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Network Traffic"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (name) (rate(container_network_receive_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]))",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Top Container Network Consumers)",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "container": true,
+              "instance": true,
+              "server": true
+            },
+            "indexByName": {
+              "Value": 1,
+              "name": 0
+            },
+            "renameByName": {
+              "Value": "Network Traffic",
+              "name": "Container Name"
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "collapsed": true,
@@ -1868,7 +1867,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 2
+        "y": 24
       },
       "id": 722,
       "panels": [],
@@ -1881,7 +1880,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 3
+        "y": 25
       },
       "id": 200,
       "panels": [
@@ -1952,7 +1951,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 4
+            "y": 104
           },
           "id": 203,
           "options": {
@@ -2061,7 +2060,7 @@
             "h": 16,
             "w": 12,
             "x": 12,
-            "y": 4
+            "y": 104
           },
           "id": 542,
           "options": {
@@ -2190,7 +2189,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 12
+            "y": 112
           },
           "id": 543,
           "options": {
@@ -2290,7 +2289,7 @@
             "h": 8,
             "w": 6,
             "x": 0,
-            "y": 20
+            "y": 120
           },
           "id": 548,
           "options": {
@@ -2382,7 +2381,7 @@
             "h": 8,
             "w": 6,
             "x": 6,
-            "y": 20
+            "y": 120
           },
           "id": 550,
           "options": {
@@ -2474,7 +2473,7 @@
             "h": 8,
             "w": 6,
             "x": 12,
-            "y": 20
+            "y": 120
           },
           "id": 552,
           "options": {
@@ -2566,7 +2565,7 @@
             "h": 8,
             "w": 6,
             "x": 18,
-            "y": 20
+            "y": 120
           },
           "id": 611,
           "options": {
@@ -2609,7 +2608,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 4
+        "y": 26
       },
       "id": 300,
       "panels": [
@@ -2684,7 +2683,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 731
+            "y": 831
           },
           "id": 613,
           "options": {
@@ -2848,7 +2847,7 @@
             "h": 17,
             "w": 12,
             "x": 12,
-            "y": 731
+            "y": 831
           },
           "id": 612,
           "options": {
@@ -3006,7 +3005,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 739
+            "y": 839
           },
           "id": 618,
           "options": {
@@ -3106,7 +3105,7 @@
             "h": 11,
             "w": 12,
             "x": 0,
-            "y": 748
+            "y": 848
           },
           "id": 524,
           "options": {
@@ -3202,7 +3201,7 @@
             "h": 11,
             "w": 12,
             "x": 12,
-            "y": 748
+            "y": 848
           },
           "id": 620,
           "options": {
@@ -3247,7 +3246,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 5
+        "y": 27
       },
       "id": 500,
       "panels": [
@@ -3388,7 +3387,7 @@
             "h": 9,
             "w": 6,
             "x": 0,
-            "y": 2781
+            "y": 2881
           },
           "id": 690,
           "options": {
@@ -3533,7 +3532,7 @@
             "h": 9,
             "w": 6,
             "x": 6,
-            "y": 2781
+            "y": 2881
           },
           "id": 628,
           "options": {
@@ -3745,7 +3744,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 2781
+            "y": 2881
           },
           "id": 508,
           "options": {
@@ -3945,7 +3944,7 @@
             "h": 8,
             "w": 10,
             "x": 0,
-            "y": 2790
+            "y": 2890
           },
           "id": 644,
           "options": {
@@ -4058,7 +4057,7 @@
             "h": 8,
             "w": 7,
             "x": 10,
-            "y": 2790
+            "y": 2890
           },
           "id": 635,
           "options": {
@@ -4154,7 +4153,7 @@
             "h": 8,
             "w": 7,
             "x": 17,
-            "y": 2790
+            "y": 2890
           },
           "id": 632,
           "options": {
@@ -4282,7 +4281,7 @@
             "h": 8,
             "w": 9,
             "x": 0,
-            "y": 2798
+            "y": 2898
           },
           "id": 535,
           "options": {
@@ -4383,7 +4382,7 @@
             "h": 8,
             "w": 6,
             "x": 9,
-            "y": 2798
+            "y": 2898
           },
           "id": 505,
           "options": {
@@ -4516,7 +4515,7 @@
             "h": 8,
             "w": 9,
             "x": 15,
-            "y": 2798
+            "y": 2898
           },
           "id": 634,
           "options": {
@@ -4653,7 +4652,7 @@
             "h": 13,
             "w": 12,
             "x": 0,
-            "y": 2806
+            "y": 2906
           },
           "id": 636,
           "options": {
@@ -4790,7 +4789,7 @@
             "h": 13,
             "w": 12,
             "x": 12,
-            "y": 2806
+            "y": 2906
           },
           "id": 637,
           "options": {
@@ -4951,7 +4950,7 @@
             "h": 14,
             "w": 12,
             "x": 0,
-            "y": 2819
+            "y": 2919
           },
           "id": 639,
           "options": {
@@ -5090,7 +5089,7 @@
             "h": 14,
             "w": 12,
             "x": 12,
-            "y": 2819
+            "y": 2919
           },
           "id": 638,
           "options": {
@@ -5140,7 +5139,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 6
+        "y": 28
       },
       "id": 400,
       "panels": [
@@ -5235,7 +5234,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 4875
+            "y": 4975
           },
           "id": 626,
           "options": {
@@ -5336,7 +5335,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 4875
+            "y": 4975
           },
           "id": 403,
           "options": {
@@ -5474,7 +5473,7 @@
             "h": 8,
             "w": 10,
             "x": 0,
-            "y": 4884
+            "y": 4984
           },
           "id": 643,
           "options": {
@@ -5590,7 +5589,7 @@
             "h": 8,
             "w": 7,
             "x": 10,
-            "y": 4884
+            "y": 4984
           },
           "id": 623,
           "options": {
@@ -5688,7 +5687,7 @@
             "h": 8,
             "w": 7,
             "x": 17,
-            "y": 4884
+            "y": 4984
           },
           "id": 624,
           "options": {
@@ -5780,7 +5779,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 4892
+            "y": 4992
           },
           "id": 625,
           "options": {
@@ -5876,7 +5875,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 4892
+            "y": 4992
           },
           "id": 404,
           "options": {
@@ -5991,7 +5990,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 4900
+            "y": 5000
           },
           "id": 402,
           "options": {
@@ -6057,8 +6056,8 @@
       },
       {
         "current": {
-          "text": "master",
-          "value": "master"
+          "text": "ra-prod",
+          "value": "ra-prod"
         },
         "datasource": {
           "type": "prometheus",
@@ -6117,5 +6116,5 @@
   "timezone": "browser",
   "title": "sys_overview",
   "uid": "infra-base-template",
-  "version": 11
+  "version": 12
 }

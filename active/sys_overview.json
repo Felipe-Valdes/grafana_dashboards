@@ -21,7 +21,7 @@
   "links": [],
   "panels": [
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -29,582 +29,583 @@
         "y": 0
       },
       "id": 100,
-      "panels": [],
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 3,
+            "x": 0,
+            "y": 1
+          },
+          "id": 1,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; gap: 10px; overflow: hidden; padding: 1px;\">\n  <img src=\"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/linux.svg\" style=\"height: 55%; width: auto; filter: invert(0.8);\" />\n  <span style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 26px; font-weight: 600; color: #8E8E8E; letter-spacing: 1px; line-height: 1.2; text-transform: capitalize;\">${server}</span>\n</div>",
+            "mode": "html"
+          },
+          "pluginVersion": "12.3.2",
+          "title": "",
+          "transparent": true,
+          "type": "text"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "dark-grey",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 600
+                  }
+                ]
+              },
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 5,
+            "x": 3,
+            "y": 1
+          },
+          "id": 4,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "last"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "text": {
+              "titleSize": 24,
+              "valueSize": 44
+            },
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "time() - node_boot_time_seconds{server=\"$server\"}",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "System Uptime",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "string"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 5,
+            "x": 8,
+            "y": 1
+          },
+          "id": 728,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [],
+              "fields": "ip",
+              "limit": 1,
+              "values": true
+            },
+            "showPercentChange": false,
+            "text": {
+              "titleSize": 24,
+              "valueSize": 44
+            },
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "label_replace(node_boot_time_seconds{server=\"$server\"}, \"ip\", \"$1\", \"instance\", \"([^:]+):.*\")",
+              "format": "table",
+              "instant": true,
+              "legendFormat": "{{ip}}",
+              "refId": "A"
+            }
+          ],
+          "title": "System IP",
+          "transformations": [
+            {
+              "id": "labelsToFields",
+              "options": {
+                "mode": "columns"
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "Value": "IP Address"
+                }
+              }
+            }
+          ],
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "string"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 13,
+            "y": 1
+          },
+          "id": 727,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [],
+              "fields": "pretty_name",
+              "limit": 1,
+              "values": true
+            },
+            "showPercentChange": false,
+            "text": {
+              "titleSize": 24,
+              "valueSize": 44
+            },
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "node_os_info{server=\"$server\"}",
+              "format": "table",
+              "instant": true,
+              "legendFormat": "{{pretty_name}}",
+              "refId": "A"
+            }
+          ],
+          "title": "OS Version",
+          "transformations": [
+            {
+              "id": "labelsToFields",
+              "options": {
+                "mode": "columns"
+              }
+            }
+          ],
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "string"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 5,
+            "x": 19,
+            "y": 1
+          },
+          "id": 729,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [],
+              "fields": "release",
+              "limit": 1,
+              "values": true
+            },
+            "showPercentChange": false,
+            "text": {
+              "titleSize": 24,
+              "valueSize": 44
+            },
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "node_uname_info{server=\"$server\"}",
+              "format": "table",
+              "instant": true,
+              "legendFormat": "{{release}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Kernel Version",
+          "transformations": [
+            {
+              "id": "labelsToFields",
+              "options": {
+                "mode": "columns"
+              }
+            }
+          ],
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "description": "Especificaciones físicas de cómputo:\n- CPU Cores: Indica la cantidad total de núcleos lógicos disponibles en el servidor procesados por el kernel.\n- Interpretación: Sirve como referencia técnica para validar que la máquina virtual o física cuenta con los recursos asignados según su perfil operativo.\n- Valores esperados: Debe coincidir con la configuración de hardware inicial. Un cambio en este valor sin mantenimiento programado podría indicar errores en la detección de hilos de procesamiento o cambios no autorizados en la capa de virtualización.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "DODGERBLUE",
+                "mode": "fixed"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "SLATEGRAY",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 0,
+            "y": 51
+          },
+          "id": 720,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "titleSize": 12,
+            "valueSize": 60,
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "expr": "count(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"})",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "CPU Cores",
+          "type": "stat"
+        },
+        {
+          "description": "Capacidad total de memoria volátil:\n- Total Memory: Reporta la cantidad máxima de RAM física instalada o asignada al sistema (node_memory_MemTotal_bytes).\n- Interpretación: Es el techo de recursos disponibles para el stack de aplicaciones y servicios del hospital. Es fundamental para el cálculo de gaps en el análisis ITIL.\n- Valores esperados: Valor constante que define el límite de escalabilidad vertical inmediata antes de requerir ampliación física.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "MEDIUMPURPLE",
+                "mode": "fixed"
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "DARKPURPLE",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 6,
+            "y": 51
+          },
+          "id": 706,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "text": {
+              "titleSize": 12,
+              "valueSize": 60
+            },
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "expr": "node_memory_MemTotal_bytes{server=\"$server\"}",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Total Memory",
+          "type": "stat"
+        },
+        {
+          "description": "Capacidad de almacenamiento persistente:\n- Total Disk Capacity: Muestra el tamaño total de las particiones montadas y detectadas por el sistema operativo.\n- Interpretación: Provee el contexto necesario para evaluar el porcentaje de llenado. Es la base para la planificación de cuotas de almacenamiento y backups.\n- Valores esperados: Debe reflejar la suma del espacio en los discos de sistema y datos. No debe fluctuar a menos que se realice una expansión de volúmenes lógicos (LVM) o discos físicos.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "DARKGRAY",
+                "mode": "fixed"
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 12,
+            "y": 51
+          },
+          "id": 694,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "text": {
+              "titleSize": 24,
+              "valueSize": 60
+            },
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "expr": "node_filesystem_size_bytes{server=\"$server\", mountpoint=\"/\"}",
+              "legendFormat": "Total",
+              "refId": "B"
+            }
+          ],
+          "title": "Total Disk Capacity",
+          "type": "stat"
+        },
+        {
+          "description": "Ancho de banda teórico de la interfaz:\n- Network Interface Speed: Detecta la velocidad de negociación del enlace de red (ej. 1000Mbps / 10Gbps).\n- Interpretación: Vital para identificar 'cuellos de botella' en la capa física o de red virtual. Permite saber si el servidor está limitado por el puerto de switch al que está conectado.\n- Valores esperados: Valor estático basado en el hardware (NIC). Si el valor cae por debajo de lo nominal, indica una mala negociación del enlace o un cableado defectuoso.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "CADETBLUE",
+                "mode": "fixed"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "CADETBLUE",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 18,
+            "y": 51
+          },
+          "id": 715,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "text": {
+              "titleSize": 24,
+              "valueSize": 60
+            },
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "expr": "max(node_network_speed_bytes{server=\"$server\", device!~\"lo|veth.*\"}) * 8",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Network Interface Speed",
+          "type": "stat"
+        }
+      ],
       "title": "System",
       "type": "row"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 0,
-        "y": 1
-      },
-      "id": 1,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; gap: 10px; overflow: hidden; padding: 1px;\">\n  <img src=\"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/linux.svg\" style=\"height: 55%; width: auto; filter: invert(0.8);\" />\n  <span style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 26px; font-weight: 600; color: #8E8E8E; letter-spacing: 1px; line-height: 1.2; text-transform: capitalize;\">${server}</span>\n</div>",
-        "mode": "html"
-      },
-      "pluginVersion": "12.3.2",
-      "title": "",
-      "transparent": true,
-      "type": "text"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "text",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-grey",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 600
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 3,
-        "y": 1
-      },
-      "id": 4,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 24,
-          "valueSize": 44
-        },
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "time() - node_boot_time_seconds{server=\"$server\"}",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "System Uptime",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "text",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "string"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 8,
-        "y": 1
-      },
-      "id": 728,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [],
-          "fields": "ip",
-          "limit": 1,
-          "values": true
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 24,
-          "valueSize": 44
-        },
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "label_replace(node_boot_time_seconds{server=\"$server\"}, \"ip\", \"$1\", \"instance\", \"([^:]+):.*\")",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "{{ip}}",
-          "refId": "A"
-        }
-      ],
-      "title": "System IP",
-      "transformations": [
-        {
-          "id": "labelsToFields",
-          "options": {
-            "mode": "columns"
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "Value": "IP Address"
-            }
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "text",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "string"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 13,
-        "y": 1
-      },
-      "id": 727,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [],
-          "fields": "pretty_name",
-          "limit": 1,
-          "values": true
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 24,
-          "valueSize": 44
-        },
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "node_os_info{server=\"$server\"}",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "{{pretty_name}}",
-          "refId": "A"
-        }
-      ],
-      "title": "OS Version",
-      "transformations": [
-        {
-          "id": "labelsToFields",
-          "options": {
-            "mode": "columns"
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "text",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "string"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 19,
-        "y": 1
-      },
-      "id": 729,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [],
-          "fields": "release",
-          "limit": 1,
-          "values": true
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 24,
-          "valueSize": 44
-        },
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "node_uname_info{server=\"$server\"}",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "{{release}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Kernel Version",
-      "transformations": [
-        {
-          "id": "labelsToFields",
-          "options": {
-            "mode": "columns"
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "description": "Especificaciones físicas de cómputo:\n- CPU Cores: Indica la cantidad total de núcleos lógicos disponibles en el servidor procesados por el kernel.\n- Interpretación: Sirve como referencia técnica para validar que la máquina virtual o física cuenta con los recursos asignados según su perfil operativo.\n- Valores esperados: Debe coincidir con la configuración de hardware inicial. Un cambio en este valor sin mantenimiento programado podría indicar errores en la detección de hilos de procesamiento o cambios no autorizados en la capa de virtualización.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "DODGERBLUE",
-            "mode": "fixed"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "SLATEGRAY",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 0,
-        "y": 5
-      },
-      "id": 720,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "titleSize": 12,
-        "valueSize": 60,
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "count(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"})",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "CPU Cores",
-      "type": "stat"
-    },
-    {
-      "description": "Capacidad total de memoria volátil:\n- Total Memory: Reporta la cantidad máxima de RAM física instalada o asignada al sistema (node_memory_MemTotal_bytes).\n- Interpretación: Es el techo de recursos disponibles para el stack de aplicaciones y servicios del hospital. Es fundamental para el cálculo de gaps en el análisis ITIL.\n- Valores esperados: Valor constante que define el límite de escalabilidad vertical inmediata antes de requerir ampliación física.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "MEDIUMPURPLE",
-            "mode": "fixed"
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "DARKPURPLE",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 6,
-        "y": 5
-      },
-      "id": 706,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 60
-        },
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "node_memory_MemTotal_bytes{server=\"$server\"}",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Total Memory",
-      "type": "stat"
-    },
-    {
-      "description": "Capacidad de almacenamiento persistente:\n- Total Disk Capacity: Muestra el tamaño total de las particiones montadas y detectadas por el sistema operativo.\n- Interpretación: Provee el contexto necesario para evaluar el porcentaje de llenado. Es la base para la planificación de cuotas de almacenamiento y backups.\n- Valores esperados: Debe reflejar la suma del espacio en los discos de sistema y datos. No debe fluctuar a menos que se realice una expansión de volúmenes lógicos (LVM) o discos físicos.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "DARKGRAY",
-            "mode": "fixed"
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 12,
-        "y": 5
-      },
-      "id": 694,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 24,
-          "valueSize": 60
-        },
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "node_filesystem_size_bytes{server=\"$server\", mountpoint=\"/\"}",
-          "legendFormat": "Total",
-          "refId": "B"
-        }
-      ],
-      "title": "Total Disk Capacity",
-      "type": "stat"
-    },
-    {
-      "description": "Ancho de banda teórico de la interfaz:\n- Network Interface Speed: Detecta la velocidad de negociación del enlace de red (ej. 1000Mbps / 10Gbps).\n- Interpretación: Vital para identificar 'cuellos de botella' en la capa física o de red virtual. Permite saber si el servidor está limitado por el puerto de switch al que está conectado.\n- Valores esperados: Valor estático basado en el hardware (NIC). Si el valor cae por debajo de lo nominal, indica una mala negociación del enlace o un cableado defectuoso.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "CADETBLUE",
-            "mode": "fixed"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "CADETBLUE",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "bps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 18,
-        "y": 5
-      },
-      "id": 715,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 24,
-          "valueSize": 60
-        },
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "max(node_network_speed_bytes{server=\"$server\", device!~\"lo|veth.*\"}) * 8",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Network Interface Speed",
-      "type": "stat"
     },
     {
       "collapsed": true,
@@ -612,7 +613,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 1
       },
       "id": 703,
       "panels": [
@@ -647,7 +648,7 @@
             "h": 3,
             "w": 6,
             "x": 0,
-            "y": 10
+            "y": 2
           },
           "id": 667,
           "options": {
@@ -715,7 +716,7 @@
             "h": 3,
             "w": 6,
             "x": 6,
-            "y": 10
+            "y": 2
           },
           "id": 668,
           "options": {
@@ -783,7 +784,7 @@
             "h": 3,
             "w": 6,
             "x": 12,
-            "y": 10
+            "y": 2
           },
           "id": 679,
           "options": {
@@ -851,7 +852,7 @@
             "h": 3,
             "w": 6,
             "x": 18,
-            "y": 10
+            "y": 2
           },
           "id": 698,
           "options": {
@@ -959,7 +960,7 @@
             "h": 9,
             "w": 6,
             "x": 0,
-            "y": 93
+            "y": 29
           },
           "id": 666,
           "options": {
@@ -1076,7 +1077,7 @@
             "h": 9,
             "w": 6,
             "x": 6,
-            "y": 93
+            "y": 29
           },
           "id": 669,
           "options": {
@@ -1204,7 +1205,7 @@
             "h": 9,
             "w": 6,
             "x": 12,
-            "y": 93
+            "y": 29
           },
           "id": 699,
           "options": {
@@ -1333,7 +1334,7 @@
             "h": 9,
             "w": 6,
             "x": 18,
-            "y": 93
+            "y": 29
           },
           "id": 678,
           "options": {
@@ -1446,7 +1447,7 @@
             "h": 10,
             "w": 6,
             "x": 0,
-            "y": 102
+            "y": 38
           },
           "id": 721,
           "options": {
@@ -1564,7 +1565,7 @@
             "h": 10,
             "w": 6,
             "x": 6,
-            "y": 102
+            "y": 38
           },
           "id": 724,
           "options": {
@@ -1685,7 +1686,7 @@
             "h": 10,
             "w": 6,
             "x": 12,
-            "y": 102
+            "y": 38
           },
           "id": 725,
           "options": {
@@ -1806,7 +1807,7 @@
             "h": 10,
             "w": 6,
             "x": 18,
-            "y": 102
+            "y": 38
           },
           "id": 726,
           "options": {
@@ -1867,7 +1868,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 2
       },
       "id": 722,
       "panels": [],
@@ -1880,7 +1881,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 3
       },
       "id": 200,
       "panels": [
@@ -1951,7 +1952,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 2076
+            "y": 4
           },
           "id": 203,
           "options": {
@@ -2060,7 +2061,7 @@
             "h": 16,
             "w": 12,
             "x": 12,
-            "y": 2076
+            "y": 4
           },
           "id": 542,
           "options": {
@@ -2189,7 +2190,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 2164
+            "y": 12
           },
           "id": 543,
           "options": {
@@ -2289,7 +2290,7 @@
             "h": 8,
             "w": 6,
             "x": 0,
-            "y": 2172
+            "y": 20
           },
           "id": 548,
           "options": {
@@ -2381,7 +2382,7 @@
             "h": 8,
             "w": 6,
             "x": 6,
-            "y": 2172
+            "y": 20
           },
           "id": 550,
           "options": {
@@ -2473,7 +2474,7 @@
             "h": 8,
             "w": 6,
             "x": 12,
-            "y": 2172
+            "y": 20
           },
           "id": 552,
           "options": {
@@ -2565,7 +2566,7 @@
             "h": 8,
             "w": 6,
             "x": 18,
-            "y": 2172
+            "y": 20
           },
           "id": 611,
           "options": {
@@ -2608,7 +2609,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 4
       },
       "id": 300,
       "panels": [
@@ -2683,7 +2684,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 13
+            "y": 731
           },
           "id": 613,
           "options": {
@@ -2847,7 +2848,7 @@
             "h": 17,
             "w": 12,
             "x": 12,
-            "y": 13
+            "y": 731
           },
           "id": 612,
           "options": {
@@ -3005,7 +3006,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 21
+            "y": 739
           },
           "id": 618,
           "options": {
@@ -3105,7 +3106,7 @@
             "h": 11,
             "w": 12,
             "x": 0,
-            "y": 30
+            "y": 748
           },
           "id": 524,
           "options": {
@@ -3201,7 +3202,7 @@
             "h": 11,
             "w": 12,
             "x": 12,
-            "y": 30
+            "y": 748
           },
           "id": 620,
           "options": {
@@ -3246,7 +3247,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 5
       },
       "id": 500,
       "panels": [
@@ -3387,7 +3388,7 @@
             "h": 9,
             "w": 6,
             "x": 0,
-            "y": 2063
+            "y": 2781
           },
           "id": 690,
           "options": {
@@ -3532,7 +3533,7 @@
             "h": 9,
             "w": 6,
             "x": 6,
-            "y": 2063
+            "y": 2781
           },
           "id": 628,
           "options": {
@@ -3744,7 +3745,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 2063
+            "y": 2781
           },
           "id": 508,
           "options": {
@@ -3944,7 +3945,7 @@
             "h": 8,
             "w": 10,
             "x": 0,
-            "y": 2072
+            "y": 2790
           },
           "id": 644,
           "options": {
@@ -4057,7 +4058,7 @@
             "h": 8,
             "w": 7,
             "x": 10,
-            "y": 2072
+            "y": 2790
           },
           "id": 635,
           "options": {
@@ -4153,7 +4154,7 @@
             "h": 8,
             "w": 7,
             "x": 17,
-            "y": 2072
+            "y": 2790
           },
           "id": 632,
           "options": {
@@ -4281,7 +4282,7 @@
             "h": 8,
             "w": 9,
             "x": 0,
-            "y": 2080
+            "y": 2798
           },
           "id": 535,
           "options": {
@@ -4382,7 +4383,7 @@
             "h": 8,
             "w": 6,
             "x": 9,
-            "y": 2080
+            "y": 2798
           },
           "id": 505,
           "options": {
@@ -4515,7 +4516,7 @@
             "h": 8,
             "w": 9,
             "x": 15,
-            "y": 2080
+            "y": 2798
           },
           "id": 634,
           "options": {
@@ -4652,7 +4653,7 @@
             "h": 13,
             "w": 12,
             "x": 0,
-            "y": 2088
+            "y": 2806
           },
           "id": 636,
           "options": {
@@ -4789,7 +4790,7 @@
             "h": 13,
             "w": 12,
             "x": 12,
-            "y": 2088
+            "y": 2806
           },
           "id": 637,
           "options": {
@@ -4950,7 +4951,7 @@
             "h": 14,
             "w": 12,
             "x": 0,
-            "y": 2101
+            "y": 2819
           },
           "id": 639,
           "options": {
@@ -5089,7 +5090,7 @@
             "h": 14,
             "w": 12,
             "x": 12,
-            "y": 2101
+            "y": 2819
           },
           "id": 638,
           "options": {
@@ -5139,7 +5140,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 6
       },
       "id": 400,
       "panels": [
@@ -5234,7 +5235,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 4157
+            "y": 4875
           },
           "id": 626,
           "options": {
@@ -5335,7 +5336,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 4157
+            "y": 4875
           },
           "id": 403,
           "options": {
@@ -5473,7 +5474,7 @@
             "h": 8,
             "w": 10,
             "x": 0,
-            "y": 4166
+            "y": 4884
           },
           "id": 643,
           "options": {
@@ -5589,7 +5590,7 @@
             "h": 8,
             "w": 7,
             "x": 10,
-            "y": 4166
+            "y": 4884
           },
           "id": 623,
           "options": {
@@ -5687,7 +5688,7 @@
             "h": 8,
             "w": 7,
             "x": 17,
-            "y": 4166
+            "y": 4884
           },
           "id": 624,
           "options": {
@@ -5779,7 +5780,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 4174
+            "y": 4892
           },
           "id": 625,
           "options": {
@@ -5875,7 +5876,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 4174
+            "y": 4892
           },
           "id": 404,
           "options": {
@@ -5990,7 +5991,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 4182
+            "y": 4900
           },
           "id": 402,
           "options": {
@@ -6056,8 +6057,8 @@
       },
       {
         "current": {
-          "text": "ra-prod",
-          "value": "ra-prod"
+          "text": "master",
+          "value": "master"
         },
         "datasource": {
           "type": "prometheus",

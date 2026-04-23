@@ -87,7 +87,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "DODGERBLUE",
+                "color": "#1565C0",
                 "value": 0
               },
               {
@@ -225,7 +225,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "MEDIUMPURPLE",
+                "color": "#B15EFF",
                 "value": 0
               },
               {
@@ -515,7 +515,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "CADETBLUE",
+                "color": "#00ACC1",
                 "value": 0
               },
               {
@@ -653,7 +653,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "SLATEGRAY",
+                "color": "#546E7A",
                 "value": 0
               },
               {
@@ -782,7 +782,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "DARKGRAY",
+                "color": "text",
                 "value": 0
               }
             ]
@@ -843,7 +843,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "DARKGRAY",
+                "color": "text",
                 "value": 0
               }
             ]
@@ -1435,7 +1435,7 @@
       "type": "row"
     },
     {
-      "description": "Monitoreo de throughput de disco físico:\n- Parte Superior (>0): Velocidad de Lectura (Read).\n- Parte Inferior (<0): Velocidad de Escritura (Write).",
+      "description": "Monitoreo de throughput de disco físico:\n- Parte Superior (>0): Velocidad de Escritura (Write).\n- Parte Inferior (<0): Velocidad de Lectura (Read).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1495,7 +1495,7 @@
           {
             "matcher": {
               "id": "byRegexp",
-              "options": "/(Write:|AVG_WRITE).*/"
+              "options": "/(Read:|AVG_READ).*/"
             },
             "properties": [
               {
@@ -1597,24 +1597,24 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "topk(7, sum by (server) (rate(node_disk_read_bytes_total[1m])))",
-          "legendFormat": "Read: {{server}}",
-          "refId": "A"
-        },
-        {
           "expr": "topk(7, sum by (server) (rate(node_disk_written_bytes_total[1m])))",
           "legendFormat": "Write: {{server}}",
           "refId": "B"
         },
         {
-          "expr": "avg(sum by (server) (rate(node_disk_read_bytes_total[1m])))",
-          "legendFormat": "AVG_READ",
-          "refId": "C"
+          "expr": "topk(7, sum by (server) (rate(node_disk_read_bytes_total[1m])))",
+          "legendFormat": "Read: {{server}}",
+          "refId": "A"
         },
         {
           "expr": "avg(sum by (server) (rate(node_disk_written_bytes_total[1m])))",
           "legendFormat": "AVG_WRITE",
           "refId": "D"
+        },
+        {
+          "expr": "avg(sum by (server) (rate(node_disk_read_bytes_total[1m])))",
+          "legendFormat": "AVG_READ",
+          "refId": "C"
         }
       ],
       "title": "Top 10 Servers - Disk I/O Traffic (Mirror)",
@@ -1649,5 +1649,5 @@
   "timezone": "",
   "title": "infra_fleet",
   "uid": "ad5x9bl",
-  "version": 3
+  "version": 6
 }

@@ -65,7 +65,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "DODGERBLUE",
+            "fixedColor": "#1565C0",
             "mode": "fixed"
           },
           "custom": {
@@ -175,7 +175,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "MEDIUMPURPLE",
+            "fixedColor": "#B15EFF",
             "mode": "fixed"
           },
           "custom": {
@@ -278,7 +278,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "DARKGRAY",
+            "fixedColor": "text",
             "mode": "fixed"
           },
           "mappings": [
@@ -355,8 +355,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "semi-dark-blue",
-            "mode": "fixed"
+            "mode": "thresholds"
           },
           "decimals": 1,
           "mappings": [],
@@ -366,12 +365,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "#1565C0",
                 "value": 0
               },
               {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
                 "color": "red",
-                "value": 80
+                "value": 90
               }
             ]
           },
@@ -424,28 +431,31 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "MEDIUMPURPLE",
-            "mode": "fixed"
+            "mode": "thresholds"
           },
           "decimals": 1,
           "mappings": [],
           "thresholds": {
-            "mode": "absolute",
+            "mode": "percentage",
             "steps": [
               {
-                "color": "green",
+                "color": "#B15EFF",
                 "value": 0
               },
               {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
                 "color": "red",
-                "value": 8589934592
+                "value": 90
               }
             ]
           },
@@ -514,7 +524,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 15,
+            "fillOpacity": 0,
             "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
@@ -641,11 +651,11 @@
       "type": "timeseries"
     },
     {
-      "description": "Análisis de Tendencia Espejo del Rendimiento de Almacenamiento:\n- Disk Throughput Mirror: Visualización bidireccional que contrasta la velocidad de lectura (Read) frente a la de escritura (Write) del contenedor en tiempo real.\n- Interpretación: Permite identificar si el microservicio es intensivo en lectura o escritura. Un desbalance persistente en la parte inferior (Write) puede indicar logs excesivos o guardados de estado ineficientes.\n- Valores esperados: Ráfagas de actividad intermitentes. Un throughput constante y elevado en ambos sentidos puede indicar contención de I/O en el host físico que aloja el contenedor.",
+      "description": "Análisis de Tendencia Espejo del Rendimiento de Almacenamiento:\n- Disk Throughput Mirror: Visualización bidireccional que contrasta la velocidad de lectura (Read) frente a la de escritura (Write) del contenedor en tiempo real.\n- Interpretación: Permite identificar si el microservicio es intensivo en lectura o escritura. Un desbalance persistente en la parte superior (Write) puede indicar logs excesivos o guardados de estado ineficientes.\n- Valores esperados: Ráfagas de actividad intermitentes. Un throughput constante y elevado en ambos sentidos puede indicar contención de I/O en el host físico que aloja el contenedor.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -656,7 +666,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -706,13 +716,9 @@
             },
             "properties": [
               {
-                "id": "custom.transform",
-                "value": "negative-Y"
-              },
-              {
                 "id": "color",
                 "value": {
-                  "fixedColor": "DARKSLATEGRAY",
+                  "fixedColor": "#546E7A",
                   "mode": "fixed"
                 }
               }
@@ -727,9 +733,13 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "STEELBLUE",
+                  "fixedColor": "#90A4AE",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
               }
             ]
           }
@@ -770,18 +780,18 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(container_fs_reads_bytes_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
-          "legendFormat": "Read Throughput",
-          "refId": "A"
+          "expr": "sum(rate(container_fs_writes_bytes_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
+          "legendFormat": "Write Throughput",
+          "refId": "B"
         },
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(container_fs_writes_bytes_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
-          "legendFormat": "Write Throughput",
-          "refId": "B"
+          "expr": "sum(rate(container_fs_reads_bytes_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
+          "legendFormat": "Read Throughput",
+          "refId": "A"
         }
       ],
       "title": "Container Disk Throughput Trend (Mirror)",
@@ -801,7 +811,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "MEDIUMVIOLETRED",
+                "color": "#6A1B9A",
                 "value": 0
               },
               {
@@ -884,7 +894,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "CADETBLUE",
+                "color": "#00ACC1",
                 "value": 0
               },
               {
@@ -966,7 +976,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "SLATEGRAY",
+                "color": "#546E7A",
                 "value": 0
               },
               {
@@ -1362,7 +1372,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 20,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -1800,7 +1810,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 25,
+            "fillOpacity": 0,
             "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
@@ -2213,7 +2223,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 15,
+            "fillOpacity": 0,
             "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
@@ -2863,11 +2873,11 @@
       "type": "row"
     },
     {
-      "description": "Análisis de Tendencia Espejo del Rendimiento de Almacenamiento:\n- Disk Throughput Mirror: Visualización bidireccional que contrasta la velocidad de lectura (Read) frente a la de escritura (Write) del contenedor en tiempo real.\n- Interpretación: Permite identificar si el microservicio es intensivo en lectura o escritura. Un desbalance persistente en la parte inferior (Write) puede indicar logs excesivos o guardados de estado ineficientes.\n- Valores esperados: Ráfagas de actividad intermitentes. Un throughput constante y elevado en ambos sentidos puede indicar contención de I/O en el host físico que aloja el contenedor.",
+      "description": "Análisis de Tendencia Espejo del Rendimiento de Almacenamiento:\n- Disk Throughput Mirror: Visualización bidireccional que contrasta la velocidad de escritura (Write, arriba) frente a la de lectura (Read, abajo) del contenedor en tiempo real.\n- Interpretación: Permite identificar si el microservicio es intensivo en lectura o escritura. Un desbalance persistente en la parte superior (Write) puede indicar logs excesivos o guardados de estado ineficientes.\n- Valores esperados: Ráfagas de actividad intermitentes. Un throughput constante y elevado en ambos sentidos puede indicar contención de I/O en el host físico que aloja el contenedor.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -2878,7 +2888,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2928,13 +2938,9 @@
             },
             "properties": [
               {
-                "id": "custom.transform",
-                "value": "negative-Y"
-              },
-              {
                 "id": "color",
                 "value": {
-                  "fixedColor": "DARKSLATEGRAY",
+                  "fixedColor": "#546E7A",
                   "mode": "fixed"
                 }
               }
@@ -2949,9 +2955,13 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "STEELBLUE",
+                  "fixedColor": "#90A4AE",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
               }
             ]
           }
@@ -2992,118 +3002,21 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(container_fs_reads_bytes_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
-          "legendFormat": "Read Throughput",
-          "refId": "A"
+          "expr": "sum(rate(container_fs_writes_bytes_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
+          "legendFormat": "Write Throughput",
+          "refId": "B"
         },
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(container_fs_writes_bytes_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
-          "legendFormat": "Write Throughput",
-          "refId": "B"
-        }
-      ],
-      "title": "Container Disk Throughput Trend (Mirror)",
-      "type": "timeseries"
-    },
-    {
-      "description": "Volumen acumulado de datos leídos por el contenedor:\n- Total Read: Sumatoria de la actividad de lectura desde el inicio del rango de tiempo.\n- Interpretación: Permite identificar si el contenedor está realizando lecturas intensivas de archivos persistentes o bases de datos montadas. \n- Valores esperados: Curva ascendente proporcional al uso de la aplicación.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "STEELBLUE",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "area",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 12,
-        "y": 70
-      },
-      "id": 3215,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "max",
-            "diff"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "sum(container_fs_reads_bytes_total{server=\"$server\", name=\"$container\"}) - sum(container_fs_reads_bytes_total{server=\"$server\", name=\"$container\"} @ start())",
-          "legendFormat": "Total Read",
+          "expr": "sum(rate(container_fs_reads_bytes_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
+          "legendFormat": "Read Throughput",
           "refId": "A"
         }
       ],
-      "title": "Total Data Read (Session Accumulation)",
+      "title": "Container Disk Throughput Trend (Mirror)",
       "type": "timeseries"
     },
     {
@@ -3171,7 +3084,7 @@
       "gridPos": {
         "h": 8,
         "w": 6,
-        "x": 18,
+        "x": 12,
         "y": 70
       },
       "id": 3214,
@@ -3204,10 +3117,107 @@
       "type": "timeseries"
     },
     {
+      "description": "Volumen acumulado de datos leídos por el contenedor:\n- Total Read: Sumatoria de la actividad de lectura desde el inicio del rango de tiempo.\n- Interpretación: Permite identificar si el contenedor está realizando lecturas intensivas de archivos persistentes o bases de datos montadas. \n- Valores esperados: Curva ascendente proporcional al uso de la aplicación.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "STEELBLUE",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "area",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 70
+      },
+      "id": 3215,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max",
+            "diff"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "sum(container_fs_reads_bytes_total{server=\"$server\", name=\"$container\"}) - sum(container_fs_reads_bytes_total{server=\"$server\", name=\"$container\"} @ start())",
+          "legendFormat": "Total Read",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Data Read (Session Accumulation)",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3218,7 +3228,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3263,13 +3273,13 @@
           {
             "matcher": {
               "id": "byRegexp",
-              "options": "/Read:.*/"
+              "options": "/Write:.*/"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "STEELBLUE",
+                  "fixedColor": "#546E7A",
                   "mode": "fixed"
                 }
               }
@@ -3278,13 +3288,13 @@
           {
             "matcher": {
               "id": "byRegexp",
-              "options": "/Write:.*/"
+              "options": "/Read:.*/"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "DARKSLATEBLUE",
+                  "fixedColor": "#90A4AE",
                   "mode": "fixed"
                 }
               },
@@ -3327,14 +3337,14 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "sum by (device) (rate(container_fs_reads_bytes_total{server=\"$server\", name=\"$container\"}[1m]))",
-          "legendFormat": "Read: {{device}}",
-          "refId": "A"
-        },
-        {
           "expr": "sum by (device) (rate(container_fs_writes_bytes_total{server=\"$server\", name=\"$container\"}[1m]))",
           "legendFormat": "Write: {{device}}",
           "refId": "B"
+        },
+        {
+          "expr": "sum by (device) (rate(container_fs_reads_bytes_total{server=\"$server\", name=\"$container\"}[1m]))",
+          "legendFormat": "Read: {{device}}",
+          "refId": "A"
         }
       ],
       "title": "Disk Throughput BY DEVICE (Mirror)",
@@ -3344,7 +3354,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3355,7 +3365,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 15,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3400,13 +3410,13 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Read IOPS"
+              "options": "Write IOPS"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "STEELBLUE",
+                  "fixedColor": "#546E7A",
                   "mode": "fixed"
                 }
               }
@@ -3415,13 +3425,13 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Write IOPS"
+              "options": "Read IOPS"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "DARKSLATEBLUE",
+                  "fixedColor": "#90A4AE",
                   "mode": "fixed"
                 }
               },
@@ -3464,14 +3474,14 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "sum(rate(container_fs_reads_total{server=\"$server\", name=\"$container\"}[1m]))",
-          "legendFormat": "Read IOPS",
-          "refId": "A"
-        },
-        {
           "expr": "sum(rate(container_fs_writes_total{server=\"$server\", name=\"$container\"}[1m]))",
           "legendFormat": "Write IOPS",
           "refId": "B"
+        },
+        {
+          "expr": "sum(rate(container_fs_reads_total{server=\"$server\", name=\"$container\"}[1m]))",
+          "legendFormat": "Read IOPS",
+          "refId": "A"
         }
       ],
       "title": "Container Avg IOPS (Mirror)",
@@ -3481,7 +3491,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3492,7 +3502,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3537,13 +3547,13 @@
           {
             "matcher": {
               "id": "byRegexp",
-              "options": "/Read:.*/"
+              "options": "/Write:.*/"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "STEELBLUE",
+                  "fixedColor": "#546E7A",
                   "mode": "fixed"
                 }
               }
@@ -3552,13 +3562,13 @@
           {
             "matcher": {
               "id": "byRegexp",
-              "options": "/Write:.*/"
+              "options": "/Read:.*/"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "DARKSLATEBLUE",
+                  "fixedColor": "#90A4AE",
                   "mode": "fixed"
                 }
               },
@@ -3601,14 +3611,14 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "sum by (device) (rate(container_fs_reads_total{server=\"$server\", name=\"$container\"}[1m]))",
-          "legendFormat": "Read: {{device}}",
-          "refId": "A"
-        },
-        {
           "expr": "sum by (device) (rate(container_fs_writes_total{server=\"$server\", name=\"$container\"}[1m]))",
           "legendFormat": "Write: {{device}}",
           "refId": "B"
+        },
+        {
+          "expr": "sum by (device) (rate(container_fs_reads_total{server=\"$server\", name=\"$container\"}[1m]))",
+          "legendFormat": "Read: {{device}}",
+          "refId": "A"
         }
       ],
       "title": "Container IOPS BY DEVICE (Mirror)",
@@ -3618,7 +3628,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3629,7 +3639,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 15,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3674,13 +3684,13 @@
           {
             "matcher": {
               "id": "byRegexp",
-              "options": "/Read Block:.*/"
+              "options": "/Write Block:.*/"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "STEELBLUE",
+                  "fixedColor": "#546E7A",
                   "mode": "fixed"
                 }
               }
@@ -3689,13 +3699,13 @@
           {
             "matcher": {
               "id": "byRegexp",
-              "options": "/Write Block:.*/"
+              "options": "/Read Block:.*/"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "DARKSLATEBLUE",
+                  "fixedColor": "#90A4AE",
                   "mode": "fixed"
                 }
               },
@@ -3738,14 +3748,14 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "sum by (device) (rate(container_fs_reads_bytes_total{server=\"$server\", name=\"$container\"}[1m])) / sum by (device) (rate(container_fs_reads_total{server=\"$server\", name=\"$container\"}[1m]))",
-          "legendFormat": "Read Block: {{device}}",
-          "refId": "A"
-        },
-        {
           "expr": "sum by (device) (rate(container_fs_writes_bytes_total{server=\"$server\", name=\"$container\"}[1m])) / sum by (device) (rate(container_fs_writes_total{server=\"$server\", name=\"$container\"}[1m]))",
           "legendFormat": "Write Block: {{device}}",
           "refId": "B"
+        },
+        {
+          "expr": "sum by (device) (rate(container_fs_reads_bytes_total{server=\"$server\", name=\"$container\"}[1m])) / sum by (device) (rate(container_fs_reads_total{server=\"$server\", name=\"$container\"}[1m]))",
+          "legendFormat": "Read Block: {{device}}",
+          "refId": "A"
         }
       ],
       "title": "Disk I/O Avg Block Size BY DEVICE (Mirror)",
@@ -3758,10 +3768,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "Prometheus",
-          "value": "PBFA97CFB590B2093"
-        },
         "label": "Data Source",
         "name": "datasource",
         "options": [],
@@ -3771,10 +3777,6 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "text": "master",
-          "value": "master"
-        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -3791,10 +3793,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "grafana",
-          "value": "grafana"
-        },
+
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -3811,10 +3810,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "1",
-          "value": "1"
-        },
         "label": "Intensity",
         "name": "threshold",
         "options": [
@@ -3852,5 +3847,5 @@
   "timezone": "browser",
   "title": "container_overview",
   "uid": "adnqj4l",
-  "version": 9
+  "version": 15
 }

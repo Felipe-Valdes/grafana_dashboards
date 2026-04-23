@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 29,
+  "id": 87,
   "links": [],
   "panels": [
     {
@@ -86,7 +86,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "DODGERBLUE",
+                "color": "#1565C0",
                 "value": 0
               },
               {
@@ -224,7 +224,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "MEDIUMPURPLE",
+                "color": "#B15EFF",
                 "value": 0
               },
               {
@@ -504,7 +504,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "CADETBLUE",
+                "color": "#00ACC1",
                 "value": 0
               },
               {
@@ -642,7 +642,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "SLATEGRAY",
+                "color": "#546E7A",
                 "value": 0
               },
               {
@@ -761,7 +761,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "DARKGRAY",
+            "fixedColor": "text",
             "mode": "fixed"
           },
           "mappings": [
@@ -838,7 +838,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "DARKGRAY",
+            "fixedColor": "text",
             "mode": "fixed"
           },
           "decimals": 0,
@@ -1452,7 +1452,7 @@
       "type": "row"
     },
     {
-      "description": "Monitoreo de lectura y escritura en disco:\n- Parte Superior (>0): Velocidad de Lectura (Read).\n- Parte Inferior (<0): Velocidad de Escritura (Write).",
+      "description": "Monitoreo de lectura y escritura en disco:\n- Parte Superior (>0): Velocidad de Escritura (Write).\n- Parte Inferior (<0): Velocidad de Lectura (Read).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1512,7 +1512,7 @@
           {
             "matcher": {
               "id": "byRegexp",
-              "options": "/(Write:|AVG_WRITE).*/"
+              "options": "/(Read:|AVG_READ).*/"
             },
             "properties": [
               {
@@ -1616,24 +1616,24 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "topk(7, sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
-          "legendFormat": "Read: {{name}}",
-          "refId": "A"
-        },
-        {
           "expr": "topk(7, sum by (name) (rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
           "legendFormat": "Write: {{name}}",
           "refId": "B"
         },
         {
-          "expr": "avg(sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
-          "legendFormat": "AVG_READ",
-          "refId": "C"
+          "expr": "topk(7, sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
+          "legendFormat": "Read: {{name}}",
+          "refId": "A"
         },
         {
           "expr": "avg(sum by (name) (rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
           "legendFormat": "AVG_WRITE",
           "refId": "D"
+        },
+        {
+          "expr": "avg(sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
+          "legendFormat": "AVG_READ",
+          "refId": "C"
         }
       ],
       "title": "Top 10 Containers - Disk I/O Traffic (Mirror)",
@@ -1647,10 +1647,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "Prometheus",
-          "value": "PBFA97CFB590B2093"
-        },
         "label": "Data Source",
         "name": "datasource",
         "options": [],
@@ -1660,10 +1656,6 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "text": "athena",
-          "value": "athena"
-        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -1689,5 +1681,5 @@
   "timezone": "browser",
   "title": "docker_overview",
   "uid": "ad6lcp5",
-  "version": 2
+  "version": 10
 }

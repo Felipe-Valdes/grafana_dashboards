@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 79,
+  "id": 28,
   "links": [],
   "panels": [
     {
@@ -576,7 +576,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "TEAL",
+                  "fixedColor": "#4DD0E1",
                   "mode": "fixed"
                 }
               }
@@ -591,7 +591,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "LIGHTSEAGREEN",
+                  "fixedColor": "#00ACC1",
                   "mode": "fixed"
                 }
               }
@@ -1060,7 +1060,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "DODGERBLUE",
+            "fixedColor": "#1565C0",
             "mode": "fixed"
           },
           "custom": {
@@ -1213,7 +1213,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "DEEPSKYBLUE",
+                "color": "#1565C0",
                 "value": 0
               }
             ]
@@ -1268,7 +1268,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "LIGHTSKYBLUE",
+            "fixedColor": "#42A5F5",
             "mode": "fixed"
           },
           "custom": {
@@ -1312,7 +1312,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "LIGHTSKYBLUE",
+                "color": "#42A5F5",
                 "value": 0
               }
             ]
@@ -1420,7 +1420,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "CORNFLOWERBLUE",
+                  "fixedColor": "#1565C0",
                   "mode": "fixed"
                 }
               }
@@ -1435,7 +1435,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "DARKGRAY",
+                  "fixedColor": "#90CAF9",
                   "mode": "fixed"
                 }
               }
@@ -1492,7 +1492,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "SLATEGRAY",
+            "fixedColor": "#1E88E5",
             "mode": "fixed"
           },
           "custom": {
@@ -1536,7 +1536,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "SLATEGRAY",
+                "color": "#1E88E5",
                 "value": 0
               }
             ]
@@ -1585,7 +1585,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "CADETBLUE",
+            "fixedColor": "#0D47A1",
             "mode": "fixed"
           },
           "custom": {
@@ -1629,7 +1629,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "CADETBLUE",
+                "color": "#0D47A1",
                 "value": 0
               }
             ]
@@ -1699,7 +1699,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "MEDIUMPURPLE",
+            "fixedColor": "#B15EFF",
             "mode": "fixed"
           },
           "custom": {
@@ -1859,7 +1859,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "MEDIUMPURPLE",
+                  "fixedColor": "#7B1FA2",
                   "mode": "fixed"
                 }
               }
@@ -1874,7 +1874,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "REBECCAPURPLE",
+                  "fixedColor": "#D1A3FF",
                   "mode": "fixed"
                 }
               }
@@ -1935,11 +1935,10 @@
       "type": "timeseries"
     },
     {
-      "description": "Análisis de impacto del contenedor sobre el recurso físico:\n- Container Usage: Memoria real consumida por el microservicio seleccionado.\n- Total Host RAM: Capacidad física total instalada en el servidor (VM).\n- Interpretación: Permite visualizar qué porción del hardware global está siendo 'secuestrada' por este proceso. Si el uso del contenedor se acerca a la capacidad total del host, existe un riesgo crítico de Kernel Panic o caída masiva de servicios (Neighbor Noise effect).",
+      "description": "Análisis de impacto del contenedor sobre el recurso físico:\n- Container Usage: Memoria real consumida por el microservicio (Área púrpura).\n- Remaining Host RAM: Capacidad física disponible en el servidor (Área clara).\n- Total Host RAM: Límite físico total (Línea punteada blanca).\n- Interpretación: La visualización apilada permite contrastar el impacto del contenedor frente al hardware global. El crecimiento del área púrpura hacia la línea blanca indica riesgo crítico de Kernel Panic o Neighbor Noise effect.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "MEDIUMPURPLE",
             "mode": "fixed"
           },
           "custom": {
@@ -1951,8 +1950,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 25,
-            "gradientMode": "opacity",
+            "fillOpacity": 50,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -1960,7 +1959,7 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 1.5,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
@@ -1970,7 +1969,7 @@
             "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "none"
+              "mode": "normal"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -1983,37 +1982,18 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "MEDIUMPURPLE",
+                "color": "green",
                 "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
           "unit": "decbytes"
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total Host RAM"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "DARKSLATEGRAY",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 2
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 15
-              }
-            ]
-          },
           {
             "matcher": {
               "id": "byName",
@@ -2026,13 +2006,83 @@
                   "fixedColor": "MEDIUMPURPLE",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 100
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Remaining Host RAM"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#E1BEE7",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 25
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Host RAM"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "white",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.stacking",
+                "value": {
+                  "mode": "none"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    4,
+                    4
+                  ],
+                  "fill": "dash"
+                }
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 12,
         "x": 0,
         "y": 43
@@ -2066,18 +2116,27 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "scalar(node_memory_MemTotal_bytes{server=\"$server\"})",
-          "legendFormat": "Total Host RAM",
-          "refId": "B"
+          "expr": "sum(container_memory_working_set_bytes{server=\"$server\", name=\"$container\"})",
+          "legendFormat": "Container Usage",
+          "refId": "A"
         },
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(container_memory_working_set_bytes{server=\"$server\", name=\"$container\"})",
-          "legendFormat": "Container Usage",
-          "refId": "A"
+          "expr": "scalar(node_memory_MemTotal_bytes{server=\"$server\"}) - sum(container_memory_working_set_bytes{server=\"$server\", name=\"$container\"})",
+          "legendFormat": "Remaining Host RAM",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "scalar(node_memory_MemTotal_bytes{server=\"$server\"})",
+          "legendFormat": "Total Host RAM",
+          "refId": "B"
         }
       ],
       "title": "Container Usage vs Host Capacity",
@@ -2092,7 +2151,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "MEDIUMVIOLETRED",
+            "fixedColor": "#6A1B9A",
             "mode": "fixed"
           },
           "custom": {
@@ -2150,7 +2209,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 12,
         "x": 12,
         "y": 43
@@ -2200,672 +2259,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 51
-      },
-      "id": 400,
-      "panels": [],
-      "title": "Networking",
-      "type": "row"
-    },
-    {
-      "description": "Análisis de Tendencia Espejo del Tráfico de Red del Contenedor:\n- Network Traffic Trend Mirror: Visualización bidireccional que contrasta el flujo de entrada (RX) frente al de salida (TX) del contenedor en tiempo real.\n- Interpretación: La simetría o asimetría permite diagnosticar rápidamente el perfil de carga del microservicio. Una salida masiva (TX) sin entrada proporcional podría indicar exfiltración o respuestas pesadas de API.\n- Valores esperados: Patrones consistentes con la demanda. Picos inusuales en un solo sentido actúan como indicadores de saturación de interfaces virtuales o bucles de solicitudes.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": true,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "left",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "binBps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "OUT"
-            },
-            "properties": [
-              {
-                "id": "custom.transform",
-                "value": "negative-Y"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "TEAL",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "IN"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "LIGHTSEAGREEN",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 10,
-        "x": 0,
         "y": 52
-      },
-      "id": 3223,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(rate(container_network_receive_bytes_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
-          "legendFormat": "IN",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(rate(container_network_transmit_bytes_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
-          "legendFormat": "OUT",
-          "refId": "B"
-        }
-      ],
-      "title": "Container Network Traffic Trend (Mirror)",
-      "type": "timeseries"
-    },
-    {
-      "description": "Acumulación total de datos entrantes en el periodo seleccionado:\n- Inbound Accumulation: Sumatoria progresiva de bytes recibidos por el contenedor desde el inicio del rango de tiempo hasta el presente.\n- Interpretación: La visualización establece un 'cero' relativo al inicio del gráfico. La pendiente muestra la velocidad de carga de datos médicos o tráfico de red.\n- Valores esperados: Pendiente ascendente. Si aparece 'No Data', el rango consultado excede el historial disponible en Prometheus.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "LIGHTSEAGREEN",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 15,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 7,
-        "x": 10,
-        "y": 52
-      },
-      "id": 3121,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "max",
-            "diff"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "sum(container_network_receive_bytes_total{server=\"$server\", name=\"$container\"}) - sum(container_network_receive_bytes_total{server=\"$server\", name=\"$container\"} @ start())",
-          "legendFormat": "Total Inbound Data",
-          "refId": "A"
-        }
-      ],
-      "title": "Total Inbound Data (Session Accumulation)",
-      "type": "timeseries"
-    },
-    {
-      "description": "Acumulación total de datos salientes en el periodo seleccionado:\n- Outbound Accumulation: Sumatoria progresiva de bytes transmitidos por el contenedor hacia el exterior o el host.\n- Interpretación: Permite cuantificar el volumen exacto de información que el microservicio ha despachado durante la ventana de tiempo visualizada.\n- Valores esperados: Pendiente ascendente o plana. La inclinación casi vertical indica envíos masivos o picos de transferencia de datos.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "TEAL",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 15,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 7,
-        "x": 17,
-        "y": 52
-      },
-      "id": 3212,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "max",
-            "diff"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "sum(container_network_transmit_bytes_total{server=\"$server\", name=\"$container\"}) - sum(container_network_transmit_bytes_total{server=\"$server\", name=\"$container\"} @ start())",
-          "legendFormat": "Total Outbound Data",
-          "refId": "A"
-        }
-      ],
-      "title": "Total Outbound Data (Session Accumulation)",
-      "type": "timeseries"
-    },
-    {
-      "description": "Frecuencia de paquetes procesados por la interfaz virtual del contenedor:\n- Average Packets/s: Tasa combinada de recepción y transmisión de paquetes por unidad de tiempo.\n- Interpretación: Diferencia el tipo de carga de red; un PPS alto con bajo ancho de banda sugiere una gran cantidad de paquetes pequeños (peticiones API, DNS o tráfico de control). Es fundamental para detectar ataques de denegación de servicio (DoS) o ineficiencias en microservicios de baja latencia.\n- Valores esperados: Patrones consistentes con la carga transaccional del servicio. Incrementos súbitos sin aumento proporcional de bytes pueden indicar anomalías en el protocolo de red.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "CADETBLUE",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "CADETBLUE",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "pps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 11,
-        "x": 0,
-        "y": 61
-      },
-      "id": 3213,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "sum(rate(container_network_receive_packets_total{server=\"$server\", name=\"$container\"}[$__rate_interval]) + rate(container_network_transmit_packets_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
-          "legendFormat": "Average Packets/s",
-          "refId": "A"
-        }
-      ],
-      "title": "Packet Rate (PPS)",
-      "type": "timeseries"
-    },
-    {
-      "description": "Monitoreo de integridad y saturación en la capa de red del contenedor:\n- Errors: Paquetes recibidos o transmitidos con fallos de integridad, indicando posibles problemas en el stack de red virtual o el puente (bridge) de Docker.\n- Drops: Paquetes descartados por falta de recursos o saturación de buffers. A menudo es síntoma de cuellos de botella en el procesamiento del contenedor o límites de red alcanzados.\n- Interpretación: En un entorno estable, ambos valores deben ser cero. Cualquier incremento es una señal de alerta sobre la calidad de la comunicación o la capacidad de procesamiento de red asignada.\n- Valores esperados: 0 constante. Picos persistententes requieren revisión de la configuración de red del host o del aislamiento del contenedor.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 15,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 3,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "DARKORCHID",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "pps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Network Errors"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "DARKORCHID",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Packets Dropped"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "MEDIUMVIOLETRED",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 7,
-        "x": 11,
-        "y": 61
-      },
-      "id": 3119,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "p95",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "sum(rate(container_network_receive_errors_total{server=\"$server\", name=\"$container\"}[1m]) + rate(container_network_transmit_errors_total{server=\"$server\", name=\"$container\"}[1m]))",
-          "legendFormat": "Network Errors",
-          "refId": "A"
-        },
-        {
-          "expr": "sum(rate(container_network_receive_packets_dropped_total{server=\"$server\", name=\"$container\"}[1m]) + rate(container_network_transmit_packets_dropped_total{server=\"$server\", name=\"$container\"}[1m]))",
-          "legendFormat": "Packets Dropped",
-          "refId": "B"
-        }
-      ],
-      "title": "Network Errors & Drops",
-      "type": "timeseries"
-    },
-    {
-      "description": "Análisis del tráfico de red interno (interfaz lo) dentro del contenedor:\n- Internal Traffic: Datos transferidos entre procesos que residen en el mismo stack de red del contenedor.\n- Interpretación: Mide el nivel de acoplamiento interno. Un tráfico elevado en loopback puede indicar servicios de auditoría, proxies locales o Sidecars que están consumiendo recursos de red sin salir a la infraestructura del host.\n- Valores esperados: Generalmente bajo o nulo. Un aumento inusual puede delatar bucles de comunicación interna o procesos de salud (healthchecks) configurados con una frecuencia excesiva.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "DARKCYAN",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "DARKCYAN",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "binBps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 18,
-        "y": 61
-      },
-      "id": 3126,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "p95",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "sum(rate(container_network_receive_bytes_total{server=\"$server\", name=\"$container\", interface=\"lo\"}[1m]) + rate(container_network_transmit_bytes_total{server=\"$server\", name=\"$container\", interface=\"lo\"}[1m])) or vector(0)",
-          "legendFormat": "Internal Traffic (lo)",
-          "refId": "A"
-        }
-      ],
-      "title": "Internal Traffic (Loopback)",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 69
       },
       "id": 500,
       "panels": [],
@@ -2971,7 +2365,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 70
+        "y": 53
       },
       "id": 3224,
       "options": {
@@ -3085,7 +2479,7 @@
         "h": 8,
         "w": 6,
         "x": 12,
-        "y": 70
+        "y": 53
       },
       "id": 3214,
       "options": {
@@ -3182,7 +2576,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 70
+        "y": 53
       },
       "id": 3215,
       "options": {
@@ -3217,7 +2611,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3275,15 +2669,7 @@
               "id": "byRegexp",
               "options": "/Write:.*/"
             },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#546E7A",
-                  "mode": "fixed"
-                }
-              }
-            ]
+            "properties": []
           },
           {
             "matcher": {
@@ -3291,13 +2677,6 @@
               "options": "/Read:.*/"
             },
             "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#90A4AE",
-                  "mode": "fixed"
-                }
-              },
               {
                 "id": "custom.transform",
                 "value": "negative-Y"
@@ -3310,7 +2689,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 78
+        "y": 61
       },
       "id": 3219,
       "options": {
@@ -3447,7 +2826,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 78
+        "y": 61
       },
       "id": 3216,
       "options": {
@@ -3491,7 +2870,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3549,15 +2928,7 @@
               "id": "byRegexp",
               "options": "/Write:.*/"
             },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#546E7A",
-                  "mode": "fixed"
-                }
-              }
-            ]
+            "properties": []
           },
           {
             "matcher": {
@@ -3565,13 +2936,6 @@
               "options": "/Read:.*/"
             },
             "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#90A4AE",
-                  "mode": "fixed"
-                }
-              },
               {
                 "id": "custom.transform",
                 "value": "negative-Y"
@@ -3584,7 +2948,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 90
+        "y": 73
       },
       "id": 3220,
       "options": {
@@ -3628,7 +2992,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3686,15 +3050,7 @@
               "id": "byRegexp",
               "options": "/Write Block:.*/"
             },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#546E7A",
-                  "mode": "fixed"
-                }
-              }
-            ]
+            "properties": []
           },
           {
             "matcher": {
@@ -3702,13 +3058,6 @@
               "options": "/Read Block:.*/"
             },
             "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#90A4AE",
-                  "mode": "fixed"
-                }
-              },
               {
                 "id": "custom.transform",
                 "value": "negative-Y"
@@ -3721,7 +3070,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 90
+        "y": 73
       },
       "id": 3221,
       "options": {
@@ -3760,6 +3109,671 @@
       ],
       "title": "Disk I/O Avg Block Size BY DEVICE (Mirror)",
       "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 84
+      },
+      "id": 400,
+      "panels": [],
+      "title": "Networking",
+      "type": "row"
+    },
+    {
+      "description": "Análisis de Tendencia Espejo del Tráfico de Red del Contenedor:\n- Network Traffic Trend Mirror: Visualización bidireccional que contrasta el flujo de entrada (RX) frente al de salida (TX) del contenedor en tiempo real.\n- Interpretación: La simetría o asimetría permite diagnosticar rápidamente el perfil de carga del microservicio. Una salida masiva (TX) sin entrada proporcional podría indicar exfiltración o respuestas pesadas de API.\n- Valores esperados: Patrones consistentes con la demanda. Picos inusuales en un solo sentido actúan como indicadores de saturación de interfaces virtuales o bucles de solicitudes.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": true,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "left",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1.5,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "OUT"
+            },
+            "properties": [
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "TEAL",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IN"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "LIGHTSEAGREEN",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 10,
+        "x": 0,
+        "y": 85
+      },
+      "id": 3223,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "mean",
+            "p50",
+            "stdDev",
+            "p95",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(rate(container_network_receive_bytes_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
+          "legendFormat": "IN",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(rate(container_network_transmit_bytes_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
+          "legendFormat": "OUT",
+          "refId": "B"
+        }
+      ],
+      "title": "Container Network Traffic Trend (Mirror)",
+      "type": "timeseries"
+    },
+    {
+      "description": "Acumulación total de datos entrantes en el periodo seleccionado:\n- Inbound Accumulation: Sumatoria progresiva de bytes recibidos por el contenedor desde el inicio del rango de tiempo hasta el presente.\n- Interpretación: La visualización establece un 'cero' relativo al inicio del gráfico. La pendiente muestra la velocidad de carga de datos médicos o tráfico de red.\n- Valores esperados: Pendiente ascendente. Si aparece 'No Data', el rango consultado excede el historial disponible en Prometheus.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "LIGHTSEAGREEN",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1.5,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 7,
+        "x": 10,
+        "y": 85
+      },
+      "id": 3121,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max",
+            "diff"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "sum(container_network_receive_bytes_total{server=\"$server\", name=\"$container\"}) - sum(container_network_receive_bytes_total{server=\"$server\", name=\"$container\"} @ start())",
+          "legendFormat": "Total Inbound Data",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Inbound Data (Session Accumulation)",
+      "type": "timeseries"
+    },
+    {
+      "description": "Acumulación total de datos salientes en el periodo seleccionado:\n- Outbound Accumulation: Sumatoria progresiva de bytes transmitidos por el contenedor hacia el exterior o el host.\n- Interpretación: Permite cuantificar el volumen exacto de información que el microservicio ha despachado durante la ventana de tiempo visualizada.\n- Valores esperados: Pendiente ascendente o plana. La inclinación casi vertical indica envíos masivos o picos de transferencia de datos.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "TEAL",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1.5,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 7,
+        "x": 17,
+        "y": 85
+      },
+      "id": 3212,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max",
+            "diff"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "sum(container_network_transmit_bytes_total{server=\"$server\", name=\"$container\"}) - sum(container_network_transmit_bytes_total{server=\"$server\", name=\"$container\"} @ start())",
+          "legendFormat": "Total Outbound Data",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Outbound Data (Session Accumulation)",
+      "type": "timeseries"
+    },
+    {
+      "description": "Frecuencia de paquetes procesados por la interfaz virtual del contenedor:\n- Average Packets/s: Tasa combinada de recepción y transmisión de paquetes por unidad de tiempo.\n- Interpretación: Diferencia el tipo de carga de red; un PPS alto con bajo ancho de banda sugiere una gran cantidad de paquetes pequeños (peticiones API, DNS o tráfico de control). Es fundamental para detectar ataques de denegación de servicio (DoS) o ineficiencias en microservicios de baja latencia.\n- Valores esperados: Patrones consistentes con la carga transaccional del servicio. Incrementos súbitos sin aumento proporcional de bytes pueden indicar anomalías en el protocolo de red.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "CADETBLUE",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "CADETBLUE",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "pps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 0,
+        "y": 94
+      },
+      "id": 3213,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "mean",
+            "p50",
+            "stdDev",
+            "p95",
+            "p99",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "sum(rate(container_network_receive_packets_total{server=\"$server\", name=\"$container\"}[$__rate_interval]) + rate(container_network_transmit_packets_total{server=\"$server\", name=\"$container\"}[$__rate_interval]))",
+          "legendFormat": "Average Packets/s",
+          "refId": "A"
+        }
+      ],
+      "title": "Packet Rate (PPS)",
+      "type": "timeseries"
+    },
+    {
+      "description": "Monitoreo de integridad y saturación en la capa de red del contenedor:\n- Errors: Paquetes recibidos o transmitidos con fallos de integridad, indicando posibles problemas en el stack de red virtual o el puente (bridge) de Docker.\n- Drops: Paquetes descartados por falta de recursos o saturación de buffers. A menudo es síntoma de cuellos de botella en el procesamiento del contenedor o límites de red alcanzados.\n- Interpretación: En un entorno estable, ambos valores deben ser cero. Cualquier incremento es una señal de alerta sobre la calidad de la comunicación o la capacidad de procesamiento de red asignada.\n- Valores esperados: 0 constante. Picos persistententes requieren revisión de la configuración de red del host o del aislamiento del contenedor.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1.5,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 3,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "DARKORCHID",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "pps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network Errors"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#4DD0E1",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Packets Dropped"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#00838F",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 11,
+        "y": 94
+      },
+      "id": 3119,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "p95",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "sum(rate(container_network_receive_errors_total{server=\"$server\", name=\"$container\"}[1m]) + rate(container_network_transmit_errors_total{server=\"$server\", name=\"$container\"}[1m]))",
+          "legendFormat": "Network Errors",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(container_network_receive_packets_dropped_total{server=\"$server\", name=\"$container\"}[1m]) + rate(container_network_transmit_packets_dropped_total{server=\"$server\", name=\"$container\"}[1m]))",
+          "legendFormat": "Packets Dropped",
+          "refId": "B"
+        }
+      ],
+      "title": "Network Errors & Drops",
+      "type": "timeseries"
+    },
+    {
+      "description": "Análisis del tráfico de red interno (interfaz lo) dentro del contenedor:\n- Internal Traffic: Datos transferidos entre procesos que residen en el mismo stack de red del contenedor.\n- Interpretación: Mide el nivel de acoplamiento interno. Un tráfico elevado en loopback puede indicar servicios de auditoría, proxies locales o Sidecars que están consumiendo recursos de red sin salir a la infraestructura del host.\n- Valores esperados: Generalmente bajo o nulo. Un aumento inusual puede delatar bucles de comunicación interna o procesos de salud (healthchecks) configurados con una frecuencia excesiva.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "DARKCYAN",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1.5,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "DARKCYAN",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 94
+      },
+      "id": 3126,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "p95",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "sum(rate(container_network_receive_bytes_total{server=\"$server\", name=\"$container\", interface=\"lo\"}[1m]) + rate(container_network_transmit_bytes_total{server=\"$server\", name=\"$container\", interface=\"lo\"}[1m])) or vector(0)",
+          "legendFormat": "Internal Traffic (lo)",
+          "refId": "A"
+        }
+      ],
+      "title": "Internal Traffic (Loopback)",
+      "type": "timeseries"
     }
   ],
   "preload": false,
@@ -3768,6 +3782,10 @@
   "templating": {
     "list": [
       {
+        "current": {
+          "text": "Prometheus",
+          "value": "PBFA97CFB590B2093"
+        },
         "label": "Data Source",
         "name": "datasource",
         "options": [],
@@ -3777,6 +3795,10 @@
         "type": "datasource"
       },
       {
+        "current": {
+          "text": "athena",
+          "value": "athena"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -3793,7 +3815,10 @@
         "type": "query"
       },
       {
-
+        "current": {
+          "text": "cadvisor-athena",
+          "value": "cadvisor-athena"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -3810,6 +3835,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "1",
+          "value": "1"
+        },
         "label": "Intensity",
         "name": "threshold",
         "options": [
@@ -3847,5 +3876,5 @@
   "timezone": "browser",
   "title": "container_overview",
   "uid": "adnqj4l",
-  "version": 15
+  "version": 9
 }

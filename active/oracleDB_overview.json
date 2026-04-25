@@ -18,11 +18,11 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 0,
+  "id": 39,
   "links": [],
   "panels": [
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -30,1462 +30,230 @@
         "y": 0
       },
       "id": 59,
-      "panels": [
-        {
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 7,
-            "x": 0,
-            "y": 1
-          },
-          "id": 1,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
-            },
-            "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 0; box-sizing: border-box; overflow: hidden;\">\n  <img src=\"https://cdn.worldvectorlogo.com/logos/oracle-6.svg\" style=\"width: 90%; height: 90%; object-fit: contain;\" />\n</div>",
-            "mode": "html"
-          },
-          "pluginVersion": "12.3.2",
-          "title": "",
-          "transparent": true,
-          "type": "text"
-        },
-        {
-          "description": "Capacidad máxima del área global del sistema:\n- SGA Max: Tamaño máximo reservado en memoria RAM para las estructuras compartidas de la instancia (Buffer Cache, Shared Pool, etc).\n- Interpretación: Representa la memoria estática principal asignada al motor. Este valor determina el límite superior de crecimiento de las cachés internas de Oracle.\n- Valores esperados: Consistencia con la configuración de memoria compartida definida para la instancia (ej. 2.3 GB).",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "blue",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "decbytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 6,
-            "x": 7,
-            "y": 1
-          },
-          "id": 62,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"sga_max_size\"}",
-              "format": "time_series",
-              "instant": true,
-              "legendFormat": "SGA Max",
-              "refId": "A"
-            }
-          ],
-          "title": "SGA Max Size",
-          "transparent": true,
-          "type": "stat"
-        },
-        {
-          "description": "Límite máximo de memoria para procesos de usuario:\n- PGA Limit: Capacidad máxima de memoria RAM que la instancia puede asignar al conjunto de procesos de servidor.\n- Interpretación: Define el techo de memoria para operaciones de ordenamiento y hash joins. Alcanzar este límite puede forzar la terminación de sesiones para proteger la estabilidad del host.\n- Valores esperados: Consistencia con la asignación de memoria física dedicada a la instancia (ej. 4 GB).",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "blue",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "decbytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 6,
-            "x": 13,
-            "y": 1
-          },
-          "id": 61,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"pga_aggregate_limit\"}",
-              "format": "time_series",
-              "instant": true,
-              "legendFormat": "PGA Limit",
-              "refId": "A"
-            }
-          ],
-          "title": "PGA Aggregate Limit",
-          "transparent": true,
-          "type": "stat"
-        },
-        {
-          "description": "Inventario de recursos de cómputo de la instancia:\n- CPU Count: Cantidad total de núcleos lógicos detectados por el motor Oracle en el host.\n- Interpretación: Permite validar que la instancia dispone de la capacidad de procesamiento esperada según el despliegue técnico.\n- Valores esperados: Consistencia con el hardware o vCPU asignadas al servidor.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "blue",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 5,
-            "x": 19,
-            "y": 1
-          },
-          "id": 60,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"cpu_count\"}",
-              "format": "time_series",
-              "instant": true,
-              "legendFormat": "CPUs",
-              "refId": "A"
-            }
-          ],
-          "title": "Detected CPU Count",
-          "transparent": true,
-          "type": "stat"
-        }
-      ],
+      "panels": [],
       "title": "System",
       "type": "row"
     },
     {
-      "collapsed": true,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
-        "h": 1,
-        "w": 24,
+        "h": 4,
+        "w": 7,
         "x": 0,
         "y": 1
       },
-      "id": 55,
-      "panels": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Evaluación del rendimiento integral del monitoreo:\n- Latency: Tiempo total que tarda el exportador en conectar, consultar a Oracle y procesar los datos.\n- Interpretación: Un aumento aquí, comparado con la latencia interna de la DB, permite identificar problemas de red o saturación de CPU en el host del exportador.\n- Valores esperados: Estabilidad por debajo de 1s. Diferencias marcadas respecto a la latencia de DB sugieren sobrecarga en la infraestructura de transporte.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "orange",
-                "mode": "fixed"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "left",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "opacity",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 2,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "line"
-                }
-              },
-              "decimals": 3,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 1
-                  }
-                ]
-              },
-              "unit": "s"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 11,
-            "w": 12,
-            "x": 0,
-            "y": 2
-          },
-          "id": 27,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "p50",
-                "stdDev",
-                "p95",
-                "p99",
-                "max"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "oracledb_exporter_last_scrape_duration_seconds{server=\"$server\", service=\"$service\"}",
-              "legendFormat": "Total Scrape Duration",
-              "refId": "A"
-            }
-          ],
-          "title": "Total Scrape Duration (Full Cycle)",
-          "type": "timeseries"
+      "id": 1,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
         },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Análisis de integridad y persistencia del flujo de métricas:\n- Scrapes Total: Contador acumulativo de intentos exitosos de extracción.\n- Interpretación: Una línea ascendente constante garantiza que el monitoreo está activo y no hay pérdida de datos en el tiempo.\n- Valores esperados: Crecimiento lineal constante.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "green",
-                "mode": "fixed"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "left",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "opacity",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 2,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 11,
-            "w": 12,
-            "x": 12,
-            "y": 2
-          },
-          "id": 30,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "p50",
-                "stdDev",
-                "p95",
-                "p99",
-                "max"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "oracledb_exporter_scrapes_total{server=\"$server\", service=\"$service\"}",
-              "legendFormat": "Scrapes Total",
-              "refId": "A"
-            }
-          ],
-          "title": "Monitoring Continuity Analysis",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Evaluación del rendimiento interno del motor Oracle:\n- Latency: Tiempo que tarda específicamente el motor de base de datos en ejecutar las consultas de diagnóstico (V$).\n- Interpretación: Valores altos indican que Oracle está lento procesando metadatos. Al compararlo con el ciclo total, permite aislar si el problema es el motor o la red.\n- Valores esperados: Estabilidad por debajo del segundo. Picos persistentes sugieren contención de recursos dentro de la instancia.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "blue",
-                "mode": "fixed"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "left",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "opacity",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 2,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "line"
-                }
-              },
-              "decimals": 3,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 1
-                  }
-                ]
-              },
-              "unit": "s"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 11,
-            "w": 12,
-            "x": 0,
-            "y": 56
-          },
-          "id": 56,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "p50",
-                "stdDev",
-                "p95",
-                "p99",
-                "max"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "oracledb_exporter_last_database_scrape_duration_seconds{server=\"$server\", service=\"$service\"}",
-              "legendFormat": "Database Scrape Duration",
-              "refId": "A"
-            }
-          ],
-          "title": "Database Scrape Duration (Internal)",
-          "type": "timeseries"
-        },
-        {
-          "description": "Estado de la última recolección de datos:\n- oracledb_exporter_last_scrape_error: Indicador de éxito o fallo del último intento de extracción de métricas.\n- Interpretación: Un valor de 0 indica que la recolección fue exitosa. Un valor de 1 señala que ocurrió un error técnico durante el proceso, lo que puede significar problemas de permisos, errores en las consultas de diagnóstico o fallos de red intermitentes.\n- Valores esperados: El valor debe ser 0. Cualquier cambio a 1 indica que los datos mostrados en el dashboard podrían estar desactualizados.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [
-                {
-                  "options": {
-                    "0": {
-                      "text": "0 (OK)"
-                    },
-                    "1": {
-                      "text": "1 (ERROR)"
-                    }
-                  },
-                  "type": "value"
-                }
-              ],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 5,
-            "x": 12,
-            "y": 56
-          },
-          "id": 28,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "oracledb_exporter_last_scrape_error{server=\"$server\", service=\"$service\"}",
-              "format": "time_series",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Last Scrape Error (oracledb_exporter_last_scrape_error)",
-          "type": "stat"
-        }
-      ],
-      "title": "Scrape",
-      "type": "row"
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 0; box-sizing: border-box; overflow: hidden;\">\n  <img src=\"https://cdn.worldvectorlogo.com/logos/oracle-6.svg\" style=\"width: 90%; height: 90%; object-fit: contain;\" />\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
     },
     {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 2
-      },
-      "id": 57,
-      "panels": [
-        {
-          "description": "Análisis comparativo de instrucciones SQL:\n- Executes (Arriba): Número total de ejecuciones de sentencias SQL realizadas por el motor.\n- Parses (Abajo): Cantidad de análisis (hard/soft parses) requeridos antes de la ejecución.\n- Interpretación: La simetría perfecta indica que cada ejecución requiere un parseo, lo cual puede señalar ineficiencia en el uso de cursores o falta de bind variables.\n- Valores esperados: Se busca que el área de Executes sea significativamente mayor a la de Parses.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": true,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "left",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1.5,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": [
+      "description": "Capacidad máxima del área global del sistema:\n- SGA Max: Tamaño máximo reservado en memoria RAM para las estructuras compartidas de la instancia (Buffer Cache, Shared Pool, etc).\n- Interpretación: Representa la memoria estática principal asignada al motor. Este valor determina el límite superior de crecimiento de las cachés internas de Oracle.\n- Valores esperados: Consistencia con la configuración de memoria compartida definida para la instancia (ej. 2.3 GB).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Parses"
-                },
-                "properties": [
-                  {
-                    "id": "custom.transform",
-                    "value": "negative-Y"
-                  }
-                ]
+                "color": "blue",
+                "value": 0
               }
             ]
           },
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 0,
-            "y": 3
-          },
-          "id": 41,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "p50",
-                "stdDev",
-                "p95",
-                "p99",
-                "max"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "increase(oracledb_activity_execute_count{server=\"$server\", service=\"$service\"}[$__range])",
-              "legendFormat": "Executes",
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "increase(oracledb_activity_parse_count_total{server=\"$server\", service=\"$service\"}[$__range])",
-              "legendFormat": "Parses",
-              "refId": "B"
-            }
-          ],
-          "title": "Database Workload: Executes vs Parses (Mirror)",
-          "type": "timeseries"
+          "unit": "decbytes"
         },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 7,
+        "y": 1
+      },
+      "id": 62,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${datasource}"
           },
-          "description": "Balance de integridad transaccional:\n- Commits (Arriba): Transacciones finalizadas y persistidas exitosamente en disco.\n- Rollbacks (Abajo): Transacciones revertidas debido a errores, cancelaciones o fallos de lógica.\n- Interpretación: La predominancia de la parte superior indica un flujo de negocio saludable. Picos constantes en la parte inferior sugieren inestabilidad en las aplicaciones o problemas de contención.\n- Valores esperados: Parte inferior idealmente en cero o valores mínimos despreciables.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": true,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "left",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1.5,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": [
+          "editorMode": "code",
+          "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"sga_max_size\"}",
+          "format": "time_series",
+          "instant": true,
+          "legendFormat": "SGA Max",
+          "refId": "A"
+        }
+      ],
+      "title": "SGA Max Size",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "description": "Límite máximo de memoria para procesos de usuario:\n- PGA Limit: Capacidad máxima de memoria RAM que la instancia puede asignar al conjunto de procesos de servidor.\n- Interpretación: Define el techo de memoria para operaciones de ordenamiento y hash joins. Alcanzar este límite puede forzar la terminación de sesiones para proteger la estabilidad del host.\n- Valores esperados: Consistencia con la asignación de memoria física dedicada a la instancia (ej. 4 GB).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Rollbacks"
-                },
-                "properties": [
-                  {
-                    "id": "custom.transform",
-                    "value": "negative-Y"
-                  }
-                ]
+                "color": "blue",
+                "value": 0
               }
             ]
           },
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 12,
-            "y": 3
-          },
-          "id": 45,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "p50",
-                "stdDev",
-                "p95",
-                "p99",
-                "max"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "increase(sum(oracledb_activity_user_commits{server=\"$server\", service=\"$service\"})[$__range:])",
-              "legendFormat": "Commits",
-              "range": true,
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "increase(sum(oracledb_activity_user_rollbacks{server=\"$server\", service=\"$service\"})[$__range:])",
-              "legendFormat": "Rollbacks",
-              "range": true,
-              "refId": "B"
-            }
-          ],
-          "title": "Database Health: Commits vs Rollbacks (Mirror)",
-          "type": "timeseries"
+          "unit": "decbytes"
         },
-        {
-          "description": "Intensidad de carga por segundo (Ops/s):\n- Execute Rate: Frecuencia de ejecución de sentencias calculada sobre el intervalo de tiempo.\n- Parse Rate: Ritmo al que el optimizador de Oracle procesa nuevas consultas.\n- Interpretación: Permite cuantificar la presión sobre la CPU. Un Parse Rate elevado consume recursos computacionales de forma ineficiente, degradando la latencia general del sistema.\n- Valores esperados: Estabilidad en los patrones según la demanda de la aplicación.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": true,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "left",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1.5,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "showValues": false,
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 2,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "ops"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Parses"
-                },
-                "properties": [
-                  {
-                    "id": "custom.transform",
-                    "value": "negative-Y"
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 0,
-            "y": 36
-          },
-          "id": 43,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "p50",
-                "stdDev",
-                "p95",
-                "p99",
-                "max"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "rate(oracledb_activity_execute_count{server=\"$server\", service=\"$service\"}[$__rate_interval])",
-              "legendFormat": "Executes",
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "rate(oracledb_activity_parse_count_total{server=\"$server\", service=\"$service\"}[$__rate_interval])",
-              "legendFormat": "Parses",
-              "refId": "B"
-            }
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 13,
+        "y": 1
+      },
+      "id": 61,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
           ],
-          "title": "Database Workload: Execute vs Parse Rate (Mirror)",
-          "type": "timeseries"
+          "fields": "",
+          "values": false
         },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${datasource}"
           },
-          "description": "Velocidad de procesamiento transaccional:\n- Commit Rate: Tasa de éxito transaccional por segundo.\n- Rollback Rate: Tasa de fallos o cancelaciones por segundo.\n- Interpretación: Es el indicador de rendimiento final del negocio. Un aumento en el Rollback Rate actúa como alerta temprana de bloqueos (locks), falta de espacio en UNDO o errores de conexión en el pool de la aplicación.\n- Valores esperados: Consistencia con la actividad del usuario y mínima presencia de rollbacks.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": true,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "left",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1.5,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 2,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "ops"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Rollbacks"
-                },
-                "properties": [
-                  {
-                    "id": "custom.transform",
-                    "value": "negative-Y"
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 12,
-            "y": 36
-          },
-          "id": 46,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "p50",
-                "stdDev",
-                "p95",
-                "p99",
-                "max"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "rate(sum(oracledb_activity_user_commits{server=\"$server\", service=\"$service\"}) by (server, service) [$__rate_interval:])",
-              "legendFormat": "Commits",
-              "range": true,
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "rate(sum(oracledb_activity_user_rollbacks{server=\"$server\", service=\"$service\"}) by (server, service) [$__rate_interval:])",
-              "legendFormat": "Rollbacks",
-              "range": true,
-              "refId": "B"
-            }
-          ],
-          "title": "Database Health: Commit vs Rollback Rate (Mirror)",
-          "type": "timeseries"
+          "editorMode": "code",
+          "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"pga_aggregate_limit\"}",
+          "format": "time_series",
+          "instant": true,
+          "legendFormat": "PGA Limit",
+          "refId": "A"
         }
       ],
-      "title": "Activity",
-      "type": "row"
+      "title": "PGA Aggregate Limit",
+      "transparent": true,
+      "type": "stat"
     },
     {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 3
+      "description": "Inventario de recursos de cómputo de la instancia:\n- CPU Count: Cantidad total de núcleos lógicos detectados por el motor Oracle en el host.\n- Interpretación: Permite validar que la instancia dispone de la capacidad de procesamiento esperada según el despliegue técnico.\n- Valores esperados: Consistencia con el hardware o vCPU asignadas al servidor.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
       },
-      "id": 58,
-      "panels": [
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 19,
+        "y": 1
+      },
+      "id": 60,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
         {
-          "description": "Evaluación de la eficiencia de la memoria compartida (SGA):\n- Hit Ratio (%): Porcentaje de peticiones de datos y metadatos resueltas directamente en la memoria RAM.\n- Interpretación: Valores cercanos al 100% indican que el motor evita accesos físicos a disco. Una caída en estos ratios aumenta drásticamente los tiempos de espera (Wait Times) y degrada el rendimiento transaccional.\n- Valores esperados: Estabilidad superior al 95%. Descensos sostenidos sugieren que el tamaño de las estructuras de memoria (Buffer Cache, Library Cache) es insuficiente para la carga de trabajo actual.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "#3274D9",
-                "mode": "fixed"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "filterable": true,
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false
-              },
-              "decimals": 2,
-              "mappings": [],
-              "max": 100,
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "#3274D9",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "percent"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Hit Ratio (%)"
-                },
-                "properties": [
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "basic",
-                      "type": "gauge"
-                    }
-                  }
-                ]
-              }
-            ]
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
-          "gridPos": {
-            "h": 7,
-            "w": 9,
-            "x": 0,
-            "y": 473
-          },
-          "id": 70,
-          "options": {
-            "cellHeight": "sm",
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Hit Ratio (%)"
-              }
-            ]
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "oracledb_cache_hit_ratio_value{server=\"$server\", service=\"$service\"}",
-              "format": "table",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "SGA Cache Efficiency Ranking",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "__name__": true,
-                  "database": true,
-                  "instance": true,
-                  "job": true,
-                  "server": true,
-                  "service": true
-                },
-                "indexByName": {
-                  "Value": 1,
-                  "cache_hit_type": 0
-                },
-                "renameByName": {
-                  "Value": "Hit Ratio (%)",
-                  "cache_hit_type": "Cache Type"
-                }
-              }
-            }
-          ],
-          "type": "table"
+          "editorMode": "code",
+          "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"cpu_count\"}",
+          "format": "time_series",
+          "instant": true,
+          "legendFormat": "CPUs",
+          "refId": "A"
         }
       ],
-      "title": "Cache",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 4
-      },
-      "id": 64,
-      "panels": [
-        {
-          "description": "Monitoreo de límites operativos de la instancia:\n- Usage (%): Porcentaje de ocupación actual frente al límite máximo.\n- Mapeos: Valores sin límite real se muestran como 'Unlimited'.\n- Interpretación: Identificación de techos operativos en sesiones y procesos.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "#3274D9",
-                "mode": "fixed"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "filterable": true,
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false
-              },
-              "decimals": 2,
-              "mappings": [],
-              "max": 100,
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "#3274D9",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "percent"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Resource Name"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 168
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Usage (%)"
-                },
-                "properties": [
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "basic",
-                      "type": "gauge"
-                    }
-                  },
-                  {
-                    "id": "custom.width",
-                    "value": 277
-                  },
-                  {
-                    "id": "mappings",
-                    "value": [
-                      {
-                        "options": {
-                          "0": {
-                            "index": 0,
-                            "text": "Disabled"
-                          },
-                          "-1": {
-                            "index": 1,
-                            "text": "Unlimited"
-                          }
-                        },
-                        "type": "value"
-                      },
-                      {
-                        "options": {
-                          "from": -100,
-                          "result": {
-                            "index": 2,
-                            "text": "Unlimited"
-                          },
-                          "to": -0.01
-                        },
-                        "type": "range"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 7,
-            "x": 0,
-            "y": 474
-          },
-          "id": 71,
-          "options": {
-            "cellHeight": "sm",
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Usage (%)"
-              }
-            ]
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "(oracledb_resource_current_utilization{server=\"$server\"} / oracledb_resource_limit_value) * 100",
-              "format": "table",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Instance Resource Utilization",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "__name__": true,
-                  "database": true,
-                  "inst_id": true,
-                  "instance": true,
-                  "job": true,
-                  "server": true,
-                  "service": true
-                },
-                "indexByName": {
-                  "Value": 1,
-                  "resource_name": 0
-                },
-                "renameByName": {
-                  "Value": "Usage (%)",
-                  "resource_name": "Resource Name"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        }
-      ],
-      "title": "Resource",
-      "type": "row"
+      "title": "Detected CPU Count",
+      "transparent": true,
+      "type": "stat"
     },
     {
       "collapsed": true,
@@ -1495,275 +263,18 @@
         "x": 0,
         "y": 5
       },
-      "id": 65,
-      "panels": [
-        {
-          "description": "Análisis de tendencia de sesiones de usuario:\n- ACTIVE (Arriba): Usuarios o aplicaciones ejecutando instrucciones en tiempo real.\n- INACTIVE (Abajo): Conexiones abiertas en reposo (Idle) que mantienen recursos asignados.\n- Interpretación: La asimetría hacia abajo permite detectar fugas de conexiones (Idle Leaks). Un aumento en la parte superior indica un incremento en la demanda concurrente real.\n- Valores esperados: Fluctuación según horario operativo; el área negativa debe ser estable.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": true,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "left",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "opacity",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 2,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "ACTIVE"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "green",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "INACTIVE"
-                },
-                "properties": [
-                  {
-                    "id": "custom.transform",
-                    "value": "negative-Y"
-                  },
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "blue",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 6,
-            "x": 0,
-            "y": 331
-          },
-          "id": 49,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "stdDev",
-                "max"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "sum(oracledb_sessions_value{server=\"$server\", service=\"$service\", type=\"USER\", status=\"ACTIVE\"})",
-              "legendFormat": "ACTIVE",
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "sum(oracledb_sessions_value{server=\"$server\", service=\"$service\", type=\"USER\", status=\"INACTIVE\"})",
-              "legendFormat": "INACTIVE",
-              "refId": "B"
-            }
-          ],
-          "title": "Oracle User Sessions (Mirror)",
-          "type": "timeseries"
-        },
-        {
-          "description": "Monitoreo de procesos internos del motor:\n- Background Sessions: Procesos autónomos (PMON, SMON, DBWn, etc.) encargados del mantenimiento de la instancia.\n- Interpretación: Estas sesiones aseguran la integridad de la base de datos. Una caída brusca o variaciones inusuales sugieren inestabilidad en componentes críticos del motor Oracle.\n- Valores esperados: Valor mayoritariamente constante e independiente de la carga de usuarios externos.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "purple",
-                "mode": "fixed"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "left",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "opacity",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 2,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "orange",
-                    "value": 80
-                  },
-                  {
-                    "color": "red",
-                    "value": 120
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 9,
-            "x": 6,
-            "y": 331
-          },
-          "id": 52,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "p50",
-                "stdDev",
-                "p95",
-                "max"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "expr": "sum(oracledb_sessions_value{server=\"$server\", service=\"$service\", type=\"BACKGROUND\"})",
-              "legendFormat": "Background Sessions",
-              "refId": "A"
-            }
-          ],
-          "title": "Oracle Background Sessions Trend",
-          "type": "timeseries"
-        }
-      ],
-      "title": "Sessions",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 6
-      },
       "id": 66,
       "panels": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "description": "Ranking de ocupación porcentual de almacenamiento:\n- Usage (%): Relación entre el espacio utilizado y el tamaño máximo potencial (MaxBytes).\n- Interpretación: Identifica qué áreas de datos están más cerca de agotar su capacidad física reservada.\n- Valores esperados: Crecimiento gradual según la tasa de ingesta de datos; evitar valores superiores al 90%.",
           "fieldConfig": {
             "defaults": {
               "custom": {
-                "align": "auto",
+                "align": "center",
                 "cellOptions": {
                   "type": "auto"
                 },
@@ -1804,12 +315,8 @@
                 },
                 "properties": [
                   {
-                    "id": "links",
-                    "value": []
-                  },
-                  {
                     "id": "custom.width",
-                    "value": 378
+                    "value": 300
                   }
                 ]
               },
@@ -1825,10 +332,6 @@
                       "mode": "basic",
                       "type": "gauge"
                     }
-                  },
-                  {
-                    "id": "custom.width",
-                    "value": 448
                   }
                 ]
               }
@@ -1838,7 +341,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 102
+            "y": 6
           },
           "id": 47,
           "options": {
@@ -1858,7 +361,8 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "(oracledb_tablespace_bytes{server=\"$server\", service=\"$service\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"} / oracledb_tablespace_max_bytes{server=\"$server\", service=\"$service\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}) * 100",
+              "editorMode": "code",
+              "expr": "(oracledb_tablespace_bytes{server=\"$server\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"} / oracledb_tablespace_max_bytes{server=\"$server\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}) * 100",
               "format": "table",
               "instant": true,
               "refId": "A"
@@ -1872,10 +376,8 @@
                 "excludeByName": {
                   "Time": true,
                   "__name__": true,
+                  "con_id": false,
                   "database": true,
-                  "database 1": true,
-                  "database 2": true,
-                  "database 3": true,
                   "instance": true,
                   "job": true,
                   "server": true,
@@ -1896,11 +398,15 @@
           "type": "table"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "description": "Estado de ocupación de áreas críticas del motor:\n- Usage (%): Porcentaje de uso en tablespaces de sistema (SYSTEM, SYSAUX, UNDO, etc).\n- Interpretación: Monitorea la salud de las estructuras internas esenciales para la operación de la instancia.\n- Valores esperados: Ocupación estable. Picos en UNDO pueden indicar transacciones masivas o bloqueos prolongados.",
           "fieldConfig": {
             "defaults": {
               "custom": {
-                "align": "auto",
+                "align": "center",
                 "cellOptions": {
                   "type": "auto"
                 },
@@ -1946,7 +452,7 @@
                   },
                   {
                     "id": "custom.width",
-                    "value": 419
+                    "value": 292
                   }
                 ]
               },
@@ -1965,7 +471,7 @@
                   },
                   {
                     "id": "custom.width",
-                    "value": 374
+                    "value": 347
                   }
                 ]
               }
@@ -1975,7 +481,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 102
+            "y": 6
           },
           "id": 48,
           "options": {
@@ -1995,7 +501,8 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "(oracledb_tablespace_bytes{server=\"$server\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"} / oracledb_tablespace_max_bytes{server=\"$server\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}) * 100",
+              "editorMode": "code",
+              "expr": "(oracledb_tablespace_bytes{server=\"$server\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDO|USERS\"} / oracledb_tablespace_max_bytes{server=\"$server\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDO|USERS\"}) * 100",
               "format": "table",
               "instant": true,
               "refId": "A"
@@ -2033,11 +540,15 @@
           "type": "table"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "description": "Inventario detallado de capacidad para datos de usuario:\n- Total/Used/Free: Desglose en bytes del espacio disponible vs. asignado para esquemas de aplicación.\n- TS Type: Clasificación del tipo de almacenamiento (PERMANENT/TEMPORARY).\n- Interpretación: Permite el planeamiento de capacidad (Capacity Planning) basado en el espacio libre real (Available Capacity).",
           "fieldConfig": {
             "defaults": {
               "custom": {
-                "align": "auto",
+                "align": "center",
                 "cellOptions": {
                   "type": "auto"
                 },
@@ -2089,7 +600,7 @@
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 157
+                    "value": 124
                   }
                 ]
               },
@@ -2115,6 +626,42 @@
                     "value": 180
                   }
                 ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #Free"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 99
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #Total"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 115
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #Used"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 168
+                  }
+                ]
               }
             ]
           },
@@ -2122,7 +669,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 109
+            "y": 13
           },
           "id": 36,
           "options": {
@@ -2136,8 +683,10 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
+              "editorMode": "code",
               "expr": "oracledb_tablespace_max_bytes{server=\"$server\", service=\"$service\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
               "format": "table",
+              "range": true,
               "refId": "Total"
             },
             {
@@ -2225,11 +774,15 @@
           "type": "table"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "description": "Métricas de capacidad física de la infraestructura interna:\n- Métricas: Valores exactos de bytes asignados y libres en tablespaces de gestión del motor.\n- Interpretación: Crucial para asegurar que archivos de sistema como SYSTEM o SYSAUX tengan margen de crecimiento para auditorías y metadatos.\n- Valores esperados: Espacio libre suficiente para evitar errores de tipo ORA-01653.",
           "fieldConfig": {
             "defaults": {
               "custom": {
-                "align": "auto",
+                "align": "center",
                 "cellOptions": {
                   "type": "auto"
                 },
@@ -2237,7 +790,8 @@
                 "footer": {
                   "reducers": []
                 },
-                "inspect": false
+                "inspect": false,
+                "wrapText": false
               },
               "decimals": 1,
               "mappings": [],
@@ -2269,7 +823,7 @@
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 200
+                    "value": 181
                   }
                 ]
               },
@@ -2295,6 +849,54 @@
                     "value": 180
                   }
                 ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "TS Type"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 112
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #Free"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 128
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #Total"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 121
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #Used"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 147
+                  }
+                ]
               }
             ]
           },
@@ -2302,12 +904,18 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 109
+            "y": 13
           },
           "id": 39,
           "options": {
             "cellHeight": "sm",
-            "showHeader": true
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Value #Used"
+              }
+            ]
           },
           "pluginVersion": "12.3.2",
           "targets": [
@@ -2468,7 +1076,7 @@
             "h": 12,
             "w": 12,
             "x": 0,
-            "y": 116
+            "y": 30
           },
           "id": 37,
           "options": {
@@ -2571,7 +1179,7 @@
             "h": 12,
             "w": 12,
             "x": 12,
-            "y": 116
+            "y": 30
           },
           "id": 38,
           "options": {
@@ -2620,7 +1228,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 6
       },
       "id": 68,
       "panels": [
@@ -2632,6 +1240,9 @@
           "description": "Inventario de impacto de sentencias SQL:\n- Elapsed Time: Tiempo total acumulado de ejecución registrado en la Shared Pool.\n- SQL ID: Identificador único de la consulta para trazabilidad en el motor.\n- Propósito: Listado exhaustivo de actividad SQL sin filtros de umbral mínimos.",
           "fieldConfig": {
             "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
               "custom": {
                 "align": "auto",
                 "cellOptions": {
@@ -2704,9 +1315,9 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 13,
+            "w": 14,
             "x": 0,
-            "y": 8
+            "y": 51
           },
           "id": 72,
           "options": {
@@ -2727,7 +1338,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "increase(oracledb_top_sql_elapsed{server=\"$server\"}[$__range])",
+              "expr": "delta(oracledb_top_sql_elapsed{server=\"$server\"}[$__range])",
               "format": "table",
               "instant": true,
               "refId": "A"
@@ -2773,7 +1384,1521 @@
         "h": 1,
         "w": 24,
         "x": 0,
+        "y": 7
+      },
+      "id": 57,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus"
+          },
+          "description": "Análisis comparativo de instrucciones SQL:\n- Executes (Arriba): Número total de ejecuciones de sentencias SQL realizadas por el motor.\n- Parses (Abajo): Cantidad de análisis (hard/soft parses) requeridos antes de la ejecución.\n- Interpretación: La simetría perfecta indica que cada ejecución requiere un parseo, lo cual puede señalar ineficiencia en el uso de cursores o falta de bind variables.\n- Valores esperados: Se busca que el área de Executes sea significativamente mayor a la de Parses.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": true,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "left",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Parses"
+                },
+                "properties": [
+                  {
+                    "id": "custom.transform",
+                    "value": "negative-Y"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 170
+          },
+          "id": 41,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "p99",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(increase(oracledb_activity_execute_count{server=\"$server\", service=\"$service\"}[$__range]))",
+              "legendFormat": "Executes",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(increase(oracledb_activity_parse_count_total{server=\"$server\", service=\"$service\"}[$__range]))",
+              "legendFormat": "Parses",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "Database Workload: Executes vs Parses (Mirror)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Balance de integridad transaccional:\n- Commits (Arriba): Transacciones finalizadas y persistidas exitosamente en disco.\n- Rollbacks (Abajo): Transacciones revertidas debido a errores, cancelaciones o fallos de lógica.\n- Interpretación: La predominancia de la parte superior indica un flujo de negocio saludable. Picos constantes en la parte inferior sugieren inestabilidad en las aplicaciones o problemas de contención.\n- Valores esperados: Parte inferior idealmente en cero o valores mínimos despreciables.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": true,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "left",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Rollbacks"
+                },
+                "properties": [
+                  {
+                    "id": "custom.transform",
+                    "value": "negative-Y"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 170
+          },
+          "id": 45,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "p99",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "increase(sum(oracledb_activity_user_commits{server=\"$server\", service=\"$service\"})[$__range:])",
+              "legendFormat": "Commits",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "increase(sum(oracledb_activity_user_rollbacks{server=\"$server\", service=\"$service\"})[$__range:])",
+              "legendFormat": "Rollbacks",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "Database Health: Commits vs Rollbacks (Mirror)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Intensidad de carga por segundo (Ops/s):\n- Execute Rate: Frecuencia de ejecución de sentencias calculada sobre el intervalo de tiempo.\n- Parse Rate: Ritmo al que el optimizador de Oracle procesa nuevas consultas.\n- Interpretación: Permite cuantificar la presión sobre la CPU. Un Parse Rate elevado consume recursos computacionales de forma ineficiente, degradando la latencia general del sistema.\n- Valores esperados: Estabilidad en los patrones según la demanda de la aplicación.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": true,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "left",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "ops"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Parses"
+                },
+                "properties": [
+                  {
+                    "id": "custom.transform",
+                    "value": "negative-Y"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 180
+          },
+          "id": 43,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "p99",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum by (service) (rate(oracledb_activity_execute_count{server=\"$server\", service=\"$service\"}[$__rate_interval]))",
+              "legendFormat": "Executes",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum by (service) (rate(oracledb_activity_parse_count_total{server=\"$server\", service=\"$service\"}[$__rate_interval]))",
+              "legendFormat": "Parses",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "Database Workload: Execute vs Parse Rate (Mirror)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Velocidad de procesamiento transaccional:\n- Commit Rate: Tasa de éxito transaccional por segundo.\n- Rollback Rate: Tasa de fallos o cancelaciones por segundo.\n- Interpretación: Es el indicador de rendimiento final del negocio. Un aumento en el Rollback Rate actúa como alerta temprana de bloqueos (locks), falta de espacio en UNDO o errores de conexión en el pool de la aplicación.\n- Valores esperados: Consistencia con la actividad del usuario y mínima presencia de rollbacks.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": true,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "left",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1.5,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "ops"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Rollbacks"
+                },
+                "properties": [
+                  {
+                    "id": "custom.transform",
+                    "value": "negative-Y"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 180
+          },
+          "id": 46,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "p99",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "rate(sum(oracledb_activity_user_commits{server=\"$server\", service=\"$service\"}) by (server, service) [$__rate_interval:])",
+              "legendFormat": "Commits",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "rate(sum(oracledb_activity_user_rollbacks{server=\"$server\", service=\"$service\"}) by (server, service) [$__rate_interval:])",
+              "legendFormat": "Rollbacks",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "Database Health: Commit vs Rollback Rate (Mirror)",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Activity",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
         "y": 8
+      },
+      "id": 58,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Evaluación de la eficiencia de la memoria compartida (SGA):\n- Hit Ratio (%): Porcentaje de peticiones de datos y metadatos resueltas directamente en la memoria RAM.\n- Interpretación: Valores cercanos al 100% indican que el motor evita accesos físicos a disco. Una caída en estos ratios aumenta drásticamente los tiempos de espera (Wait Times) y degrada el rendimiento transaccional.\n- Valores esperados: Estabilidad superior al 95%. Descensos sostenidos sugieren que el tamaño de las estructuras de memoria (Buffer Cache, Library Cache) es insuficiente para la carga de trabajo actual.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "#3274D9",
+                "mode": "fixed"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "decimals": 2,
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "#3274D9",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Hit Ratio (%)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "basic",
+                      "type": "gauge",
+                      "valueDisplayMode": "text"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 9,
+            "x": 0,
+            "y": 213
+          },
+          "id": 70,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Hit Ratio (%)"
+              }
+            ]
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "oracledb_cache_hit_ratio_value{server=\"$server\", service=\"$service\"}",
+              "format": "table",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "SGA Cache Efficiency Ranking",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "__name__": true,
+                  "database": true,
+                  "instance": true,
+                  "job": true,
+                  "server": true,
+                  "service": true
+                },
+                "indexByName": {
+                  "Value": 1,
+                  "cache_hit_type": 0
+                },
+                "renameByName": {
+                  "Value": "Hit Ratio (%)",
+                  "cache_hit_type": "Cache Type"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "Cache",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 64,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Monitoreo de límites operativos de la instancia:\n- Usage (%): Porcentaje de ocupación actual frente al límite máximo.\n- Mapeos: Valores sin límite real se muestran como 'Unlimited'.\n- Interpretación: Identificación de techos operativos en sesiones y procesos.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "#3274D9",
+                "mode": "fixed"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "decimals": 2,
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "#3274D9",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Resource Name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 168
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Usage (%)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "basic",
+                      "type": "gauge"
+                    }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 277
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "0": {
+                            "index": 0,
+                            "text": "Disabled"
+                          },
+                          "-1": {
+                            "index": 1,
+                            "text": "Unlimited"
+                          }
+                        },
+                        "type": "value"
+                      },
+                      {
+                        "options": {
+                          "from": -100,
+                          "result": {
+                            "index": 2,
+                            "text": "Unlimited"
+                          },
+                          "to": -0.01
+                        },
+                        "type": "range"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 0,
+            "y": 214
+          },
+          "id": 71,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Usage (%)"
+              }
+            ]
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "(oracledb_resource_current_utilization{server=\"$server\"} / oracledb_resource_limit_value) * 100",
+              "format": "table",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Instance Resource Utilization",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "__name__": true,
+                  "database": true,
+                  "inst_id": true,
+                  "instance": true,
+                  "job": true,
+                  "server": true,
+                  "service": true
+                },
+                "indexByName": {
+                  "Value": 1,
+                  "resource_name": 0
+                },
+                "renameByName": {
+                  "Value": "Usage (%)",
+                  "resource_name": "Resource Name"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "Resource",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 55,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Evaluación del rendimiento integral del monitoreo:\n- Latency: Tiempo total que tarda el exportador en conectar, consultar a Oracle y procesar los datos.\n- Interpretación: Un aumento aquí, comparado con la latencia interna de la DB, permite identificar problemas de red o saturación de CPU en el host del exportador.\n- Valores esperados: Estabilidad por debajo de 1s. Diferencias marcadas respecto a la latencia de DB sugieren sobrecarga en la infraestructura de transporte.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "orange",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "left",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "line"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 12,
+            "x": 0,
+            "y": 404
+          },
+          "id": 27,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "p99",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "oracledb_exporter_last_scrape_duration_seconds{server=\"$server\", service=\"$service\"}",
+              "legendFormat": "Total Scrape Duration",
+              "refId": "A"
+            }
+          ],
+          "title": "Total Scrape Duration (Full Cycle)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Análisis de integridad y persistencia del flujo de métricas:\n- Scrapes Total: Contador acumulativo de intentos exitosos de extracción.\n- Interpretación: Una línea ascendente constante garantiza que el monitoreo está activo y no hay pérdida de datos en el tiempo.\n- Valores esperados: Crecimiento lineal constante.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "green",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "left",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 12,
+            "x": 12,
+            "y": 404
+          },
+          "id": 30,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "p99",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "oracledb_exporter_scrapes_total{server=\"$server\", service=\"$service\"}",
+              "legendFormat": "Scrapes Total",
+              "refId": "A"
+            }
+          ],
+          "title": "Monitoring Continuity Analysis",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Evaluación del rendimiento interno del motor Oracle:\n- Latency: Tiempo que tarda específicamente el motor de base de datos en ejecutar las consultas de diagnóstico (V$).\n- Interpretación: Valores altos indican que Oracle está lento procesando metadatos. Al compararlo con el ciclo total, permite aislar si el problema es el motor o la red.\n- Valores esperados: Estabilidad por debajo del segundo. Picos persistentes sugieren contención de recursos dentro de la instancia.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "blue",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "left",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "line"
+                }
+              },
+              "decimals": 3,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              },
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 12,
+            "x": 0,
+            "y": 466
+          },
+          "id": 56,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "p99",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "oracledb_exporter_last_database_scrape_duration_seconds{server=\"$server\", service=\"$service\"}",
+              "legendFormat": "Database Scrape Duration",
+              "refId": "A"
+            }
+          ],
+          "title": "Database Scrape Duration (Internal)",
+          "type": "timeseries"
+        },
+        {
+          "description": "Estado de la última recolección de datos:\n- oracledb_exporter_last_scrape_error: Indicador de éxito o fallo del último intento de extracción de métricas.\n- Interpretación: Un valor de 0 indica que la recolección fue exitosa. Un valor de 1 señala que ocurrió un error técnico durante el proceso, lo que puede significar problemas de permisos, errores en las consultas de diagnóstico o fallos de red intermitentes.\n- Valores esperados: El valor debe ser 0. Cualquier cambio a 1 indica que los datos mostrados en el dashboard podrían estar desactualizados.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "fixed"
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "text": "0 (OK)"
+                    },
+                    "1": {
+                      "text": "1 (ERROR)"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 5,
+            "x": 12,
+            "y": 466
+          },
+          "id": 28,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "oracledb_exporter_last_scrape_error{server=\"$server\", service=\"$service\"}",
+              "format": "time_series",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Last Scrape Error (oracledb_exporter_last_scrape_error)",
+          "type": "stat"
+        }
+      ],
+      "title": "Scrape",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 11
+      },
+      "id": 65,
+      "panels": [
+        {
+          "description": "Análisis de tendencia de sesiones de usuario:\n- ACTIVE (Arriba): Usuarios o aplicaciones ejecutando instrucciones en tiempo real.\n- INACTIVE (Abajo): Conexiones abiertas en reposo (Idle) que mantienen recursos asignados.\n- Interpretación: La asimetría hacia abajo permite detectar fugas de conexiones (Idle Leaks). Un aumento en la parte superior indica un incremento en la demanda concurrente real.\n- Valores esperados: Fluctuación según horario operativo; el área negativa debe ser estable.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": true,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "left",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "ACTIVE"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "green",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "INACTIVE"
+                },
+                "properties": [
+                  {
+                    "id": "custom.transform",
+                    "value": "negative-Y"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 8,
+            "x": 0,
+            "y": 408
+          },
+          "id": 49,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "stdDev",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "sum(oracledb_sessions_value{server=\"$server\", service=\"$service\", type=\"USER\", status=\"ACTIVE\"})",
+              "legendFormat": "ACTIVE",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "sum(oracledb_sessions_value{server=\"$server\", service=\"$service\", type=\"USER\", status=\"INACTIVE\"})",
+              "legendFormat": "INACTIVE",
+              "refId": "B"
+            }
+          ],
+          "title": "Oracle User Sessions (Mirror)",
+          "type": "timeseries"
+        },
+        {
+          "description": "Monitoreo de procesos internos del motor:\n- Background Sessions: Procesos autónomos (PMON, SMON, DBWn, etc.) encargados del mantenimiento de la instancia.\n- Interpretación: Estas sesiones aseguran la integridad de la base de datos. Una caída brusca o variaciones inusuales sugieren inestabilidad en componentes críticos del motor Oracle.\n- Valores esperados: Valor mayoritariamente constante e independiente de la carga de usuarios externos.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "purple",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "left",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "orange",
+                    "value": 80
+                  },
+                  {
+                    "color": "red",
+                    "value": 120
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 9,
+            "x": 8,
+            "y": 408
+          },
+          "id": 52,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "mean",
+                "p50",
+                "stdDev",
+                "p95",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "expr": "sum(oracledb_sessions_value{server=\"$server\", service=\"$service\", type=\"BACKGROUND\"})",
+              "legendFormat": "Background Sessions",
+              "refId": "A"
+            }
+          ],
+          "title": "Oracle Background Sessions Trend",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Sessions",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 12
       },
       "id": 67,
       "panels": [
@@ -2847,7 +2972,7 @@
             "h": 7,
             "w": 10,
             "x": 0,
-            "y": 17
+            "y": 419
           },
           "id": 80,
           "options": {
@@ -2868,7 +2993,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "label_replace({__name__=~\"oracledb_wait_time_.*\", server=\"$server\"}, \"category\", \"$1\", \"__name__\", \"oracledb_wait_time_(.*)\")",
+              "expr": "sum by (category) (\r\n  label_replace(\r\n    {__name__=~\"oracledb_wait_time_.*\", server=\"$server\"}, \r\n    \"category\", \"$1\", \"__name__\", \"oracledb_wait_time_(.*)\"\r\n  )\r\n)",
               "format": "table",
               "instant": true,
               "refId": "A"
@@ -2913,7 +3038,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 13
       },
       "id": 63,
       "panels": [
@@ -2986,7 +3111,7 @@
             "h": 10,
             "w": 9,
             "x": 0,
-            "y": 1058
+            "y": 14
           },
           "id": 51,
           "options": {
@@ -3047,8 +3172,8 @@
       },
       {
         "current": {
-          "text": "master",
-          "value": "master"
+          "text": "oracle-19c-vagrant",
+          "value": "oracle-19c-vagrant"
         },
         "datasource": {
           "type": "prometheus",
@@ -3082,12 +3207,12 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "oracleDB_overview",
   "uid": "add2jz5",
-  "version": 41
+  "version": 6
 }

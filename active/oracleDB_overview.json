@@ -18,6 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 90,
   "links": [],
   "panels": [
     {
@@ -222,6 +223,9 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus"
+      },
       "description": "- **Definición**: Cantidad de solicitudes de lectura de bloques de datos realizadas directamente al almacenamiento físico por segundo.\n- **Interpretación**: Indica la dependencia del disco. Un valor alto sugiere que el Working Set de datos no cabe en el Buffer Cache y está forzando lecturas físicas.\n- **Uso**: Correlación con el Buffer Cache Hit Ratio para optimizar el tamaño de la SGA.",
       "fieldConfig": {
         "defaults": {
@@ -310,8 +314,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_activity_physical_reads_total{server=\"$server\"}[$__rate_interval])",
+          "expr": "rate(oracledb_disk_stats_value{server=\"$server\", name=\"physical reads\"}[$__rate_interval])",
           "legendFormat": "Reads/sec",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -319,6 +324,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Promedio de tiempo que los procesos SQL pasan esperando por recursos (I/O, Concurrencia, Commits).\n- **Interpretación**: Es el indicador de fricción del sistema. Un valor alto indica que las consultas están 'encoladas' o esperando al hardware.\n- **Uso**: Identificar cuellos de botella en la ejecución de sentencias SQL.",
       "fieldConfig": {
         "defaults": {
@@ -407,8 +416,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_wait_time_user_io{server=\"$server\"}[$__rate_interval]) + rate(oracledb_wait_time_system_io{server=\"$server\"}[$__rate_interval]) + rate(oracledb_wait_time_concurrency{server=\"$server\"}[$__rate_interval]) + rate(oracledb_wait_time_commit{server=\"$server\"}[$__rate_interval])",
+          "expr": "rate(oracledb_transaction_stats_value{name=\"DB time\", server=\"$server\"}[$__rate_interval]) / 100",
           "legendFormat": "Response Time Lag",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -416,6 +426,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Porcentaje de tiempo que los procesos de la base de datos pasan en eventos de espera (I/O, Concurrencia, etc.).\n- **Interpretación**: Indica la eficiencia del procesamiento. Un ratio alto sugiere que la base de datos está limitada por recursos externos o bloqueos.\n- **Uso**: Monitoreo de la salud transaccional y detección de contención de recursos.",
       "fieldConfig": {
         "defaults": {
@@ -457,7 +471,7 @@
               "mode": "off"
             }
           },
-          "decimals": 1,
+          "decimals": 4,
           "mappings": [],
           "max": 100,
           "min": 0,
@@ -506,8 +520,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "clamp_max(sum(rate(oracledb_wait_time_user_io{server=\"$server\"}[$__rate_interval]) + rate(oracledb_wait_time_concurrency{server=\"$server\"}[$__rate_interval]) + rate(oracledb_wait_time_commit{server=\"$server\"}[$__rate_interval])) * 100, 100)",
+          "expr": "clamp_max(\n  (\n    sum by (server) (rate(oracledb_wait_time_user_io{server=\"$server\"}[$__rate_interval])) + \n    sum by (server) (rate(oracledb_wait_time_concurrency{server=\"$server\"}[$__rate_interval])) + \n    sum by (server) (rate(oracledb_wait_time_commit{server=\"$server\"}[$__rate_interval]))\n  ) \n  / \n  sum by (server) (rate(oracledb_transaction_stats_value{name=\"DB time\", server=\"$server\"}[$__rate_interval])) \n  * 100\n, 100)",
           "legendFormat": "Wait Ratio",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -703,6 +718,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Frecuencia de escritura de bloques de datos desde el Buffer Cache hacia los archivos de datos físicos en el almacenamiento.\n- **Interpretación**: Indica la intensidad de la actividad de persistencia. Picos altos suelen coincidir con procesos de Checkpoint masivos o cargas de datos pesadas.\n- **Uso**: Monitoreo del rendimiento de escritura y detección de cuellos de botella en el subsistema de I/O.",
       "fieldConfig": {
         "defaults": {
@@ -791,8 +810,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_activity_physical_writes_total{server=\"$server\"}[$__rate_interval])",
+          "expr": "rate(oracledb_disk_stats_value{server=\"$server\", name=\"physical writes\"}[$__rate_interval])",
           "legendFormat": "Writes/sec",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -800,6 +820,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Porcentaje de operaciones de ordenamiento realizadas en memoria frente al total (Memoria + Disco).\n- **Interpretación**: Un valor cercano al 100% indica que la configuración de la PGA es óptima. Caídas constantes indican que la base de datos está ordenando datos en el Tablespace TEMP.\n- **Uso**: Optimización de parámetros de memoria de sesión.",
       "fieldConfig": {
         "defaults": {
@@ -890,8 +914,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(oracledb_activity_sorts_memory / (oracledb_activity_sorts_memory + oracledb_activity_sorts_disk)) * 100",
+          "expr": "(\n  oracledb_compute_stats_value{server=\"$server\", name=\"sorts (memory)\"}\n  / \n  on(server, instance, job) \n  (\n    sum by (server, instance, job) (oracledb_compute_stats_value{server=\"$server\", name=~\"sorts.*\"})\n  )\n) * 100",
           "legendFormat": "Memory Sort Efficiency",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -899,6 +924,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Porcentaje de memoria disponible en la Shared Pool dentro de la SGA.\n- **Interpretación**: La Shared Pool almacena planes de ejecución SQL y diccionarios de datos. Si este valor se acerca a 0, la base de datos tendrá que eliminar objetos antiguos de memoria, provocando 'Hard Parses' y aumentando el uso de CPU.\n- **Uso**: Monitoreo de la fragmentación y suficiencia de la memoria compartida.",
       "fieldConfig": {
         "defaults": {
@@ -989,8 +1018,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(oracledb_sga_shared_pool_free_bytes{server=\"$server\"} / oracledb_db_system_value{name=\"shared_pool_size\", server=\"$server\"}) * 100",
+          "expr": "(\n  oracledb_sga_stats_free_bytes{server=\"$server\", pool=\"shared pool\"} \n  / on(server, instance) group_left \n  oracledb_db_system_value{server=\"$server\", name=\"sga_max_size\"}\n) * 100",
           "legendFormat": "Free Shared Pool",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1059,6 +1089,10 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Porcentaje de sesiones actuales respecto al límite máximo (parámetro SESSIONS) de Oracle.\n- **Interpretación**: Monitorea qué tan cerca está la instancia de rechazar nuevas conexiones. Superar el 90% es crítico.\n- **Valores esperados**: Idealmente por debajo del 80% para permitir ráfagas de conexión.",
       "fieldConfig": {
         "defaults": {
@@ -1158,6 +1192,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Cantidad de operaciones de ordenamiento que no pudieron completarse en memoria (PGA) y requirieron escritura en el tablespace temporal.\n- **Interpretación**: Un valor mayor a 0 indica presión sobre la memoria de sesión. Impacta directamente en el tiempo de respuesta de las consultas complejas.\n- **Uso**: Correlación con el rendimiento del Tablespace TEMP.",
       "fieldConfig": {
         "defaults": {
@@ -1245,8 +1283,10 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(oracledb_activity_sorts_disk{server=\"$server\"}[$__rate_interval])",
+          "editorMode": "code",
+          "expr": "rate(oracledb_compute_stats_value{server=\"$server\", name=\"sorts (disk)\"}[$__rate_interval])",
           "legendFormat": "Disk Sorts/sec",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1256,7 +1296,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "- **Definición**: Cantidad de transacciones que fueron revertidas por los usuarios o por errores de aplicación.\n- **Interpretación**: Un número alto de rollbacks indica fallos en la lógica de negocio, excepciones no controladas o cancelaciones manuales de operaciones.\n- **Uso**: Monitoreo de la estabilidad de las aplicaciones y detección de errores transaccionales.",
       "fieldConfig": {
@@ -1274,8 +1314,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "bars",
-            "fillOpacity": 80,
-            "gradientMode": "none",
+            "fillOpacity": 100,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": true,
               "tooltip": false,
@@ -1346,8 +1386,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_activity_user_rollbacks{server=\"$server\"}[$__rate_interval])",
+          "expr": "rate(oracledb_transaction_stats_value{server=\"$server\", name=\"user rollbacks\"}[$__rate_interval])",
           "legendFormat": "Rollbacks/sec",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1355,6 +1396,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Cantidad de veces que una sesión superó el tiempo máximo de espera por un bloqueo (enqueue) sin obtener el recurso.\n- **Interpretación**: Indica problemas graves de concurrencia o contención a nivel de aplicación/objetos. Los usuarios experimentarán errores de 'Resource Busy' o esperas prolongadas.\n- **Uso**: Diagnóstico de bloqueos excesivos y optimización de transacciones concurrentes.",
       "fieldConfig": {
         "defaults": {
@@ -1443,8 +1488,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_activity_enqueue_timeouts_total{server=\"$server\"}[$__rate_interval])",
+          "expr": "rate(oracledb_traffic_stats_value{server=\"$server\", name=\"enqueue timeouts\"}[$__rate_interval])",
           "legendFormat": "Timeouts/sec",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1513,6 +1559,10 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Cantidad de nuevos inicios de sesión (conexiones) establecidos en la base de datos por segundo.\n- **Interpretación**: Un incremento inusual puede indicar una tormenta de conexiones o intentos masivos de acceso. Útil para identificar problemas en el pool de conexiones de las aplicaciones.\n- **Uso**: Monitoreo de la frecuencia de establecimiento de sesiones.",
       "fieldConfig": {
         "defaults": {
@@ -1601,8 +1651,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_activity_logons_count_total{server=\"$server\"}[$__rate_interval])",
+          "expr": "rate(oracledb_traffic_stats_value{server=\"$server\", name=\"logons cumulative\"}[$__rate_interval])",
           "legendFormat": "Logons/sec",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1610,6 +1661,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Frecuencia con la que la base de datos lee tablas completas en lugar de usar índices.\n- **Interpretación**: Valores altos pueden indicar falta de índices óptimos o estadísticas de tablas desactualizadas. Genera una carga alta de I/O.\n- **Uso**: Identificación de consultas ineficientes que degradan el rendimiento global.",
       "fieldConfig": {
         "defaults": {
@@ -1697,8 +1752,10 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(oracledb_activity_tablescans_total{server=\"$server\"}[$__rate_interval])",
+          "editorMode": "code",
+          "expr": "rate(oracledb_compute_stats_value{server=\"$server\", name=\"table scans (long tables)\"}[$__rate_interval])",
           "legendFormat": "FTS/sec",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1731,6 +1788,10 @@
       "type": "text"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Porcentaje de espacio utilizado en cada tablespace respecto a su tamaño máximo permitido.\n- **Interpretación**: Permite monitorear el crecimiento de los datos. Valores cercanos al 90-95% indican la necesidad de expandir los datafiles o revisar políticas de purga.\n- **Uso**: Planificación de capacidad de almacenamiento.",
       "fieldConfig": {
         "defaults": {
@@ -1829,6 +1890,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -1905,7 +1970,13 @@
       "id": 167,
       "options": {
         "cellHeight": "sm",
-        "showHeader": false
+        "showHeader": false,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Size"
+          }
+        ]
       },
       "pluginVersion": "12.3.2",
       "targets": [
@@ -1914,6 +1985,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
+          "editorMode": "code",
           "expr": "oracledb_tablespace_max_bytes{server=\"$server\"}",
           "format": "table",
           "instant": true,
@@ -1944,6 +2016,17 @@
               "Value": "Size",
               "tablespace": "Tablespace Name"
             }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": [
+              {
+                "desc": true,
+                "name": "Size"
+              }
+            ]
           }
         }
       ],
@@ -2115,6 +2198,215 @@
         "x": 0,
         "y": 27
       },
+      "id": 59,
+      "panels": [
+        {
+          "description": "Capacidad máxima del área global del sistema:\n- SGA Max: Tamaño máximo reservado en memoria RAM para las estructuras compartidas de la instancia (Buffer Cache, Shared Pool, etc).\n- Interpretación: Representa la memoria estática principal asignada al motor. Este valor determina el límite superior de crecimiento de las cachés internas de Oracle.\n- Valores esperados: Consistencia con la configuración de memoria compartida definida para la instancia (ej. 2.3 GB).",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 0,
+            "y": 28
+          },
+          "id": 62,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"sga_max_size\"}",
+              "format": "time_series",
+              "instant": true,
+              "legendFormat": "SGA Max",
+              "refId": "A"
+            }
+          ],
+          "title": "SGA Max Size",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "description": "Límite máximo de memoria para procesos de usuario:\n- PGA Limit: Capacidad máxima de memoria RAM que la instancia puede asignar al conjunto de procesos de servidor.\n- Interpretación: Define el techo de memoria para operaciones de ordenamiento y hash joins. Alcanzar este límite puede forzar la terminación de sesiones para proteger la estabilidad del host.\n- Valores esperados: Consistencia con la asignación de memoria física dedicada a la instancia (ej. 4 GB).",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 6,
+            "y": 28
+          },
+          "id": 61,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"pga_aggregate_limit\"}",
+              "format": "time_series",
+              "instant": true,
+              "legendFormat": "PGA Limit",
+              "refId": "A"
+            }
+          ],
+          "title": "PGA Aggregate Limit",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "description": "Inventario de recursos de cómputo de la instancia:\n- CPU Count: Cantidad total de núcleos lógicos detectados por el motor Oracle en el host.\n- Interpretación: Permite validar que la instancia dispone de la capacidad de procesamiento esperada según el despliegue técnico.\n- Valores esperados: Consistencia con el hardware o vCPU asignadas al servidor.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 5,
+            "x": 12,
+            "y": 28
+          },
+          "id": 60,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"cpu_count\"}",
+              "format": "time_series",
+              "instant": true,
+              "legendFormat": "CPUs",
+              "refId": "A"
+            }
+          ],
+          "title": "Detected CPU Count",
+          "transparent": true,
+          "type": "stat"
+        }
+      ],
+      "title": "System",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
       "id": 68,
       "panels": [
         {
@@ -2202,7 +2494,7 @@
             "h": 8,
             "w": 15,
             "x": 0,
-            "y": 8
+            "y": 29
           },
           "id": 72,
           "options": {
@@ -2261,215 +2553,6 @@
         }
       ],
       "title": "SQL",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 28
-      },
-      "id": 59,
-      "panels": [
-        {
-          "description": "Capacidad máxima del área global del sistema:\n- SGA Max: Tamaño máximo reservado en memoria RAM para las estructuras compartidas de la instancia (Buffer Cache, Shared Pool, etc).\n- Interpretación: Representa la memoria estática principal asignada al motor. Este valor determina el límite superior de crecimiento de las cachés internas de Oracle.\n- Valores esperados: Consistencia con la configuración de memoria compartida definida para la instancia (ej. 2.3 GB).",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "blue",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "decbytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 6,
-            "x": 0,
-            "y": 7
-          },
-          "id": 62,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"sga_max_size\"}",
-              "format": "time_series",
-              "instant": true,
-              "legendFormat": "SGA Max",
-              "refId": "A"
-            }
-          ],
-          "title": "SGA Max Size",
-          "transparent": true,
-          "type": "stat"
-        },
-        {
-          "description": "Límite máximo de memoria para procesos de usuario:\n- PGA Limit: Capacidad máxima de memoria RAM que la instancia puede asignar al conjunto de procesos de servidor.\n- Interpretación: Define el techo de memoria para operaciones de ordenamiento y hash joins. Alcanzar este límite puede forzar la terminación de sesiones para proteger la estabilidad del host.\n- Valores esperados: Consistencia con la asignación de memoria física dedicada a la instancia (ej. 4 GB).",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "blue",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "decbytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 6,
-            "x": 0,
-            "y": 19
-          },
-          "id": 61,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"pga_aggregate_limit\"}",
-              "format": "time_series",
-              "instant": true,
-              "legendFormat": "PGA Limit",
-              "refId": "A"
-            }
-          ],
-          "title": "PGA Aggregate Limit",
-          "transparent": true,
-          "type": "stat"
-        },
-        {
-          "description": "Inventario de recursos de cómputo de la instancia:\n- CPU Count: Cantidad total de núcleos lógicos detectados por el motor Oracle en el host.\n- Interpretación: Permite validar que la instancia dispone de la capacidad de procesamiento esperada según el despliegue técnico.\n- Valores esperados: Consistencia con el hardware o vCPU asignadas al servidor.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "blue",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 5,
-            "x": 0,
-            "y": 23
-          },
-          "id": 60,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"cpu_count\"}",
-              "format": "time_series",
-              "instant": true,
-              "legendFormat": "CPUs",
-              "refId": "A"
-            }
-          ],
-          "title": "Detected CPU Count",
-          "transparent": true,
-          "type": "stat"
-        }
-      ],
-      "title": "System",
       "type": "row"
     },
     {
@@ -3510,7 +3593,7 @@
             "h": 7,
             "w": 9,
             "x": 0,
-            "y": 26
+            "y": 57
           },
           "id": 70,
           "options": {
@@ -3682,7 +3765,7 @@
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 34
+            "y": 418
           },
           "id": 71,
           "options": {
@@ -3830,7 +3913,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 20
+            "y": 59
           },
           "id": 41,
           "options": {
@@ -3963,7 +4046,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 20
+            "y": 59
           },
           "id": 45,
           "options": {
@@ -4096,7 +4179,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 110
+            "y": 69
           },
           "id": 43,
           "options": {
@@ -4229,7 +4312,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 110
+            "y": 69
           },
           "id": 46,
           "options": {
@@ -4365,7 +4448,7 @@
             "h": 7,
             "w": 10,
             "x": 0,
-            "y": 588
+            "y": 972
           },
           "id": 80,
           "options": {
@@ -4530,7 +4613,7 @@
             "h": 10,
             "w": 8,
             "x": 0,
-            "y": 596
+            "y": 290
           },
           "id": 49,
           "options": {
@@ -4644,7 +4727,7 @@
             "h": 10,
             "w": 9,
             "x": 8,
-            "y": 596
+            "y": 290
           },
           "id": 52,
           "options": {
@@ -4765,7 +4848,7 @@
             "h": 10,
             "w": 9,
             "x": 0,
-            "y": 607
+            "y": 991
           },
           "id": 51,
           "options": {
@@ -5096,7 +5179,7 @@
             "h": 11,
             "w": 12,
             "x": 0,
-            "y": 115
+            "y": 499
           },
           "id": 56,
           "options": {
@@ -5173,7 +5256,7 @@
             "h": 4,
             "w": 5,
             "x": 12,
-            "y": 115
+            "y": 499
           },
           "id": 28,
           "options": {
@@ -5216,6 +5299,7 @@
     }
   ],
   "preload": false,
+  "refresh": "",
   "schemaVersion": 42,
   "tags": [],
   "templating": {
@@ -5275,5 +5359,5 @@
   "timezone": "",
   "title": "Oracle Database",
   "uid": "add2jz5",
-  "version": 52
+  "version": 64
 }

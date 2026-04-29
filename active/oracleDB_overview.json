@@ -17,7 +17,7 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
+  "graphTooltip": 1,
   "id": 90,
   "links": [],
   "panels": [
@@ -65,7 +65,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Session Activity\n </span>\n <div style=\"position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #E9ECEF;\"></div>\n</div>",
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #E9ECEF;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Session Activity\n </span>\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -91,7 +91,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Disk Activity\n </span>\n <div style=\"position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #E9ECEF;\"></div>\n</div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Disk Activity\n </span></div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -117,7 +117,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Database and Buffer Activity\n </span>\n <div style=\"position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #E9ECEF;\"></div>\n</div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Database and Buffer Activity\n </span></div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -126,6 +126,10 @@
       "type": "text"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Número total de sesiones en estado activo dentro de la instancia de base de datos.\n- **Interpretación**: Refleja la carga de trabajo concurrente en tiempo real. Picos inusuales pueden indicar bloqueos o consultas ineficientes.\n- **Valores esperados**: Variable según la carga, pero debe mantenerse estable bajo condiciones normales de operación.",
       "fieldConfig": {
         "defaults": {
@@ -314,7 +318,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_disk_stats_value{server=\"$server\", name=\"physical reads\"}[$__rate_interval])",
+          "expr": "rate(oracledb_physical_disk_value{server=\"$server\", name=\"physical reads\"}[$__rate_interval])",
           "legendFormat": "Reads/sec",
           "range": true,
           "refId": "A"
@@ -612,7 +616,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Cache Hit Ratios\n </span>\n <div style=\"position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #E9ECEF;\"></div>\n</div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Cache Hit Ratios\n </span></div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -810,7 +814,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_disk_stats_value{server=\"$server\", name=\"physical writes\"}[$__rate_interval])",
+          "expr": "rate(oracledb_physical_disk_value{server=\"$server\", name=\"physical writes\"}[$__rate_interval])",
           "legendFormat": "Writes/sec",
           "range": true,
           "refId": "A"
@@ -1404,7 +1408,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "#4DA2D6",
+            "fixedColor": "#FF0000",
             "mode": "fixed"
           },
           "custom": {
@@ -5352,12 +5356,12 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Oracle Database",
   "uid": "add2jz5",
-  "version": 64
+  "version": 70
 }

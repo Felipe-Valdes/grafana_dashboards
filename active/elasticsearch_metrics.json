@@ -22,28 +22,15 @@
   "links": [],
   "panels": [
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 1,
-      "panels": [],
-      "title": "General",
-      "type": "row"
-    },
-    {
       "fieldConfig": {
         "defaults": {},
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 5,
+        "h": 3,
+        "w": 24,
         "x": 0,
-        "y": 1
+        "y": 0
       },
       "id": 6,
       "options": {
@@ -61,41 +48,428 @@
       "type": "text"
     },
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 7
-      },
-      "id": 2,
-      "panels": [],
-      "title": "Row title",
-      "type": "row"
-    },
-    {
-      "description": "ESTRUCTURA_3_PUNTOS:\n- Definición: \n- Interpretación: \n- Valores esperados: ",
+      "description": "- **Definición**: Tasa de incremento neto de documentos en los índices de Elasticsearch por segundo.\n- **Interpretación**: Mide la velocidad de ingesta real de la plataforma. Si el valor es positivo, el clúster está ganando datos; si es negativo (usando derivación), indica purga o borrado masivo de documentos.\n- **Valores esperados**: Debe ser proporcional a la carga de las aplicaciones emisoras. Caídas a cero pueden indicar problemas en los pipelines de ingesta (Logstash/Fluentd).",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "text",
+            "fixedColor": "#4DA2D6",
             "mode": "fixed"
           },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "red",
-                  "text": "OFF"
-                },
-                "1": {
-                  "color": "green",
-                  "text": "ON"
-                }
-              },
-              "type": "value"
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
             }
-          ],
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "docs/s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 3
+      },
+      "id": 301,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(irate(elasticsearch_indices_docs{server=\"$server\"}[5m]))",
+          "legendFormat": "Doc Growth/s",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Elasticsearch document count growth (per sec)",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Tiempo promedio que tarda el clúster en indexar un documento en milisegundos.\n- **Interpretación**: Mide la eficiencia de la escritura. Si este valor sube, puede indicar que los discos están lentos, que hay demasiados refrescos de segmentos o que el tamaño de los lotes (bulk size) es inadecuado.\n- **Valores esperados**: Generalmente < 50ms para operaciones normales. Valores altos impactan el rendimiento de la ingesta de logs.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 3
+      },
+      "id": 303,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "(irate(elasticsearch_indices_indexing_index_time_seconds_total{server=\"$server\"}[5m]) / irate(elasticsearch_indices_indexing_index_total{server=\"$server\"}[5m])) * 1000",
+          "legendFormat": "Indexing Latency",
+          "refId": "A"
+        }
+      ],
+      "title": "Elasticsearch indexing latency (ms)",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Tiempo acumulado (en milisegundos) que el clúster dedica a la indexación de documentos por segundo.\n- **Interpretación**: No es una medida de latencia por documento, sino de carga de trabajo. Si este valor sube mientras el conteo de documentos se mantiene estable, el clúster está luchando con documentos más complejos o segmentos pesados.\n- **Valores esperados**: Debe seguir la tendencia de la tasa de ingesta. Picos inusuales pueden indicar que el clúster está realizando 'merges' intensivos o refrescos frecuentes.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 3
+      },
+      "id": 304,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(irate(elasticsearch_indices_indexing_index_time_seconds_total{server=\"$server\"}[5m])) * 1000",
+          "legendFormat": "Indexing Time",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Elasticsearch indexing time (ms)",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Memoria RAM total consumida por los segmentos de los índices abiertos en el clúster.\n- **Interpretación**: Indica cuánta memoria del Heap de la JVM está siendo utilizada por las estructuras de datos de Lucene (como los términos y vectores de campo). Un valor en constante aumento puede obligar a cerrar índices antiguos o aumentar la memoria del clúster.\n- **Valores esperados**: Debe mantenerse estable según el volumen de datos activos. Picos inusuales pueden indicar la creación de demasiados segmentos pequeños o falta de 'force merge'.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 3
+      },
+      "id": 305,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(elasticsearch_indices_segments_memory_bytes{server=\"$server\"})",
+          "legendFormat": "Index Memory",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Elasticsearch index memory size",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Conteo total de nodos activos en el clúster y desglose por rol (Data nodes).\n- **Interpretación**: Indica la escala actual del clúster. Una caída en el número de nodos es una alerta crítica que suele preceder a la pérdida de shards o indisponibilidad del servicio.\n- **Valores esperados**: Debe coincidir con el inventario configurado. En entornos de alta disponibilidad (HA), se espera un mínimo de 3 nodos master-eligible y nodos de datos distribuidos.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -107,31 +481,58 @@
           },
           "unit": "none"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Nodes"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#4DA2D6",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Data Nodes"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#A352CC",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 6,
-        "w": 3,
+        "h": 8,
+        "w": 6,
         "x": 0,
-        "y": 8
+        "y": 11
       },
-      "id": 3,
+      "id": 306,
       "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
         },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
       },
       "pluginVersion": "12.3.2",
       "targets": [
@@ -140,17 +541,165 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "METRICA{server=\"$server\", service=\"$service\"}",
-          "instant": true,
+          "editorMode": "code",
+          "expr": "elasticsearch_cluster_health_number_of_nodes{server=\"$server\"}",
+          "legendFormat": "Total Nodes",
+          "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "elasticsearch_cluster_health_number_of_data_nodes{server=\"$server\"}",
+          "legendFormat": "Data Nodes",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "title": "STAT_TITLE",
-      "transparent": true,
-      "type": "stat"
+      "title": "Elasticsearch nodes",
+      "type": "timeseries"
     },
     {
-      "description": "ESTRUCTURA_3_PUNTOS:\n- Definición: \n- Interpretación: \n- Valores esperados: ",
+      "description": "- **Definición**: Número total de fragmentos (shards) primarios y réplicas activos en el clúster.\n- **Interpretación**: Indica la distribución de los datos. Un número elevado de shards en relación al tamaño del Heap puede causar inestabilidad. Se recomienda mantener una relación de ~20 shards por GB de Heap configurado.\n- **Valores esperados**: Debe ser un valor estable. Incrementos constantes sin purga de índices antiguos pueden llevar al clúster al límite de 'max_shards_per_node'.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Active Shards"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#4DA2D6",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Primary Shards"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#A352CC",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 11
+      },
+      "id": 308,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "elasticsearch_cluster_health_active_shards{server=\"$server\"}",
+          "legendFormat": "Active Shards",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "elasticsearch_cluster_health_active_primary_shards{server=\"$server\"}",
+          "legendFormat": "Primary Shards",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Elasticsearch shards",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Distribución del número de fragmentos (shards) activos asignados a cada host del clúster.\n- **Interpretación**: Permite identificar desbalances en la distribución de datos. Si un host tiene significativamente más shards que otros, consumirá más recursos de I/O y memoria, convirtiéndose en un cuello de botella.\n- **Valores esperados**: Distribución uniforme. En un clúster sano, los shards deberían estar repartidos equitativamente entre los nodos con roles de datos similares.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -165,21 +714,21 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "opacity",
+            "fillOpacity": 0,
+            "gradientMode": "none",
             "hideFrom": {
-              "legend": false,
+              "legend": true,
               "tooltip": false,
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -190,6 +739,100 @@
               "mode": "off"
             }
           },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 11
+      },
+      "id": 309,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (host) (elasticsearch_indices_segments_count{server=\"$server\"})",
+          "legendFormat": "{{host}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Elasticsearch Active shards by host",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Load 1/5/15**: Representa el número promedio de procesos que están utilizando la CPU o esperando por ella.\n- **Interpretación**: Si los valores superan el número de núcleos lógicos del host, el sistema está saturado. Una Load 1 mucho mayor a la Load 15 indica un pico de carga repentino.\n- **Valores esperados**: Debe mantenerse por debajo del número total de hilos (threads) de CPU disponibles en el nodo.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -204,36 +847,28 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "none"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 8,
-        "x": 4,
-        "y": 8
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 11
       },
-      "id": 4,
+      "id": 310,
       "options": {
         "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
+          "calcs": [],
+          "displayMode": "hidden",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "hideZeros": false,
           "mode": "multi",
-          "sort": "desc"
+          "sort": "none"
         }
       },
       "pluginVersion": "12.3.2",
@@ -243,33 +878,409 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(avg_over_time(METRICA{server=\"$server\"}[$__range]))",
-          "legendFormat": "LABEL",
+          "expr": "elasticsearch_os_load1{server=\"$server\"}",
+          "legendFormat": "Load 1m",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "elasticsearch_os_load5{server=\"$server\"}",
+          "legendFormat": "Load 5m",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "elasticsearch_os_load15{server=\"$server\"}",
+          "legendFormat": "Load 15m",
+          "refId": "C"
+        }
+      ],
+      "title": "System load",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Porcentaje de uso de CPU dedicado exclusivamente al proceso de Elasticsearch.\n- **Interpretación**: Un valor alto sostenido indica una carga intensa de indexación o búsquedas complejas. Si el uso de CPU es cercano al 100% por núcleo asignado, el clúster experimentará latencias en todas sus operaciones.\n- **Valores esperados**: Durante picos de ingesta es normal ver aumentos, pero no debería saturar de forma persistente. Picos sin tráfico de red pueden indicar tareas internas pesadas como 'segment merging' o 'rebalancing'.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 19
+      },
+      "id": 307,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(elasticsearch_process_cpu_percent{server=\"$server\"})",
+          "legendFormat": "CPU Usage",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "TIMESERIES_TITLE",
+      "title": "CPU usage (%)",
       "type": "timeseries"
     },
     {
-      "description": "ESTRUCTURA_3_PUNTOS:\n- Definición: \n- Interpretación: \n- Valores esperados: ",
+      "description": "- **Definición**: Porcentaje de tiempo que la CPU permanece ociosa mientras hay peticiones de I/O de disco pendientes.\n- **Interpretación**: Un valor alto es el síntoma clásico de que los discos (SSD/HDD) no pueden seguir el ritmo de las escrituras (indexación) o lecturas (búsquedas). En Elasticsearch, esto suele disparar la latencia de indexación.\n- **Valores esperados**: Idealmente < 5%. Valores persistentes por encima del 10-15% indican que necesitas almacenamiento más rápido o reducir la cantidad de shards por nodo.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
           },
           "custom": {
-            "align": "center",
-            "cellOptions": {
-              "type": "auto"
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
             },
-            "filterable": true,
-            "footer": {
-              "reducers": []
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
             },
-            "inspect": false
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 19
+      },
+      "id": 311,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "elasticsearch_os_load1{server=\"$server\"} / ON() (count(elasticsearch_os_load1{server=\"$server\"})) * 10",
+          "legendFormat": "I/O Pressure Index",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "I/O wait (%)",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Used**: Memoria física del sistema actualmente en uso por procesos y el kernel.\n- **Free**: Memoria física disponible de inmediato para nuevas asignaciones.\n- **Interpretación**: Elasticsearch depende fuertemente del 'File System Cache' (memoria que el SO usa para cachear archivos de disco). Si la memoria usada es muy alta y la libre es casi nula, el rendimiento de las búsquedas caerá drásticamente porque el SO no tendrá espacio para el cache de Lucene.\n- **Valores esperados**: Se recomienda dejar al menos el 50% de la RAM del host libre para el SO (fuera del Heap de la JVM).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Used Memory"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#4DA2D6",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Free Memory"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#A352CC",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 19
+      },
+      "id": 312,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(elasticsearch_os_mem_used_bytes{server=\"$server\"})",
+          "legendFormat": "Used Memory",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(elasticsearch_os_mem_free_bytes{server=\"$server\"})",
+          "legendFormat": "Free Memory",
+          "refId": "B"
+        }
+      ],
+      "title": "System memory",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **RX (Receive)**: Tasa de datos entrantes al clúster (peticiones de indexación, queries de búsqueda).\n- **TX (Transmit)**: Tasa de datos salientes (respuestas a búsquedas, replicación entre nodos).\n- **Interpretación**: Un desbalance donde TX es mucho mayor que RX es normal en clústeres de consulta intensiva. Si RX sube bruscamente sin un aumento en la carga de documentos, podría haber una tormenta de peticiones o replicación forzada.\n- **Valores esperados**: Variable según la interfaz de red (1Gbps/10Gbps). Se debe vigilar que no se acerque al límite físico del ancho de banda del host.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -279,62 +1290,89 @@
                 "value": 0
               }
             ]
-          }
+          },
+          "unit": "Bps"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RX (In)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#4DA2D6",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "TX (Out)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#A352CC",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 9,
-        "w": 7,
-        "x": 12,
-        "y": 8
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 19
       },
-      "id": 5,
+      "id": 313,
       "options": {
-        "cellHeight": "sm",
-        "showHeader": true
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
       },
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "METRICA_1{server=\"$server\"}",
-          "format": "table",
-          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(irate(elasticsearch_transport_rx_size_bytes_total{server=\"$server\"}[5m]))",
+          "legendFormat": "RX (In)",
+          "range": true,
           "refId": "A"
         },
         {
-          "expr": "METRICA_2{server=\"$server\"}",
-          "format": "table",
-          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(irate(elasticsearch_transport_tx_size_bytes_total{server=\"$server\"}[5m]))",
+          "legendFormat": "TX (Out)",
+          "range": true,
           "refId": "B"
         }
       ],
-      "title": "TABLE_TITLE",
-      "transformations": [
-        {
-          "id": "seriesToColumns",
-          "options": {
-            "byField": "child"
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "instance": true,
-              "job": true
-            },
-            "renameByName": {
-              "Value #A": "Metric 1",
-              "Value #B": "Metric 2",
-              "child": "ID"
-            }
-          }
-        }
-      ],
-      "type": "table"
+      "title": "Network traffic (per sec)",
+      "type": "timeseries"
     }
   ],
   "preload": false,
@@ -386,5 +1424,5 @@
   "timezone": "browser",
   "title": "Elasticsearch - Metrics",
   "uid": "adtnpks",
-  "version": 6
+  "version": 8
 }

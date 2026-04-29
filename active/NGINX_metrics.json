@@ -17,7 +17,7 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
+  "graphTooltip": 1,
   "id": 97,
   "links": [],
   "panels": [
@@ -41,7 +41,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 5,
+        "w": 4,
         "x": 0,
         "y": 1
       },
@@ -61,171 +61,12 @@
       "type": "text"
     },
     {
-      "description": "ESTRUCTURA_3_PUNTOS:\n- Definición: \n- Interpretación: \n- Valores esperados: ",
+      "description": "- **Definición**: Tasa de conexiones aceptadas por el socket pero que no fueron manejadas por un worker process por segundo.\n- **Interpretación**: Un valor mayor a 0 indica saturación. Generalmente ocurre cuando se alcanza el límite de `worker_connections` en Nginx o el límite de descriptores de archivos del SO.\n- **Valores esperados**: Debe ser estrictamente 0. Cualquier incremento indica pérdida de tráfico y latencia para los usuarios.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "center",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 7,
-        "x": 11,
-        "y": 1
-      },
-      "id": 5,
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "METRICA_1{server=\"$server\"}",
-          "format": "table",
-          "instant": true,
-          "refId": "A"
-        },
-        {
-          "expr": "METRICA_2{server=\"$server\"}",
-          "format": "table",
-          "instant": true,
-          "refId": "B"
-        }
-      ],
-      "title": "TABLE_TITLE",
-      "transformations": [
-        {
-          "id": "seriesToColumns",
-          "options": {
-            "byField": "child"
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "instance": true,
-              "job": true
-            },
-            "renameByName": {
-              "Value #A": "Metric 1",
-              "Value #B": "Metric 2",
-              "child": "ID"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "description": "ESTRUCTURA_3_PUNTOS:\n- Definición: \n- Interpretación: \n- Valores esperados: ",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "text",
+            "fixedColor": "#F2495C",
             "mode": "fixed"
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "red",
-                  "text": "OFF"
-                },
-                "1": {
-                  "color": "green",
-                  "text": "ON"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 0,
-        "y": 7
-      },
-      "id": 3,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "METRICA{server=\"$server\", service=\"$service\"}",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "STAT_TITLE",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "description": "ESTRUCTURA_3_PUNTOS:\n- Definición: \n- Interpretación: \n- Valores esperados: ",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -237,15 +78,211 @@
             "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
-            "gradientMode": "opacity",
+            "gradientMode": "area",
             "hideFrom": {
-              "legend": false,
+              "legend": true,
               "tooltip": false,
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0.0001
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 10,
+        "x": 4,
+        "y": 1
+      },
+      "id": 201,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "irate(nginx_connections_accepted{server=\"$server\"}[5m]) - irate(nginx_connections_handled{server=\"$server\"}[5m])",
+          "legendFormat": "Dropped Conns/sec",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Dropped connections per second",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Tasa de respuestas con código de estado 5xx (Server Errors) enviadas por Nginx por segundo.\n- **Interpretación**: Indica fallos críticos en el backend o en el propio Nginx. Comúnmente 502 (Bad Gateway), 503 (Service Unavailable) o 504 (Gateway Timeout).\n- **Valores esperados**: Debe ser estrictamente 0. Cualquier valor por encima de cero indica que el servidor no puede procesar las peticiones de los clientes.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0.1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 10,
+        "x": 14,
+        "y": 1
+      },
+      "id": 202,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(irate(nginx_http_requests_total{status=~\"5..\", server=\"$server\"}[5m])) OR on() vector(0)",
+          "legendFormat": "5xx/sec",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "5xx per second",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Tasa de peticiones HTTP procesadas por el servidor por segundo.\n- **Interpretación**: Mide el volumen de tráfico entrante. Un aumento súbito sin un incremento proporcional en las conexiones activas indica peticiones ligeras; si las conexiones suben más rápido, las peticiones están tardando más en procesarse.\n- **Valores esperados**: Variable según la aplicación. Se debe establecer una línea base para detectar ataques DoS o picos de tráfico inusuales.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#5794F2",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
@@ -261,6 +298,7 @@
               "mode": "off"
             }
           },
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -275,36 +313,28 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "reqps"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 13,
         "w": 8,
-        "x": 3,
-        "y": 7
+        "x": 0,
+        "y": 13
       },
-      "id": 4,
+      "id": 204,
       "options": {
         "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
+          "calcs": [],
+          "displayMode": "hidden",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "12.3.2",
@@ -314,27 +344,267 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(avg_over_time(METRICA{server=\"$server\"}[$__range]))",
-          "legendFormat": "LABEL",
-          "range": true,
+          "expr": "irate(nginx_http_requests_total{server=\"$server\"}[5m])",
+          "legendFormat": "Requests/sec",
           "refId": "A"
         }
       ],
-      "title": "TIMESERIES_TITLE",
+      "title": "Requests per second",
       "type": "timeseries"
     },
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 16
+      "description": "- **Definición**: Tasa de variación de las conexiones que están siendo procesadas actualmente por Nginx (incluye Reading, Writing y Waiting).\n- **Interpretación**: Indica la velocidad con la que los clientes están estableciendo o cerrando sesiones. Una tasa alta de nuevas conexiones por segundo con un Requests/sec bajo sugiere ineficiencia en el uso de Keep-Alive.\n- **Valores esperados**: Debe ser estable. Valores erráticos suelen preceder a problemas de saturación de descriptores de archivos.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#5794F2",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
       },
-      "id": 2,
-      "panels": [],
-      "title": "Row title",
-      "type": "row"
+      "gridPos": {
+        "h": 13,
+        "w": 8,
+        "x": 8,
+        "y": 13
+      },
+      "id": 205,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "irate(nginx_connections_active{server=\"$server\"}[5m])",
+          "legendFormat": "Active Conn/sec",
+          "refId": "A"
+        }
+      ],
+      "title": "Active connections per second",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Reading**: Nginx está leyendo el encabezado de la solicitud del cliente. Valores altos indican latencia de red en el cliente o ataques de tipo Slowloris.\n- **Writing**: Nginx está respondiendo al cliente (enviando datos). Valores altos son normales durante la transferencia de archivos grandes o alta carga de salida.\n- **Waiting**: Conexiones 'Keep-Alive' activas pero ociosas. Indica cuántas sesiones están abiertas esperando una nueva petición del mismo cliente.\n- **Interpretación**: Un desbalance entre Writing y Waiting ayuda a dimensionar la eficiencia del Keep-Alive y el uso de recursos del sistema.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": true,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reading"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5794F2",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Writing"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#A352CC",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Waiting"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#FADE2A",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 8,
+        "x": 16,
+        "y": 13
+      },
+      "id": 203,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "nginx_connections_reading{server=\"$server\"}",
+          "legendFormat": "Reading",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "nginx_connections_writing{server=\"$server\"}",
+          "legendFormat": "Writing",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "nginx_connections_waiting{server=\"$server\"}",
+          "legendFormat": "Waiting",
+          "refId": "C"
+        }
+      ],
+      "title": "Connections: reading, writing, waiting",
+      "type": "timeseries"
     }
   ],
   "preload": false,
@@ -384,7 +654,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "NGINX_metrics",
+  "title": "NGINX - Metrics",
   "uid": "adxf8fg",
-  "version": 4
+  "version": 7
 }

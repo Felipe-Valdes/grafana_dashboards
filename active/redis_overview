@@ -18,45 +18,175 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 87,
+  "id": 98,
   "links": [],
   "panels": [
     {
-      "collapsed": false,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
-        "h": 1,
-        "w": 24,
+        "h": 14,
+        "w": 6,
         "x": 0,
         "y": 0
       },
       "id": 1,
-      "panels": [],
-      "title": "General",
-      "type": "row"
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 0; box-sizing: border-box; overflow: hidden;\">\n  <img src=\"https://www.vectorlogo.zone/logos/redis/redis-official.svg\" style=\"width: 90%; height: 90%; object-fit: contain;\" />\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
     },
     {
-      "description": "ESTRUCTURA_3_PUNTOS:\n- Definición: \n- Interpretación: \n- Valores esperados: ",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 81,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #FFB6C1;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n Overview \n </span>\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 82,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #FFB6C1;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n Base Activity Metrics \n </span>\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "prometheus"
+      },
+      "description": "- Definición: Porcentaje de solicitudes de lectura que se resolvieron con éxito desde la caché.\n- Interpretación: Mide la eficiencia de Redis; un valor bajo indica que los datos no están en caché o han expirado. Origen: redis_keyspace_hits_total / (hits + misses).\n- Valores esperados: Idealmente superior al 80% en entornos de producción.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "text",
+            "fixedColor": "#4DA2D6",
             "mode": "fixed"
           },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "red",
-                  "text": "OFF"
-                },
-                "1": {
-                  "color": "green",
-                  "text": "ON"
-                }
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
               },
-              "type": "value"
-            }
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 6,
+        "y": 2
+      },
+      "id": 601,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
           ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(irate(redis_keyspace_hits_total{server=\"$server\"}[5m])) / (sum(irate(redis_keyspace_hits_total{server=\"$server\"}[5m])) + sum(irate(redis_keyspace_misses_total{server=\"$server\"}[5m])))",
+          "legendFormat": "Hit Rate",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Hit rate",
+      "type": "stat"
+    },
+    {
+      "description": "- Definición: Número de clientes que están esperando en una operación bloqueante (ej. BLPOP).\n- Interpretación: Un valor alto indica que las aplicaciones están detenidas esperando datos de las colas. Origen: redis_blocked_clients.\n- Valores esperados: Generalmente cercano a 0.",
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -66,19 +196,409 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 9,
+        "y": 2
+      },
+      "id": 606,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "suffix": " conns"
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(redis_blocked_clients{server=\"$server\"}) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Blocked clients",
+      "type": "stat"
+    },
+    {
+      "description": "- Definición: Número total de conexiones de clientes activas (incluyendo réplicas).\n- Interpretación: Un exceso de clientes puede agotar los descriptores de archivo o la memoria. Origen: redis_connected_clients.\n- Valores esperados: Inferior al límite definido en maxclients.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 2
+      },
+      "id": 605,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "redis_connected_clients{server=\"$server\"}",
+          "legendFormat": "Connected Clients",
+          "refId": "A"
+        }
+      ],
+      "title": "Connected clients",
+      "type": "timeseries"
+    },
+    {
+      "description": "- Definición: Número de clientes que están esperando en una operación bloqueante (ej. BLPOP).\n- Interpretación: Un valor alto indica que las aplicaciones están detenidas esperando datos de las colas. Origen: redis_blocked_clients.\n- Valores esperados: Generalmente cercano a 0.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 2
+      },
+      "id": 610,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "redis_blocked_clients{server=\"$server\"}",
+          "legendFormat": "Blocked Clients",
+          "refId": "A"
+        }
+      ],
+      "title": "Blocked clients",
+      "type": "timeseries"
+    },
+    {
+      "description": "- Definición: Cantidad total de llaves almacenadas actualmente en todas las bases de datos.\n- Interpretación: Indica el volumen de datos en memoria; crecimientos abruptos pueden sugerir fugas o falta de políticas de expiración. Origen: redis_db_keys.\n- Valores esperados: Estable según el dimensionamiento de la aplicación.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 6,
+        "y": 5
+      },
+      "id": 602,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(redis_db_keys{server=\"$server\"}) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Redis keyspace",
+      "type": "stat"
+    },
+    {
+      "description": "- Definición: Cantidad de operaciones realizadas desde la última persistencia en disco (RDB snapshot).\n- Interpretación: Representa el riesgo de pérdida de datos ante una caída del servicio. Origen: redis_rdb_changes_since_last_save.\n- Valores esperados: Debe volver a 0 tras cada proceso de guardado exitoso.",
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 9,
+        "y": 5
+      },
+      "id": 604,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "suffix": " changes"
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(redis_rdb_changes_since_last_save{server=\"$server\"}) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Unsaved changes",
+      "type": "stat"
+    },
+    {
+      "description": "- Definición: Estado de la conexión entre el nodo actual y su nodo maestro (Primary).\n- Interpretación: Indica si la replicación está activa o si existe una falla de red entre nodos. Origen: redis_master_link_status.\n- Valores esperados: Debe ser 1 (UP) en configuraciones de replicación.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#495057",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 1,
+                  "text": "DOWN"
+                },
+                "1": {
+                  "index": 0,
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 0,
-        "y": 1
+        "x": 6,
+        "y": 8
       },
-      "id": 3,
+      "id": 607,
       "options": {
-        "colorMode": "none",
+        "colorMode": "text",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
@@ -101,21 +621,20 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "METRICA{server=\"$server\", service=\"$service\"}",
-          "instant": true,
+          "expr": "redis_master_link_status{server=\"$server\"}",
           "refId": "A"
         }
       ],
-      "title": "STAT_TITLE",
-      "transparent": true,
+      "title": "Primary link down",
       "type": "stat"
     },
     {
-      "description": "ESTRUCTURA_3_PUNTOS:\n- Definición: \n- Interpretación: \n- Valores esperados: ",
+      "description": "- Definición: Cantidad de servidores secundarios (réplicas) conectados a este nodo maestro.\n- Interpretación: Confirma que la topología de alta disponibilidad está operando correctamente. Origen: redis_connected_slaves.\n- Valores esperados: Igual al número de réplicas configuradas en el clúster.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -126,21 +645,21 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "opacity",
+            "fillOpacity": 0,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1.5,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -151,6 +670,7 @@
               "mode": "off"
             }
           },
+          "decimals": 0,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -170,31 +690,23 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 8,
-        "x": 3,
-        "y": 1
+        "h": 6,
+        "w": 5,
+        "x": 12,
+        "y": 8
       },
-      "id": 4,
+      "id": 608,
       "options": {
         "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
+          "calcs": [],
+          "displayMode": "hidden",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "12.3.2",
@@ -204,33 +716,57 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(avg_over_time(METRICA{server=\"$server\"}[$__range]))",
-          "legendFormat": "LABEL",
-          "range": true,
+          "expr": "redis_connected_slaves{server=\"$server\"}",
+          "legendFormat": "Replicas",
           "refId": "A"
         }
       ],
-      "title": "TIMESERIES_TITLE",
+      "title": "Connected replicas",
       "type": "timeseries"
     },
     {
-      "description": "ESTRUCTURA_3_PUNTOS:\n- Definición: \n- Interpretación: \n- Valores esperados: ",
+      "description": "- Definición: Número de conexiones que Redis rechazó debido al límite de clientes máximos.\n- Interpretación: Indica saturación crítica; el servidor no puede aceptar más peticiones. Origen: redis_rejected_connections_total.\n- Valores esperados: Estrictamente 0.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
           },
           "custom": {
-            "align": "center",
-            "cellOptions": {
-              "type": "auto"
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
             },
-            "filterable": true,
-            "footer": {
-              "reducers": []
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
             },
-            "inspect": false
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -238,77 +774,1675 @@
               {
                 "color": "green",
                 "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
-          }
+          },
+          "unit": "pps"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 7,
-        "x": 11,
-        "y": 1
+        "h": 6,
+        "w": 5,
+        "x": 17,
+        "y": 8
       },
-      "id": 5,
+      "id": 609,
       "options": {
-        "cellHeight": "sm",
-        "showHeader": true
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "METRICA_1{server=\"$server\"}",
-          "format": "table",
-          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "irate(redis_rejected_connections_total{server=\"$server\"}[5m])",
+          "legendFormat": "Rejected Connections",
           "refId": "A"
-        },
-        {
-          "expr": "METRICA_2{server=\"$server\"}",
-          "format": "table",
-          "instant": true,
-          "refId": "B"
         }
       ],
-      "title": "TABLE_TITLE",
-      "transformations": [
-        {
-          "id": "seriesToColumns",
-          "options": {
-            "byField": "child"
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "instance": true,
-              "job": true
-            },
-            "renameByName": {
-              "Value #A": "Metric 1",
-              "Value #B": "Metric 2",
-              "child": "ID"
-            }
-          }
-        }
-      ],
-      "type": "table"
+      "title": "Rejected connections",
+      "type": "timeseries"
     },
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 10
+      "description": "- Definición: Tasa de comandos procesados por el servidor por unidad de tiempo.\n- Interpretación: Mide el throughput o carga de trabajo actual del motor. Origen: redis_commands_processed_total.\n- Valores esperados: Variable según el tráfico, pero estable dentro de los picos normales.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#495057",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "ops"
+        },
+        "overrides": []
       },
-      "id": 2,
-      "panels": [],
-      "title": "Row title",
-      "type": "row"
+      "gridPos": {
+        "h": 6,
+        "w": 2,
+        "x": 22,
+        "y": 8
+      },
+      "id": 611,
+      "options": {
+        "colorMode": "text",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(irate(redis_commands_processed_total{server=\"$server\"}[5m])) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Commands per second",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 6,
+        "x": 0,
+        "y": 14
+      },
+      "id": 83,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #FFB6C1;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n Performance Metrics \n </span>\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 6,
+        "x": 6,
+        "y": 14
+      },
+      "id": 85,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #FFB6C1;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n Memory Metrics \n </span>\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "id": 86,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #FFB6C1;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n Key Metrics \n </span>\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "description": "- **Definición**: Tiempo que tarda el exportador en completar un ciclo de recolección de métricas desde el servidor Redis.\n- **Interpretación**: Refleja la latencia de respuesta del servicio; picos altos sugieren saturación del motor o problemas de red. Origen: redis_exporter_last_scrape_duration_seconds.\n- **Valores esperados**: Generalmente por debajo de los 50ms (0.05s).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#F85353",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 4,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 0,
+        "y": 16
+      },
+      "id": 617,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "redis_exporter_last_scrape_duration_seconds{server=\"$server\"}",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Latency by host",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Porcentaje de la memoria total disponible que está siendo utilizada por Redis.\n- **Interpretación**: Indica la proximidad al límite de memoria (maxmemory); valores cercanos al 100% activarán políticas de desalojo o rechazo de escrituras. Origen: redis_memory_used_bytes / redis_memory_max_bytes.\n- **Valores esperados**: Idealmente por debajo del 80% para permitir picos de tráfico y procesos de mantenimiento.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 6,
+        "y": 16
+      },
+      "id": 621,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "min",
+            "max",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "(sum(redis_memory_used_bytes{server=\"$server\"}) by (instance) / sum(redis_memory_max_bytes{server=\"$server\"}) by (instance)) * 100",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Percent Used Memory by host",
+      "type": "timeseries"
+    },
+    {
+      "description": "- Definición: Evolución temporal del inventario de objetos en el servidor.\n- Interpretación: Permite observar tendencias de crecimiento de datos a largo plazo. Origen: sum(redis_db_keys).\n- Valores esperados: Crecimiento controlado o lineal.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 12,
+        "y": 16
+      },
+      "id": 612,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(redis_db_keys{server=\"$server\"})",
+          "legendFormat": "Total Keys",
+          "refId": "A"
+        }
+      ],
+      "title": "Total keys",
+      "type": "timeseries"
+    },
+    {
+      "description": "- Definición: Valor instantáneo del recuento de llaves en el sistema.\n- Interpretación: Resumen numérico del uso del keyspace para auditoría rápida. Origen: sum(redis_db_keys).\n- Valores esperados: Coincidente con la última medición del gráfico de Total Keys.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#495057",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 2,
+        "x": 17,
+        "y": 16
+      },
+      "id": 613,
+      "options": {
+        "colorMode": "text",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 24,
+          "valueSize": 44
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(redis_db_keys{server=\"$server\"}) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Current total",
+      "type": "stat"
+    },
+    {
+      "description": "- **Definición**: Histórico de la cantidad de llaves desglosado por cada base de datos lógica (DB) en Redis.\n- **Interpretación**: Permite observar qué base de datos está creciendo y si la distribución de carga entre ellas es la esperada. Origen: redis_db_keys.\n- **Valores esperados**: Crecimiento estable o balanceado según la segmentación de datos de la aplicación.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 19,
+        "y": 16
+      },
+      "id": 616,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "redis_db_keys{server=\"$server\"}",
+          "legendFormat": "DB {{db}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Key length distribution",
+      "type": "timeseries"
+    },
+    {
+      "description": "- Definición: Tasa de llaves que son eliminadas automáticamente al cumplir su tiempo de vida (TTL).\n- Interpretación: Mide la actividad del recolector de basura de Redis y la rotación de caché. Origen: redis_expired_keys_total.\n- Valores esperados: Proporcional a la carga de escritura con TTL.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 12,
+        "y": 21
+      },
+      "id": 614,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(irate(redis_expired_keys_total{server=\"$server\"}[5m]))",
+          "legendFormat": "Expired Keys",
+          "refId": "A"
+        }
+      ],
+      "title": "Expired keys",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Cantidad actual de llaves que tienen un tiempo de vida (TTL) configurado.\n- **Interpretación**: Indica cuántos objetos están sujetos a eliminación automática; si es igual al Total Keys, toda la caché es volátil. Origen: redis_db_keys_expiring.\n- **Valores esperados**: Debe representar una fracción significativa si se usa Redis como caché.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#495057",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 2,
+        "x": 17,
+        "y": 21
+      },
+      "id": 615,
+      "options": {
+        "colorMode": "text",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 24,
+          "valueSize": 44
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(redis_db_keys_expiring{server=\"$server\"}) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Keys with expiration",
+      "type": "stat"
+    },
+    {
+      "description": "- **Definición**: Tiempo de ejecución de la última consulta registrada en el log de comandos lentos.\n- **Interpretación**: Permite cuantificar el impacto real de los comandos ineficientes en la CPU; duraciones altas bloquean el hilo principal de Redis. Origen: redis_slowlog_last_duration_seconds.\n- **Valores esperados**: Idealmente inferior al umbral configurado en `slowlog-log-slower-than` (por defecto 10ms).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 4,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 26
+      },
+      "id": 622,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "redis_slowlog_last_duration_seconds{server=\"$server\"}",
+          "legendFormat": "Last Duration",
+          "refId": "A"
+        }
+      ],
+      "title": "Slowlog duration",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Número total de consultas registradas en el log de comandos lentos (Slow Log) de Redis.\n- **Interpretación**: Indica la presencia de comandos que superan el umbral de ejecución definido en `slowlog-log-slower-than`. Origen: redis_slowlog_length.\n- **Valores esperados**: Idealmente 0; valores altos requieren optimizar las llaves o los comandos utilizados.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              },
+              {
+                "color": "#F85353",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 2,
+        "x": 4,
+        "y": 26
+      },
+      "id": 620,
+      "options": {
+        "colorMode": "text",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(redis_slowlog_length{server=\"$server\"}) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Slowlog query rates",
+      "type": "stat"
+    },
+    {
+      "description": "- **Definición**: Tasa de llaves eliminadas por Redis para liberar memoria según la política de `maxmemory-policy`.\n- **Interpretación**: Un valor alto indica que Redis ha alcanzado su límite de memoria y está expulsando datos válidos para admitir nuevos. Origen: redis_evicted_keys_total.\n- **Valores esperados**: Idealmente 0; si es constante, se requiere aumentar la memoria o revisar la política de desalojo.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 6,
+        "y": 26
+      },
+      "id": 623,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(irate(redis_evicted_keys_total{server=\"$server\"}[5m]))",
+          "legendFormat": "Evicted Keys",
+          "refId": "A"
+        }
+      ],
+      "title": "Evictions",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Diferencia en bytes (offset) entre los datos procesados por el nodo maestro y los recibidos por las réplicas.\n- **Interpretación**: Mide el retraso de la replicación; un valor creciente indica que la réplica no puede seguir el ritmo de escritura del maestro o hay problemas de red. Origen: redis_master_repl_offset - redis_slave_repl_offset.\n- **Valores esperados**: Lo más cercano a 0 posible; valores altos pueden causar pérdida de datos en un failover.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 31
+      },
+      "id": 624,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "redis_master_repl_offset{server=\"$server\"} - on (instance) redis_slave_repl_offset{server=\"$server\"}",
+          "legendFormat": "Replication Offset Delay",
+          "refId": "A"
+        }
+      ],
+      "title": "Average replication delay (offset)",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Cantidad total de memoria RAM que Redis ha reservado actualmente del sistema operativo.\n- **Interpretación**: Es el indicador real de consumo de recursos; incluye tanto los datos almacenados como los buffers de conexión y fragmentación. Origen: redis_memory_used_bytes.\n- **Valores esperados**: Debe mantenerse estable y siempre por debajo del límite físico del servidor para evitar el uso de SWAP.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 6,
+        "y": 31
+      },
+      "id": 625,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(redis_memory_used_bytes{server=\"$server\"})",
+          "legendFormat": "Memory Used",
+          "refId": "A"
+        }
+      ],
+      "title": "Total allocated memory",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "- **Definición**: Porcentaje de tiempo de CPU consumido por el proceso de Redis tanto en modo usuario como en modo sistema.\n- **Interpretación**: Dado que Redis es mayoritariamente monohilo, un valor cercano al 100% en un núcleo indica que el servidor está llegando a su límite de procesamiento. Origen: irate(redis_cpu_user_seconds_total + redis_cpu_sys_seconds_total).\n- **Valores esperados**: Idealmente por debajo del 70% para evitar encolamiento de comandos.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 36
+      },
+      "id": 626,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(irate(redis_cpu_user_seconds_total{server=\"$server\"}[5m]) + irate(redis_cpu_sys_seconds_total{server=\"$server\"}[5m])) * 100",
+          "legendFormat": "CPU Usage",
+          "refId": "A"
+        }
+      ],
+      "title": "Average CPU usage",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Relación entre la memoria que el sistema operativo ha asignado (RSS) y la memoria que Redis está usando realmente.\n- **Interpretación**: Un ratio > 1.5 indica fragmentación excesiva (desperdicio de RAM), mientras que < 1.0 sugiere que el sistema está haciendo SWAP. Origen: redis_mem_fragmentation_ratio.\n- **Valores esperados**: Idealmente entre 1.0 y 1.2.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#90EE90",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#9EE69E",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 2,
+        "x": 6,
+        "y": 36
+      },
+      "id": 628,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(redis_mem_fragmentation_ratio{server=\"$server\"}) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Fragmentation ratio",
+      "type": "stat"
+    },
+    {
+      "description": "- **Definición**: Relación entre la memoria que el sistema operativo ha asignado (RSS) y la memoria que Redis está usando realmente.\n- **Interpretación**: Un ratio > 1.5 indica fragmentación excesiva (desperdicio de RAM), mientras que < 1.0 sugiere que el sistema está haciendo SWAP. Origen: redis_mem_fragmentation_ratio.\n- **Valores esperados**: Idealmente entre 1.0 y 1.2.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 8,
+        "y": 36
+      },
+      "id": 627,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "redis_mem_fragmentation_ratio{server=\"$server\"}",
+          "legendFormat": "Fragmentation Ratio",
+          "refId": "A"
+        }
+      ],
+      "title": "Fragmentation ratio",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Porcentaje de solicitudes de lectura que se resolvieron con éxito desde la memoria.\n- **Interpretación**: Es el indicador clave de eficiencia de la caché; un valor bajo sugiere que la aplicación busca llaves inexistentes o que los datos expiran demasiado pronto. Origen: (hits / (hits + misses)).\n- **Valores esperados**: Idealmente superior al 80% en la mayoría de las aplicaciones.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#495057",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 2,
+        "x": 0,
+        "y": 41
+      },
+      "id": 629,
+      "options": {
+        "colorMode": "text",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 24,
+          "valueSize": 44
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(rate(redis_keyspace_hits_total{server=\"$server\"}[5m])) / (sum(rate(redis_keyspace_hits_total{server=\"$server\"}[5m])) + sum(rate(redis_keyspace_misses_total{server=\"$server\"}[5m]))) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Cache hit rate",
+      "type": "stat"
+    },
+    {
+      "description": "- **Definición**: Evolución temporal de la eficiencia de la caché.\n- **Interpretación**: Permite identificar degradaciones en el rendimiento de la caché durante picos de tráfico o despliegues de nueva data. Origen: (hits / (hits + misses)).\n- **Valores esperados**: Curva estable; caídas pronunciadas indican un cambio en el patrón de acceso a datos o vaciado de caché.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 2,
+        "y": 41
+      },
+      "id": 630,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "rate(redis_keyspace_hits_total{server=\"$server\"}[5m]) / (rate(redis_keyspace_hits_total{server=\"$server\"}[5m]) + rate(redis_keyspace_misses_total{server=\"$server\"}[5m]))",
+          "legendFormat": "Hit Rate",
+          "refId": "A"
+        }
+      ],
+      "title": "Cache hit rate",
+      "type": "timeseries"
     }
   ],
   "preload": false,
@@ -353,12 +2487,12 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Redis Overview",
+  "title": "Redis - Overview",
   "uid": "adjtbcl",
-  "version": 3
+  "version": 13
 }

@@ -2492,7 +2492,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Redis - Overview",
-  "uid": "adjtbcl",
+  "title": "Databse: Redis",
+  "uid": "db-redis",
   "version": 13
 }

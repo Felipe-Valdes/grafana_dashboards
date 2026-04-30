@@ -18,6 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
+  "id": 100,
   "links": [],
   "panels": [
     {
@@ -1175,45 +1176,22 @@
       "type": "table"
     },
     {
-      "description": "- **Definición**: Comparación de la tasa de escaneos secuenciales actuales frente a los registrados en el mismo momento hace una semana.\n- **Interpretación**: Permite identificar si un cambio reciente en el código o un crecimiento de la data ha disparado las operaciones ineficientes en comparación con el historial. Origen: pg_stat_user_tables_seq_scan.\n- **Valores esperados**: Las curvas deberían ser similares; una desviación alta hoy sugiere una degradación del rendimiento.",
+      "description": "- **Definición**: Ranking de los índices de usuario que reciben más escaneos o búsquedas.\n- **Interpretación**: Los índices en el tope de esta lista son críticos para el rendimiento. Si un índice no aparece nunca aquí tras mucho tiempo, podría ser un candidato a eliminación para ahorrar espacio y mejorar la velocidad de escritura. Origen: pg_stat_user_indexes_idx_scan.\n- **Valores esperados**: Alta actividad en tablas con muchas lecturas (SELECT).",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
           },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
             },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 3,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
+            "footer": {
+              "reducers": []
             },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "inspect": false
           },
           "decimals": 2,
           "mappings": [],
@@ -1236,64 +1214,34 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Current Week"
+              "options": "Value"
             },
             "properties": [
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#4DA2D6",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Week Before"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#A352CC",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [
-                    5,
-                    5
-                  ],
-                  "fill": "dash"
-                }
+                "id": "displayName",
+                "value": "Scans/sec"
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 6,
         "w": 3,
         "x": 0,
         "y": 27
       },
       "id": 715,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom",
-          "showLegend": false
+        "cellHeight": "sm",
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "showNodes": false
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
+        "showHeader": true
       },
       "pluginVersion": "12.3.2",
       "targets": [
@@ -1302,63 +1250,32 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_user_tables_seq_scan{server=\"$server\"}[5m]))",
-          "legendFormat": "Current Week",
+          "expr": "sort_desc(sum(irate(pg_stat_user_indexes_idx_scan{server=\"$server\"}[5m])) by (indexrelname) > 0)",
+          "instant": true,
+          "legendFormat": "{{indexrelname}}",
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(irate(pg_stat_user_tables_seq_scan{server=\"$server\"}[5m] offset 1w))",
-          "legendFormat": "Week Before",
-          "refId": "B"
         }
       ],
-      "title": "Sequential scans vs week before",
-      "type": "timeseries"
+      "title": "Most frequently scanned indexes",
+      "type": "table"
     },
     {
-      "description": "- **Definición**: Comparación de la tasa de escaneos secuenciales actuales frente a los registrados en el mismo momento hace una semana.\n- **Interpretación**: Permite identificar si un cambio reciente en el código o un crecimiento de la data ha disparado las operaciones ineficientes en comparación con el historial. Origen: pg_stat_user_tables_seq_scan.\n- **Valores esperados**: Las curvas deberían ser similares; una desviación alta hoy sugiere una degradación del rendimiento.",
+      "description": "- **Definición**: Listado de índices de usuario con la menor tasa de uso en consultas.\n- **Interpretación**: Si un índice aparece aquí con valores cercanos a 0 de forma persistente, es un candidato para ser eliminado. Cada índice penaliza el rendimiento de los INSERT, UPDATE y DELETE. Origen: pg_stat_user_indexes_idx_scan.\n- **Valores esperados**: Se espera ver índices recién creados o de tablas con muy poco uso.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "#A352CC",
+            "mode": "fixed"
           },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
             },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 3,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
+            "footer": {
+              "reducers": []
             },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "inspect": false
           },
           "decimals": 2,
           "mappings": [],
@@ -1381,40 +1298,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Current Week"
+              "options": "Value"
             },
             "properties": [
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#4DA2D6",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Week Before"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#A352CC",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [
-                    5,
-                    5
-                  ],
-                  "fill": "dash"
-                }
+                "id": "displayName",
+                "value": "Scans/sec"
               }
             ]
           }
@@ -1428,17 +1317,15 @@
       },
       "id": 717,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom",
-          "showLegend": false
+        "cellHeight": "sm",
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "showNodes": false
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
+        "showHeader": true
       },
       "pluginVersion": "12.3.2",
       "targets": [
@@ -1447,63 +1334,32 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_user_tables_seq_scan{server=\"$server\"}[5m]))",
-          "legendFormat": "Current Week",
+          "expr": "sort(sum(irate(pg_stat_user_indexes_idx_scan{server=\"$server\"}[5m])) by (indexrelname))",
+          "instant": true,
+          "legendFormat": "{{indexrelname}}",
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(irate(pg_stat_user_tables_seq_scan{server=\"$server\"}[5m] offset 1w))",
-          "legendFormat": "Week Before",
-          "refId": "B"
         }
       ],
-      "title": "Sequential scans vs week before",
-      "type": "timeseries"
+      "title": "Least frequently scanned indexes",
+      "type": "table"
     },
     {
-      "description": "- **Definición**: Comparación de la tasa de escaneos secuenciales actuales frente a los registrados en el mismo momento hace una semana.\n- **Interpretación**: Permite identificar si un cambio reciente en el código o un crecimiento de la data ha disparado las operaciones ineficientes en comparación con el historial. Origen: pg_stat_user_tables_seq_scan.\n- **Valores esperados**: Las curvas deberían ser similares; una desviación alta hoy sugiere una degradación del rendimiento.",
+      "description": "- **Definición**: Las 10 tablas de usuario que ocupan más espacio físico en el disco.\n- **Interpretación**: Identifica las tablas que más contribuyen al tamaño total de la base de datos. Si una tabla crece desproporcionadamente, puede requerir una purga o revisión de tipos de datos. Origen: pg_stat_user_tables_relsize_bytes.\n- **Valores esperados**: Generalmente las tablas de logs, auditoría o transacciones históricas suelen encabezar esta lista.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
           },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
             },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 3,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
+            "footer": {
+              "reducers": []
             },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "inspect": false
           },
           "decimals": 2,
           "mappings": [],
@@ -1520,46 +1376,18 @@
               }
             ]
           },
-          "unit": "ops"
+          "unit": "decbytes"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Current Week"
+              "options": "Value"
             },
             "properties": [
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#4DA2D6",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Week Before"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#A352CC",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [
-                    5,
-                    5
-                  ],
-                  "fill": "dash"
-                }
+                "id": "displayName",
+                "value": "Disk Usage"
               }
             ]
           }
@@ -1573,17 +1401,15 @@
       },
       "id": 718,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom",
-          "showLegend": false
+        "cellHeight": "sm",
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "showNodes": false
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
+        "showHeader": true
       },
       "pluginVersion": "12.3.2",
       "targets": [
@@ -1592,65 +1418,34 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_user_tables_seq_scan{server=\"$server\"}[5m]))",
-          "legendFormat": "Current Week",
+          "expr": "topk(10, sort_desc(pg_stat_user_tables_relsize_bytes{server=\"$server\"}))",
+          "instant": true,
+          "legendFormat": "{{relname}}",
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(irate(pg_stat_user_tables_seq_scan{server=\"$server\"}[5m] offset 1w))",
-          "legendFormat": "Week Before",
-          "refId": "B"
         }
       ],
-      "title": "Sequential scans vs week before",
-      "type": "timeseries"
+      "title": "Tables with most disk usage",
+      "type": "table"
     },
     {
-      "description": "- **Definición**: Comparación de la tasa de escaneos secuenciales actuales frente a los registrados en el mismo momento hace una semana.\n- **Interpretación**: Permite identificar si un cambio reciente en el código o un crecimiento de la data ha disparado las operaciones ineficientes en comparación con el historial. Origen: pg_stat_user_tables_seq_scan.\n- **Valores esperados**: Las curvas deberían ser similares; una desviación alta hoy sugiere una degradación del rendimiento.",
+      "description": "- **Definición**: Ranking de las tablas de usuario con el mayor número de registros activos (tuples).\n- **Interpretación**: Indica el volumen de datos reales que procesa cada tabla. Es útil para dimensionar la carga de trabajo y comparar el crecimiento de datos contra el uso de disco. Origen: pg_stat_user_tables_n_live_tup.\n- **Valores esperados**: Las tablas principales de la aplicación (usuarios, transacciones, inventario) suelen dominar este panel.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
           },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
             },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 3,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
+            "footer": {
+              "reducers": []
             },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "inspect": false
           },
-          "decimals": 2,
+          "decimals": 0,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1665,46 +1460,18 @@
               }
             ]
           },
-          "unit": "ops"
+          "unit": "short"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Current Week"
+              "options": "Value"
             },
             "properties": [
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#4DA2D6",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Week Before"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#A352CC",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [
-                    5,
-                    5
-                  ],
-                  "fill": "dash"
-                }
+                "id": "displayName",
+                "value": "Live Rows"
               }
             ]
           }
@@ -1718,17 +1485,15 @@
       },
       "id": 719,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom",
-          "showLegend": false
+        "cellHeight": "sm",
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "showNodes": false
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
+        "showHeader": true
       },
       "pluginVersion": "12.3.2",
       "targets": [
@@ -1737,22 +1502,14 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_user_tables_seq_scan{server=\"$server\"}[5m]))",
-          "legendFormat": "Current Week",
+          "expr": "sort_desc(pg_stat_user_tables_n_live_tup{server=\"$server\"} > 0)",
+          "instant": true,
+          "legendFormat": "{{relname}}",
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "expr": "sum(irate(pg_stat_user_tables_seq_scan{server=\"$server\"}[5m] offset 1w))",
-          "legendFormat": "Week Before",
-          "refId": "B"
         }
       ],
-      "title": "Sequential scans vs week before",
-      "type": "timeseries"
+      "title": "Tables with most live rows",
+      "type": "table"
     },
     {
       "fieldConfig": {
@@ -1807,6 +1564,495 @@
       "type": "text"
     },
     {
+      "description": "- **Definición**: Cantidad de servidores réplica que presentan un retraso (lag) respecto al servidor primario.\n- **Interpretación**: Un valor mayor a 0 indica que una o más réplicas no están sincronizadas en tiempo real. Si el número persiste, puede haber problemas de red o saturación en el nodo secundario. Origen: pg_replication_lag.\n- **Valores esperados**: Idealmente 0. Picos breves son normales durante cargas masivas de escritura.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 34
+      },
+      "id": 725,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "count(pg_replication_lag{server=\"$server\"} > 0) or vector(0)",
+          "legendFormat": "Hosts with Lag",
+          "refId": "A"
+        }
+      ],
+      "title": "Number of hosts with replication delay",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: El tiempo máximo de retraso (en segundos) registrado entre el nodo primario y cualquiera de sus réplicas.\n- **Interpretación**: Indica cuánto tiempo tardaría el nodo más lento en estar al día. Valores altos pueden causar pérdida de datos en un failover no planificado o lecturas inconsistentes en las réplicas. Origen: pg_replication_lag.\n- **Valores esperados**: Menos de 1 segundo es lo ideal. Valores crecientes sugieren saturación de red o de disco en el subordinado.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#A352CC",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 34
+      },
+      "id": 726,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "max(pg_replication_lag{server=\"$server\"}) or vector(0)",
+          "legendFormat": "Max Lag",
+          "refId": "A"
+        }
+      ],
+      "title": "Max replication delay",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Número de bloqueos activos en el sistema desglosados por su tipo o modo.\n- **Interpretación**: Los bloqueos son normales, pero un aumento en modos exclusivos (ExclusiveLock) indica que las transacciones están esperando por recursos, lo que causa lentitud en la aplicación. Origen: pg_locks_count.\n- **Valores esperados**: Predominancia de bloqueos compartidos. Picos de bloqueos exclusivos deben ser breves.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*exclusive.*/i"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#A352CC",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*share.*/i"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#4DA2D6",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 0,
+        "y": 36
+      },
+      "id": 722,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(pg_locks_count{server=\"$server\"}) by (mode) > 0",
+          "legendFormat": "{{mode}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Locks by lock mode",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Total de bloqueos (locks) de cualquier tipo presentes en la instancia en este momento.\n- **Interpretación**: Un valor alto persistente indica contención de recursos. Si este número sube drásticamente, es probable que haya una consulta 'colgada' bloqueando al resto. Origen: pg_locks_count.\n- **Valores esperados**: Generalmente bajo. Picos momentáneos son normales durante transacciones pesadas.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#A352CC",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "0"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 4,
+        "y": 36
+      },
+      "id": 723,
+      "options": {
+        "colorMode": "text",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 24,
+          "valueSize": 44
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(pg_locks_count{server=\"$server\"}) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Locks by lock mode",
+      "type": "stat"
+    },
+    {
+      "description": "- **Definición**: Evolución temporal de las situaciones de 'punto muerto' (deadlocks) resueltas por PostgreSQL.\n- **Interpretación**: Los picos en este gráfico indican momentos de alta contención donde la lógica de la aplicación falló al intentar acceder a los mismos recursos en órdenes distintos. Origen: pg_stat_database_deadlocks.\n- **Valores esperados**: La línea debe mantenerse en 0. Cualquier pico es una señal de alerta para los desarrolladores.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#A352CC",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 8,
+        "y": 36
+      },
+      "id": 724,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(increase(pg_stat_database_deadlocks{server=\"$server\"}[5m]))",
+          "legendFormat": "Deadlocks",
+          "refId": "A"
+        }
+      ],
+      "title": "Deadlocks count",
+      "type": "timeseries"
+    },
+    {
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -1815,7 +2061,7 @@
         "h": 2,
         "w": 6,
         "x": 12,
-        "y": 34
+        "y": 41
       },
       "id": 721,
       "options": {
@@ -1841,7 +2087,7 @@
         "h": 2,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 43
       },
       "id": 720,
       "options": {
@@ -1857,6 +2103,682 @@
       "title": "",
       "transparent": true,
       "type": "text"
+    },
+    {
+      "description": "- **Definición**: Comparación entre checkpoints iniciados por tiempo (Scheduled) vs. iniciados por llenado de WAL (Requested).\n- **Interpretación**: Si los Requested superan a los Scheduled, el sistema está bajo una carga de escritura mayor a la configurada. Se recomienda aumentar `max_wal_size` para mejorar el rendimiento de I/O. Origen: pg_stat_bgwriter.\n- **Valores esperados**: La gran mayoría deberían ser Scheduled (Celeste).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ops"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Scheduled"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#4DA2D6",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Requested"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#A352CC",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 43
+      },
+      "id": 727,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(irate(pg_stat_bgwriter_checkpoints_timed{server=\"$server\"}[5m]))",
+          "legendFormat": "Scheduled",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(irate(pg_stat_bgwriter_checkpoints_req{server=\"$server\"}[5m]))",
+          "legendFormat": "Requested",
+          "refId": "B"
+        }
+      ],
+      "title": "Scheduled vs requested checkpoints",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Número de filas insertadas en las tablas de usuario por segundo.\n- **Interpretación**: Mide el volumen de nuevos datos que entran al sistema. Útil para identificar picos de carga de escritura o procesos batch masivos. Origen: pg_stat_user_tables_n_tup_ins.\n- **Valores esperados**: Variable según la aplicación, pero debe ser consistente con la actividad del negocio.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "rows/s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 0,
+        "y": 45
+      },
+      "id": 728,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_ins{server=\"$server\"}[5m]))",
+          "legendFormat": "Inserted",
+          "refId": "A"
+        }
+      ],
+      "title": "Inserted",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Número de filas actualizadas por segundo.\n- **Interpretación**: Indica la intensidad de las operaciones de modificación. Un valor alto aquí genera carga en el proceso de Vacuum debido a que PostgreSQL crea una nueva versión de la fila. Origen: pg_stat_user_tables_n_tup_upd.\n- **Valores esperados**: Proporcional a la actividad transaccional de la plataforma.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "rows/s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 4,
+        "y": 45
+      },
+      "id": 729,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_upd{server=\"$server\"}[5m]))",
+          "legendFormat": "Updated",
+          "refId": "A"
+        }
+      ],
+      "title": "Updated",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Comparativa visual de Inserts, Updates y Deletes en un solo gráfico.\n- **Interpretación**: Permite entender el perfil de la base de datos (¿Es de solo lectura? ¿Muy transaccional? ¿De purga constante?). Origen: pg_stat_user_tables_n_tup_*.\n- **Valores esperados**: Generalmente los Inserts/Updates dominan sobre los Deletes.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "rows/s"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ins"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#4DA2D6",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Upd"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#4DA2D6",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    5,
+                    5
+                  ],
+                  "fill": "dash"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Del"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#A352CC",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 4,
+        "x": 8,
+        "y": 45
+      },
+      "id": 732,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_ins{server=\"$server\"}[5m]))",
+          "legendFormat": "Ins",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_upd{server=\"$server\"}[5m]))",
+          "legendFormat": "Upd",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_del{server=\"$server\"}[5m]))",
+          "legendFormat": "Del",
+          "refId": "C"
+        }
+      ],
+      "title": "Actions",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Número de filas eliminadas de las tablas de usuario por segundo.\n- **Interpretación**: Los borrados son costosos en PostgreSQL porque dejan 'espacio muerto' (bloat). Si este gráfico muestra picos altos, vigila el panel de Autovacuum. Origen: pg_stat_user_tables_n_tup_del.\n- **Valores esperados**: Idealmente bajo o concentrado en periodos de mantenimiento.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#A352CC",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "rows/s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 0,
+        "y": 52
+      },
+      "id": 730,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_del{server=\"$server\"}[5m]))",
+          "legendFormat": "Deleted",
+          "refId": "A"
+        }
+      ],
+      "title": "Deleted",
+      "type": "timeseries"
+    },
+    {
+      "description": "- **Definición**: Actualizaciones que no requieren modificar índices (HOT Updates).\n- **Interpretación**: Es un indicador de eficiencia. Cuanto más cerca esté este valor al de 'Updated', más eficiente es tu base de datos al ahorrar I/O de disco. Origen: pg_stat_user_tables_n_tup_hot_upd.\n- **Valores esperados**: Se busca que este valor sea lo más alto posible frente al total de updates.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4DA2D6",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "rows/s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 4,
+        "y": 52
+      },
+      "id": 731,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_hot_upd{server=\"$server\"}[5m]))",
+          "legendFormat": "HOT Updates",
+          "refId": "A"
+        }
+      ],
+      "title": "Heap-only updates",
+      "type": "timeseries"
     }
   ],
   "preload": false,
@@ -1906,7 +2828,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Postgres - Overview",
-  "uid": "adc2nkm",
-  "version": 11
+  "title": "Database: PostgreSQL",
+  "uid": "db-postgresql",
+  "version": 17
 }

@@ -5024,7 +5024,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "DBM Oracle Database Overview",
-  "uid": "adqt642",
+  "title": "Database: Oracle DBM",
+  "uid": "db-oracle-dbm",
   "version": 20
 }

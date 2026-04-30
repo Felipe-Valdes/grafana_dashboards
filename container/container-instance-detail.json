@@ -3874,7 +3874,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "container_overview",
-  "uid": "adnqj4l",
+  "title": "Container: Instance Detail",
+  "uid": "container-instance-detail",
   "version": 9
 }

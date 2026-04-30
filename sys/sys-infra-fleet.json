@@ -1647,7 +1647,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "infra_fleet",
-  "uid": "ad5x9bl",
+  "title": "System: Infra Fleet",
+  "uid": "sys-infra-fleet",
   "version": 6
 }

@@ -2984,7 +2984,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "HAProxy - Overview",
-  "uid": "ad84cwd",
+  "title": "Web: HAProxy",
+  "uid": "web-haproxy",
   "version": 25
 }

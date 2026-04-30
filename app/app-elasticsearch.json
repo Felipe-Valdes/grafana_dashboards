@@ -1422,7 +1422,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Elasticsearch - Metrics",
-  "uid": "adtnpks",
+  "title": "App: Elasticsearch",
+  "uid": "app-elasticsearch",
   "version": 8
 }

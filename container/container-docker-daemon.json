@@ -1679,7 +1679,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "docker_overview",
-  "uid": "ad6lcp5",
+  "title": "Container: Docker Daemon",
+  "uid": "container-docker-daemon",
   "version": 10
 }

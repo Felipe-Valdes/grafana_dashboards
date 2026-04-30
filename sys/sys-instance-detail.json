@@ -8031,7 +8031,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "sys_overview",
-  "uid": "infra-base-template",
+  "title": "System: Instance Detail",
+  "uid": "sys-instance-detail",
   "version": 90
 }

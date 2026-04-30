@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 87,
+  "id": 132,
   "links": [],
   "panels": [
     {
@@ -341,8 +341,8 @@
         },
         "definition": "label_values(up, server)",
         "includeAll": false,
-        "label": "Server",
-        "name": "server",
+        "label": "Host",
+        "name": "host",
         "options": [],
         "query": "label_values(up, server)",
         "refresh": 1,
@@ -360,5 +360,5 @@
   "timezone": "browser",
   "title": "template",
   "uid": "dashboard-template",
-  "version": 4
+  "version": 1
 }

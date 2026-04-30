@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 97,
+  "id": 145,
   "links": [],
   "panels": [
     {
@@ -149,7 +149,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(nginx_connections_accepted{server=\"$server\"}[5m]) - irate(nginx_connections_handled{server=\"$server\"}[5m])",
+          "expr": "irate(nginx_connections_accepted{host=\"$host\"}[5m]) - irate(nginx_connections_handled{host=\"$host\"}[5m])",
           "legendFormat": "Dropped Conns/sec",
           "range": true,
           "refId": "A"
@@ -247,7 +247,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(irate(nginx_http_requests_total{status=~\"5..\", server=\"$server\"}[5m])) OR on() vector(0)",
+          "expr": "sum(irate(nginx_http_requests_total{status=~\"5..\", host=\"$host\"}[5m])) OR on() vector(0)",
           "legendFormat": "5xx/sec",
           "range": true,
           "refId": "A"
@@ -344,7 +344,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(nginx_http_requests_total{server=\"$server\"}[5m])",
+          "expr": "irate(nginx_http_requests_total{host=\"$host\"}[5m])",
           "legendFormat": "Requests/sec",
           "refId": "A"
         }
@@ -440,7 +440,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(nginx_connections_active{server=\"$server\"}[5m])",
+          "expr": "irate(nginx_connections_active{host=\"$host\"}[5m])",
           "legendFormat": "Active Conn/sec",
           "refId": "A"
         }
@@ -578,7 +578,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "nginx_connections_reading{server=\"$server\"}",
+          "expr": "nginx_connections_reading{host=\"$host\"}",
           "legendFormat": "Reading",
           "refId": "A"
         },
@@ -588,7 +588,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "nginx_connections_writing{server=\"$server\"}",
+          "expr": "nginx_connections_writing{host=\"$host\"}",
           "legendFormat": "Writing",
           "refId": "B"
         },
@@ -598,7 +598,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "nginx_connections_waiting{server=\"$server\"}",
+          "expr": "nginx_connections_waiting{host=\"$host\"}",
           "legendFormat": "Waiting",
           "refId": "C"
         }
@@ -635,12 +635,16 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(up, server)",
+        "definition": "label_values(up,host)",
         "includeAll": false,
-        "label": "Server",
-        "name": "server",
+        "label": "Host",
+        "name": "host",
         "options": [],
-        "query": "label_values(up, server)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(up,host)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -656,5 +660,5 @@
   "timezone": "browser",
   "title": "Web: NGINX",
   "uid": "web-nginx",
-  "version": 7
+  "version": 2
 }

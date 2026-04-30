@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 92,
+  "id": 139,
   "links": [],
   "panels": [
     {
@@ -131,7 +131,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "phpfpm_active_processes{server=\"$server\"}",
+          "expr": "phpfpm_active_processes{host=\"$host\"}",
           "legendFormat": "Pool: {{pool}}",
           "range": true,
           "refId": "A"
@@ -225,7 +225,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "phpfpm_total_processes{server=\"$server\"}",
+          "expr": "phpfpm_total_processes{host=\"$host\"}",
           "legendFormat": "Total Processes: {{pool}}",
           "range": true,
           "refId": "A"
@@ -323,7 +323,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "increase(phpfpm_max_children_reached{server=\"$server\"}[5m])",
+          "expr": "increase(phpfpm_max_children_reached{host=\"$host\"}[5m])",
           "legendFormat": "Limit Reached: {{pool}}",
           "range": true,
           "refId": "A"
@@ -417,7 +417,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (pool) (irate(phpfpm_accepted_connections{server=\"$server\"}[5m]))",
+          "expr": "sum by (pool) (irate(phpfpm_accepted_connections{host=\"$host\"}[5m]))",
           "legendFormat": "Accepted: {{pool}}",
           "range": true,
           "refId": "A"
@@ -515,7 +515,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "increase(phpfpm_slow_requests{server=\"$server\"}[5m])",
+          "expr": "increase(phpfpm_slow_requests{host=\"$host\"}[5m])",
           "legendFormat": "Slow Requests: {{pool}}",
           "range": true,
           "refId": "A"
@@ -613,7 +613,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "phpfpm_listen_queue{server=\"$server\"}",
+          "expr": "phpfpm_listen_queue{host=\"$host\"}",
           "legendFormat": "Queue: {{pool}}",
           "range": true,
           "refId": "A"
@@ -704,7 +704,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "phpfpm_up{server=\"$server\"}",
+              "expr": "phpfpm_up{host=\"$host\"}",
               "format": "time_series",
               "instant": true,
               "refId": "A"
@@ -768,7 +768,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "phpfpm_start_since{server=\"$server\"}",
+              "expr": "phpfpm_start_since{host=\"$host\"}",
               "instant": true,
               "refId": "A"
             }
@@ -843,7 +843,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "phpfpm_scrape_failures{server=\"$server\"}",
+              "expr": "phpfpm_scrape_failures{host=\"$host\"}",
               "instant": true,
               "refId": "A"
             }
@@ -906,7 +906,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "phpfpm_total_processes{server=\"$server\"}",
+              "expr": "phpfpm_total_processes{host=\"$host\"}",
               "instant": true,
               "refId": "A"
             }
@@ -968,7 +968,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "phpfpm_max_active_processes{server=\"$server\"}",
+              "expr": "phpfpm_max_active_processes{host=\"$host\"}",
               "instant": true,
               "refId": "A"
             }
@@ -1030,7 +1030,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "phpfpm_listen_queue_length{server=\"$server\"}",
+              "expr": "phpfpm_listen_queue_length{host=\"$host\"}",
               "instant": true,
               "refId": "A"
             }
@@ -1105,7 +1105,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "phpfpm_max_children_reached{server=\"$server\"}",
+              "expr": "phpfpm_max_children_reached{host=\"$host\"}",
               "instant": true,
               "refId": "A"
             }
@@ -1241,7 +1241,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum(avg_over_time(phpfpm_active_processes{server=\"$server\"}[$__range]))",
+              "expr": "sum(avg_over_time(phpfpm_active_processes{host=\"$host\"}[$__range]))",
               "legendFormat": "Active Processes",
               "refId": "A"
             },
@@ -1251,7 +1251,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum(avg_over_time(phpfpm_idle_processes{server=\"$server\"}[$__range]))",
+              "expr": "sum(avg_over_time(phpfpm_idle_processes{host=\"$host\"}[$__range]))",
               "legendFormat": "Idle Processes",
               "refId": "B"
             }
@@ -1378,7 +1378,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum(avg_over_time(phpfpm_listen_queue{server=\"$server\"}[$__range]))",
+              "expr": "sum(avg_over_time(phpfpm_listen_queue{host=\"$host\"}[$__range]))",
               "legendFormat": "Current Queue",
               "refId": "A"
             },
@@ -1388,7 +1388,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum(max_over_time(phpfpm_max_listen_queue{server=\"$server\"}[$__range]))",
+              "expr": "sum(max_over_time(phpfpm_max_listen_queue{host=\"$host\"}[$__range]))",
               "legendFormat": "Max Queue",
               "refId": "B"
             }
@@ -1531,7 +1531,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum(rate(phpfpm_accepted_connections{server=\"$server\"}[$__range]))",
+              "expr": "sum(rate(phpfpm_accepted_connections{host=\"$host\"}[$__range]))",
               "legendFormat": "Throughput",
               "refId": "A"
             },
@@ -1541,7 +1541,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum(rate(phpfpm_slow_requests{server=\"$server\"}[$__range]))",
+              "expr": "sum(rate(phpfpm_slow_requests{host=\"$host\"}[$__range]))",
               "legendFormat": "Slow Requests",
               "refId": "B"
             }
@@ -1682,7 +1682,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "phpfpm_process_state{server=\"$server\"} == 1",
+              "expr": "phpfpm_process_state{host=\"$host\"} == 1",
               "format": "table",
               "instant": true,
               "refId": "States"
@@ -1692,7 +1692,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "phpfpm_process_requests{server=\"$server\"}",
+              "expr": "phpfpm_process_requests{host=\"$host\"}",
               "format": "table",
               "instant": true,
               "refId": "Requests"
@@ -1702,7 +1702,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "phpfpm_process_last_request_memory{server=\"$server\"}",
+              "expr": "phpfpm_process_last_request_memory{host=\"$host\"}",
               "format": "table",
               "instant": true,
               "refId": "Memory"
@@ -1712,7 +1712,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "phpfpm_process_request_duration{server=\"$server\"}",
+              "expr": "phpfpm_process_request_duration{host=\"$host\"}",
               "format": "table",
               "instant": true,
               "refId": "Duration"
@@ -1859,7 +1859,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "avg_over_time(phpfpm_process_last_request_cpu{server=\"$server\"}[$__range])",
+              "expr": "avg_over_time(phpfpm_process_last_request_cpu{host=\"$host\"}[$__range])",
               "legendFormat": "Child {{child}}",
               "refId": "A"
             }
@@ -1900,12 +1900,16 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(up, server)",
+        "definition": "label_values(up,host)",
         "includeAll": false,
-        "label": "Server",
-        "name": "server",
+        "label": "Host",
+        "name": "host",
         "options": [],
-        "query": "label_values(up, server)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(up,host)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -1921,5 +1925,5 @@
   "timezone": "browser",
   "title": "App: PHP-FPM",
   "uid": "app-phpfpm",
-  "version": 12
+  "version": 2
 }

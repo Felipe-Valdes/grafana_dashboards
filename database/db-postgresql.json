@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 100,
+  "id": 143,
   "links": [],
   "panels": [
     {
@@ -157,7 +157,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(pg_stat_database_numbackends{server=\"$server\"}) or vector(0)",
+          "expr": "sum(pg_stat_database_numbackends{host=\"$host\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -252,7 +252,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "pg_stat_database_numbackends{server=\"$server\"} > 0",
+          "expr": "pg_stat_database_numbackends{host=\"$host\"} > 0",
           "legendFormat": "{{datname}}",
           "refId": "A"
         }
@@ -326,7 +326,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sort_desc(pg_stat_database_numbackends{server=\"$server\"} > 0)",
+          "expr": "sort_desc(pg_stat_database_numbackends{host=\"$host\"} > 0)",
           "legendFormat": "{{datname}}",
           "refId": "A"
         }
@@ -392,7 +392,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(pg_stat_database_tup_fetched{server=\"$server\"}[5m])) / sum(rate(pg_stat_database_tup_returned{server=\"$server\"}[5m])) or vector(0)",
+          "expr": "sum(rate(pg_stat_database_tup_fetched{host=\"$host\"}[5m])) / sum(rate(pg_stat_database_tup_returned{host=\"$host\"}[5m])) or vector(0)",
           "refId": "A"
         }
       ],
@@ -539,7 +539,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(pg_stat_user_tables_n_dead_tup{server=\"$server\"})",
+          "expr": "sum(pg_stat_user_tables_n_dead_tup{host=\"$host\"})",
           "legendFormat": "Dead Rows",
           "refId": "A"
         }
@@ -622,7 +622,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sort_desc(pg_stat_user_tables_relsize_bytes{server=\"$server\"} > 0)",
+          "expr": "sort_desc(pg_stat_user_tables_relsize_bytes{host=\"$host\"} > 0)",
           "instant": true,
           "legendFormat": "{{relname}}",
           "refId": "A"
@@ -749,7 +749,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_user_tables_seq_scan{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(pg_stat_user_tables_seq_scan{host=\"$host\"}[5m]))",
           "legendFormat": "Sequential Scans",
           "refId": "A"
         },
@@ -758,7 +758,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_user_tables_idx_scan{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(pg_stat_user_tables_idx_scan{host=\"$host\"}[5m]))",
           "legendFormat": "Index Scans",
           "refId": "B"
         }
@@ -841,7 +841,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sort_desc(sum(irate(pg_stat_user_tables_seq_scan{server=\"$server\"}[5m])) by (relname) > 0)",
+          "expr": "sort_desc(sum(irate(pg_stat_user_tables_seq_scan{host=\"$host\"}[5m])) by (relname) > 0)",
           "instant": true,
           "legendFormat": "{{relname}}",
           "refId": "A"
@@ -938,7 +938,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_database_temp_bytes{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(pg_stat_database_temp_bytes{host=\"$host\"}[5m]))",
           "legendFormat": "Temp Bytes Rate",
           "refId": "A"
         }
@@ -1074,7 +1074,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_user_tables_seq_scan{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(pg_stat_user_tables_seq_scan{host=\"$host\"}[5m]))",
           "legendFormat": "Current Week",
           "refId": "A"
         },
@@ -1083,7 +1083,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_user_tables_seq_scan{server=\"$server\"}[5m] offset 1w))",
+          "expr": "sum(irate(pg_stat_user_tables_seq_scan{host=\"$host\"}[5m] offset 1w))",
           "legendFormat": "Week Before",
           "refId": "B"
         }
@@ -1166,7 +1166,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sort_desc(sum(irate(pg_stat_user_functions_calls{server=\"$server\"}[5m])) by (funcname) > 0)",
+          "expr": "sort_desc(sum(irate(pg_stat_user_functions_calls{host=\"$host\"}[5m])) by (funcname) > 0)",
           "instant": true,
           "legendFormat": "{{funcname}}",
           "refId": "A"
@@ -1250,7 +1250,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sort_desc(sum(irate(pg_stat_user_indexes_idx_scan{server=\"$server\"}[5m])) by (indexrelname) > 0)",
+          "expr": "sort_desc(sum(irate(pg_stat_user_indexes_idx_scan{host=\"$host\"}[5m])) by (indexrelname) > 0)",
           "instant": true,
           "legendFormat": "{{indexrelname}}",
           "refId": "A"
@@ -1334,7 +1334,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sort(sum(irate(pg_stat_user_indexes_idx_scan{server=\"$server\"}[5m])) by (indexrelname))",
+          "expr": "sort(sum(irate(pg_stat_user_indexes_idx_scan{host=\"$host\"}[5m])) by (indexrelname))",
           "instant": true,
           "legendFormat": "{{indexrelname}}",
           "refId": "A"
@@ -1418,7 +1418,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "topk(10, sort_desc(pg_stat_user_tables_relsize_bytes{server=\"$server\"}))",
+          "expr": "topk(10, sort_desc(pg_stat_user_tables_relsize_bytes{host=\"$host\"}))",
           "instant": true,
           "legendFormat": "{{relname}}",
           "refId": "A"
@@ -1502,7 +1502,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sort_desc(pg_stat_user_tables_n_live_tup{server=\"$server\"} > 0)",
+          "expr": "sort_desc(pg_stat_user_tables_n_live_tup{host=\"$host\"} > 0)",
           "instant": true,
           "legendFormat": "{{relname}}",
           "refId": "A"
@@ -1651,7 +1651,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "count(pg_replication_lag{server=\"$server\"} > 0) or vector(0)",
+          "expr": "count(pg_replication_lag{host=\"$host\"} > 0) or vector(0)",
           "legendFormat": "Hosts with Lag",
           "refId": "A"
         }
@@ -1747,7 +1747,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "max(pg_replication_lag{server=\"$server\"}) or vector(0)",
+          "expr": "max(pg_replication_lag{host=\"$host\"}) or vector(0)",
           "legendFormat": "Max Lag",
           "refId": "A"
         }
@@ -1873,7 +1873,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(pg_locks_count{server=\"$server\"}) by (mode) > 0",
+          "expr": "sum(pg_locks_count{host=\"$host\"}) by (mode) > 0",
           "legendFormat": "{{mode}}",
           "refId": "A"
         }
@@ -1949,7 +1949,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(pg_locks_count{server=\"$server\"}) or vector(0)",
+          "expr": "sum(pg_locks_count{host=\"$host\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -2044,7 +2044,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(increase(pg_stat_database_deadlocks{server=\"$server\"}[5m]))",
+          "expr": "sum(increase(pg_stat_database_deadlocks{host=\"$host\"}[5m]))",
           "legendFormat": "Deadlocks",
           "refId": "A"
         }
@@ -2222,7 +2222,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_bgwriter_checkpoints_timed{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(pg_stat_bgwriter_checkpoints_timed{host=\"$host\"}[5m]))",
           "legendFormat": "Scheduled",
           "refId": "A"
         },
@@ -2231,7 +2231,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_bgwriter_checkpoints_req{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(pg_stat_bgwriter_checkpoints_req{host=\"$host\"}[5m]))",
           "legendFormat": "Requested",
           "refId": "B"
         }
@@ -2327,7 +2327,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_user_tables_n_tup_ins{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_ins{host=\"$host\"}[5m]))",
           "legendFormat": "Inserted",
           "refId": "A"
         }
@@ -2423,7 +2423,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_user_tables_n_tup_upd{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_upd{host=\"$host\"}[5m]))",
           "legendFormat": "Updated",
           "refId": "A"
         }
@@ -2570,17 +2570,17 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "sum(irate(pg_stat_user_tables_n_tup_ins{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_ins{host=\"$host\"}[5m]))",
           "legendFormat": "Ins",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(pg_stat_user_tables_n_tup_upd{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_upd{host=\"$host\"}[5m]))",
           "legendFormat": "Upd",
           "refId": "B"
         },
         {
-          "expr": "sum(irate(pg_stat_user_tables_n_tup_del{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_del{host=\"$host\"}[5m]))",
           "legendFormat": "Del",
           "refId": "C"
         }
@@ -2676,7 +2676,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_user_tables_n_tup_del{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_del{host=\"$host\"}[5m]))",
           "legendFormat": "Deleted",
           "refId": "A"
         }
@@ -2772,7 +2772,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(pg_stat_user_tables_n_tup_hot_upd{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(pg_stat_user_tables_n_tup_hot_upd{host=\"$host\"}[5m]))",
           "legendFormat": "HOT Updates",
           "refId": "A"
         }
@@ -2809,12 +2809,16 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(up, server)",
+        "definition": "label_values(up,host)",
         "includeAll": false,
-        "label": "Server",
-        "name": "server",
+        "label": "Host",
+        "name": "host",
         "options": [],
-        "query": "label_values(up, server)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(up,host)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -2830,5 +2834,5 @@
   "timezone": "browser",
   "title": "Database: PostgreSQL",
   "uid": "db-postgresql",
-  "version": 17
+  "version": 2
 }

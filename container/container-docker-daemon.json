@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 87,
+  "id": 130,
   "links": [],
   "panels": [
     {
@@ -122,7 +122,7 @@
                   {
                     "targetBlank": true,
                     "title": "Ver detalle de ${__data.fields.name}",
-                    "url": "/d/adnqj4l?var-datasource=${datasource}&var-server=${server}&var-container=${__data.fields.name}"
+                    "url": "/d/container-instance-detail/container3a-instance-detail?var-datasource=${datasource}&var-host=${host}&var-container=${__data.fields.name}"
                   }
                 ]
               }
@@ -174,7 +174,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(sum by (name) (rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval])) / scalar(count(node_cpu_seconds_total{server=\"$server\", mode=\"idle\"}))) * 100",
+          "expr": "(sum by (name) (rate(container_cpu_usage_seconds_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval])) / scalar(count(node_cpu_seconds_total{host=\"$host\", mode=\"idle\"}))) * 100",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -260,7 +260,7 @@
                   {
                     "targetBlank": true,
                     "title": "Ver detalle de ${__data.fields.name}",
-                    "url": "/d/adnqj4l?var-datasource=${datasource}&var-server=${server}&var-container=${__data.fields.name}"
+                    "url": "/d/container-instance-detail/container3a-instance-detail?var-datasource=${datasource}&var-host=${host}&var-container=${__data.fields.name}"
                   }
                 ]
               }
@@ -312,7 +312,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(sum by (name) (avg_over_time(container_memory_working_set_bytes{server=\"$server\", name!=\"\", container!=\"POD\"}[$__interval])) / on() group_left() machine_memory_bytes{server=\"$server\"}) * 100",
+          "expr": "(sum by (name) (avg_over_time(container_memory_working_set_bytes{host=\"$host\", name!=\"\", container!=\"POD\"}[$__interval])) / on() group_left() machine_memory_bytes{host=\"$host\"}) * 100",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -399,7 +399,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "count(container_tasks_state{server=\"$server\", name!=\"\", state=\"running\", container!=\"POD\"}) - count(container_last_seen{server=\"$server\", name!=\"\", container!=\"POD\"}) + count(container_tasks_state{server=\"$server\", name!=\"\", state=\"running\", container!=\"POD\"})",
+          "expr": "count(container_tasks_state{host=\"$host\", name!=\"\", state=\"running\", container!=\"POD\"}) - count(container_last_seen{host=\"$host\", name!=\"\", container!=\"POD\"}) + count(container_tasks_state{host=\"$host\", name!=\"\", state=\"running\", container!=\"POD\"})",
           "instant": true,
           "refId": "A"
         }
@@ -469,7 +469,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "count(container_last_seen{server=\"$server\", name!=\"\", container!=\"POD\"}) - count(container_tasks_state{server=\"$server\", name!=\"\", state=\"running\"})",
+          "expr": "count(container_last_seen{host=\"$host\", name!=\"\", container!=\"POD\"}) - count(container_tasks_state{host=\"$host\", name!=\"\", state=\"running\"})",
           "instant": true,
           "refId": "A"
         }
@@ -540,7 +540,7 @@
                   {
                     "targetBlank": true,
                     "title": "Ver detalle de ${__data.fields.name}",
-                    "url": "/d/adnqj4l?var-datasource=${datasource}&var-server=${server}&var-container=${__data.fields.name}"
+                    "url": "/d/container-instance-detail/container3a-instance-detail?var-datasource=${datasource}&var-host=${host}&var-container=${__data.fields.name}"
                   }
                 ]
               }
@@ -592,7 +592,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (name) (\n  rate(container_network_receive_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]) \n  + \n  rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval])\n)",
+          "expr": "sum by (name) (\n  rate(container_network_receive_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval]) \n  + \n  rate(container_network_transmit_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval])\n)",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -678,7 +678,7 @@
                   {
                     "targetBlank": true,
                     "title": "Ver detalle de ${__data.fields.name}",
-                    "url": "/d/adnqj4l?var-datasource=${datasource}&var-server=${server}&var-container=${__data.fields.name}"
+                    "url": "/d/container-instance-detail/container3a-instance-detail?var-datasource=${datasource}&var-host=${host}&var-container=${__data.fields.name}"
                   }
                 ]
               }
@@ -730,7 +730,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (name) (\n  rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval]) \n  + \n  rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[$__rate_interval])\n)",
+          "expr": "sum by (name) (\n  rate(container_fs_reads_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval]) \n  + \n  rate(container_fs_writes_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval])\n)",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -825,7 +825,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "avg(time() - container_start_time_seconds{server=\"$server\", name!=\"\"})",
+          "expr": "avg(time() - container_start_time_seconds{host=\"$host\", name!=\"\"})",
           "instant": true,
           "refId": "A"
         }
@@ -896,7 +896,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(time() - max(container_start_time_seconds{server=\"$server\", name!=\"\", container!=\"POD\"})) * 1000",
+          "expr": "(time() - max(container_start_time_seconds{host=\"$host\", name!=\"\", container!=\"POD\"})) * 1000",
           "instant": true,
           "refId": "A"
         }
@@ -1054,7 +1054,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(20, sum by (name) (rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 100))",
+          "expr": "topk(20, sum by (name) (rate(container_cpu_usage_seconds_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m]) * 100))",
           "legendFormat": "{{name}}",
           "refId": "A"
         },
@@ -1064,7 +1064,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "avg(sum by (name) (rate(container_cpu_usage_seconds_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 100))",
+          "expr": "avg(sum by (name) (rate(container_cpu_usage_seconds_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m]) * 100))",
           "legendFormat": "AVERAGE",
           "refId": "B"
         }
@@ -1219,7 +1219,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(20, sum by (name) (container_memory_working_set_bytes{server=\"$server\", name!=\"\", container!=\"POD\"}))",
+          "expr": "topk(20, sum by (name) (container_memory_working_set_bytes{host=\"$host\", name!=\"\", container!=\"POD\"}))",
           "legendFormat": "{{name}}",
           "refId": "A"
         },
@@ -1229,7 +1229,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "avg(sum by (name) (container_memory_working_set_bytes{server=\"$server\", name!=\"\", container!=\"POD\"}))",
+          "expr": "avg(sum by (name) (container_memory_working_set_bytes{host=\"$host\", name!=\"\", container!=\"POD\"}))",
           "legendFormat": "AVERAGE",
           "refId": "B"
         }
@@ -1415,22 +1415,22 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "topk(7, sum by (name) (rate(container_network_receive_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
+          "expr": "topk(7, sum by (name) (rate(container_network_receive_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
           "legendFormat": "IN: {{name}}",
           "refId": "A"
         },
         {
-          "expr": "topk(7, sum by (name) (rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
+          "expr": "topk(7, sum by (name) (rate(container_network_transmit_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
           "legendFormat": "OUT: {{name}}",
           "refId": "B"
         },
         {
-          "expr": "avg(sum by (name) (rate(container_network_receive_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
+          "expr": "avg(sum by (name) (rate(container_network_receive_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
           "legendFormat": "AVG_IN",
           "refId": "C"
         },
         {
-          "expr": "avg(sum by (name) (rate(container_network_transmit_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
+          "expr": "avg(sum by (name) (rate(container_network_transmit_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
           "legendFormat": "AVG_OUT",
           "refId": "D"
         }
@@ -1616,22 +1616,22 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "topk(7, sum by (name) (rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
+          "expr": "topk(7, sum by (name) (rate(container_fs_writes_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m])))",
           "legendFormat": "Write: {{name}}",
           "refId": "B"
         },
         {
-          "expr": "topk(7, sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
+          "expr": "topk(7, sum by (name) (rate(container_fs_reads_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m])))",
           "legendFormat": "Read: {{name}}",
           "refId": "A"
         },
         {
-          "expr": "avg(sum by (name) (rate(container_fs_writes_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
+          "expr": "avg(sum by (name) (rate(container_fs_writes_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m])))",
           "legendFormat": "AVG_WRITE",
           "refId": "D"
         },
         {
-          "expr": "avg(sum by (name) (rate(container_fs_reads_bytes_total{server=\"$server\", name!=\"\", container!=\"POD\"}[1m])))",
+          "expr": "avg(sum by (name) (rate(container_fs_reads_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m])))",
           "legendFormat": "AVG_READ",
           "refId": "C"
         }
@@ -1647,6 +1647,10 @@
   "templating": {
     "list": [
       {
+        "current": {
+          "text": "Prometheus",
+          "value": "PBFA97CFB590B2093"
+        },
         "label": "Data Source",
         "name": "datasource",
         "options": [],
@@ -1656,16 +1660,24 @@
         "type": "datasource"
       },
       {
+        "current": {
+          "text": "master",
+          "value": "master"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(up, server)",
+        "definition": "label_values(up,host)",
         "includeAll": false,
-        "label": "Server",
-        "name": "server",
+        "label": "Host",
+        "name": "host",
         "options": [],
-        "query": "label_values(up, server)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(up,host)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -1681,5 +1693,5 @@
   "timezone": "browser",
   "title": "Container: Docker Daemon",
   "uid": "container-docker-daemon",
-  "version": 10
+  "version": 3
 }

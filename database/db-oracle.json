@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 90,
+  "id": 141,
   "links": [],
   "panels": [
     {
@@ -218,7 +218,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(oracledb_sessions_value{status=\"ACTIVE\", server=\"$server\"})",
+          "expr": "sum(oracledb_sessions_value{status=\"ACTIVE\", host=\"$host\"})",
           "legendFormat": "Active Sessions",
           "refId": "A"
         }
@@ -318,7 +318,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_physical_disk_value{server=\"$server\", name=\"physical reads\"}[$__rate_interval])",
+          "expr": "rate(oracledb_physical_disk_value{host=\"$host\", name=\"physical reads\"}[$__rate_interval])",
           "legendFormat": "Reads/sec",
           "range": true,
           "refId": "A"
@@ -420,7 +420,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_transaction_stats_value{name=\"DB time\", server=\"$server\"}[$__rate_interval]) / 100",
+          "expr": "rate(oracledb_transaction_stats_value{name=\"DB time\", host=\"$host\"}[$__rate_interval]) / 100",
           "legendFormat": "Response Time Lag",
           "range": true,
           "refId": "A"
@@ -524,7 +524,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "clamp_max(\n  (\n    sum by (server) (rate(oracledb_wait_time_user_io{server=\"$server\"}[$__rate_interval])) + \n    sum by (server) (rate(oracledb_wait_time_concurrency{server=\"$server\"}[$__rate_interval])) + \n    sum by (server) (rate(oracledb_wait_time_commit{server=\"$server\"}[$__rate_interval]))\n  ) \n  / \n  sum by (server) (rate(oracledb_transaction_stats_value{name=\"DB time\", server=\"$server\"}[$__rate_interval])) \n  * 100\n, 100)",
+          "expr": "clamp_max(\n  (\n    sum by (server) (rate(oracledb_wait_time_user_io{host=\"$host\"}[$__rate_interval])) + \n    sum by (server) (rate(oracledb_wait_time_concurrency{host=\"$host\"}[$__rate_interval])) + \n    sum by (server) (rate(oracledb_wait_time_commit{host=\"$host\"}[$__rate_interval]))\n  ) \n  / \n  sum by (server) (rate(oracledb_transaction_stats_value{name=\"DB time\", host=\"$host\"}[$__rate_interval])) \n  * 100\n, 100)",
           "legendFormat": "Wait Ratio",
           "range": true,
           "refId": "A"
@@ -591,7 +591,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "oracledb_up{server=\"$server\"}",
+          "expr": "oracledb_up{host=\"$host\"}",
           "refId": "A"
         }
       ],
@@ -713,7 +713,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_resource_current_utilization{resource_name=\"sessions\", server=\"$server\"}",
+          "expr": "oracledb_resource_current_utilization{resource_name=\"sessions\", host=\"$host\"}",
           "legendFormat": "Total Sessions",
           "refId": "A"
         }
@@ -814,7 +814,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_physical_disk_value{server=\"$server\", name=\"physical writes\"}[$__rate_interval])",
+          "expr": "rate(oracledb_physical_disk_value{host=\"$host\", name=\"physical writes\"}[$__rate_interval])",
           "legendFormat": "Writes/sec",
           "range": true,
           "refId": "A"
@@ -918,7 +918,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(\n  oracledb_compute_stats_value{server=\"$server\", name=\"sorts (memory)\"}\n  / \n  on(server, instance, job) \n  (\n    sum by (server, instance, job) (oracledb_compute_stats_value{server=\"$server\", name=~\"sorts.*\"})\n  )\n) * 100",
+          "expr": "(\n  oracledb_compute_stats_value{host=\"$host\", name=\"sorts (memory)\"}\n  / \n  on(server, instance, job) \n  (\n    sum by (server, instance, job) (oracledb_compute_stats_value{host=\"$host\", name=~\"sorts.*\"})\n  )\n) * 100",
           "legendFormat": "Memory Sort Efficiency",
           "range": true,
           "refId": "A"
@@ -1022,7 +1022,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(\n  oracledb_sga_stats_free_bytes{server=\"$server\", pool=\"shared pool\"} \n  / on(server, instance) group_left \n  oracledb_db_system_value{server=\"$server\", name=\"sga_max_size\"}\n) * 100",
+          "expr": "(\n  oracledb_sga_stats_free_bytes{host=\"$host\", pool=\"shared pool\"} \n  / on(server, instance) group_left \n  oracledb_db_system_value{host=\"$host\", name=\"sga_max_size\"}\n) * 100",
           "legendFormat": "Free Shared Pool",
           "range": true,
           "refId": "A"
@@ -1085,7 +1085,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "avg_over_time(oracledb_cache_hit_ratio_value{cache_hit_type=\"Buffer Cache Hit Ratio\", server=\"$server\"}[$__range])",
+          "expr": "avg_over_time(oracledb_cache_hit_ratio_value{cache_hit_type=\"Buffer Cache Hit Ratio\", host=\"$host\"}[$__range])",
           "refId": "A"
         }
       ],
@@ -1187,7 +1187,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(oracledb_resource_current_utilization{resource_name=\"sessions\", server=\"$server\"} / oracledb_resource_limit_value{resource_name=\"sessions\", server=\"$server\"}) * 100",
+          "expr": "(oracledb_resource_current_utilization{resource_name=\"sessions\", host=\"$host\"} / oracledb_resource_limit_value{resource_name=\"sessions\", host=\"$host\"}) * 100",
           "legendFormat": "Session Usage",
           "refId": "A"
         }
@@ -1288,7 +1288,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_compute_stats_value{server=\"$server\", name=\"sorts (disk)\"}[$__rate_interval])",
+          "expr": "rate(oracledb_compute_stats_value{host=\"$host\", name=\"sorts (disk)\"}[$__rate_interval])",
           "legendFormat": "Disk Sorts/sec",
           "range": true,
           "refId": "A"
@@ -1390,7 +1390,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_transaction_stats_value{server=\"$server\", name=\"user rollbacks\"}[$__rate_interval])",
+          "expr": "rate(oracledb_transaction_stats_value{host=\"$host\", name=\"user rollbacks\"}[$__rate_interval])",
           "legendFormat": "Rollbacks/sec",
           "range": true,
           "refId": "A"
@@ -1492,7 +1492,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_traffic_stats_value{server=\"$server\", name=\"enqueue timeouts\"}[$__rate_interval])",
+          "expr": "rate(oracledb_traffic_stats_value{host=\"$host\", name=\"enqueue timeouts\"}[$__rate_interval])",
           "legendFormat": "Timeouts/sec",
           "range": true,
           "refId": "A"
@@ -1555,7 +1555,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "avg_over_time(oracledb_cache_hit_ratio_value{cache_hit_type=\"Cursor Cache Hit Ratio\", server=\"$server\"}[$__range])",
+          "expr": "avg_over_time(oracledb_cache_hit_ratio_value{cache_hit_type=\"Cursor Cache Hit Ratio\", host=\"$host\"}[$__range])",
           "refId": "A"
         }
       ],
@@ -1655,7 +1655,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_traffic_stats_value{server=\"$server\", name=\"logons cumulative\"}[$__rate_interval])",
+          "expr": "rate(oracledb_traffic_stats_value{host=\"$host\", name=\"logons cumulative\"}[$__rate_interval])",
           "legendFormat": "Logons/sec",
           "range": true,
           "refId": "A"
@@ -1757,7 +1757,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_compute_stats_value{server=\"$server\", name=\"table scans (long tables)\"}[$__rate_interval])",
+          "expr": "rate(oracledb_compute_stats_value{host=\"$host\", name=\"table scans (long tables)\"}[$__rate_interval])",
           "legendFormat": "FTS/sec",
           "range": true,
           "refId": "A"
@@ -1885,7 +1885,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_tablespace_used_percent{server=\"$server\"}",
+          "expr": "oracledb_tablespace_used_percent{host=\"$host\"}",
           "legendFormat": "{{tablespace}}",
           "refId": "A"
         }
@@ -1990,7 +1990,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_tablespace_max_bytes{server=\"$server\"}",
+          "expr": "oracledb_tablespace_max_bytes{host=\"$host\"}",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -2090,7 +2090,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "avg_over_time(oracledb_cache_hit_ratio_value{cache_hit_type=\"Library Cache Hit Ratio\", server=\"$server\"}[$__range])",
+          "expr": "avg_over_time(oracledb_cache_hit_ratio_value{cache_hit_type=\"Library Cache Hit Ratio\", host=\"$host\"}[$__range])",
           "refId": "A"
         }
       ],
@@ -2186,7 +2186,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_tablespace_bytes{tablespace=\"TEMP\", server=\"$server\"}",
+          "expr": "oracledb_tablespace_bytes{tablespace=\"TEMP\", host=\"$host\"}",
           "legendFormat": "Used Space",
           "refId": "A"
         }
@@ -2258,7 +2258,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"sga_max_size\"}",
+              "expr": "oracledb_db_system_value{host=\"$host\", service=\"$service\", name=\"sga_max_size\"}",
               "format": "time_series",
               "instant": true,
               "legendFormat": "SGA Max",
@@ -2323,7 +2323,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"pga_aggregate_limit\"}",
+              "expr": "oracledb_db_system_value{host=\"$host\", service=\"$service\", name=\"pga_aggregate_limit\"}",
               "format": "time_series",
               "instant": true,
               "legendFormat": "PGA Limit",
@@ -2388,7 +2388,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "oracledb_db_system_value{server=\"$server\", service=\"$service\", name=\"cpu_count\"}",
+              "expr": "oracledb_db_system_value{host=\"$host\", service=\"$service\", name=\"cpu_count\"}",
               "format": "time_series",
               "instant": true,
               "legendFormat": "CPUs",
@@ -2519,7 +2519,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "delta(oracledb_top_sql_elapsed{server=\"$server\"}[$__range])",
+              "expr": "delta(oracledb_top_sql_elapsed{host=\"$host\"}[$__range])",
               "format": "table",
               "instant": true,
               "refId": "A"
@@ -2666,7 +2666,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "(oracledb_tablespace_bytes{server=\"$server\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"} / oracledb_tablespace_max_bytes{server=\"$server\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}) * 100",
+              "expr": "(oracledb_tablespace_bytes{host=\"$host\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"} / oracledb_tablespace_max_bytes{host=\"$host\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}) * 100",
               "format": "table",
               "instant": true,
               "refId": "A"
@@ -2806,7 +2806,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "(oracledb_tablespace_bytes{server=\"$server\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDO|USERS\"} / oracledb_tablespace_max_bytes{server=\"$server\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDO|USERS\"}) * 100",
+              "expr": "(oracledb_tablespace_bytes{host=\"$host\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDO|USERS\"} / oracledb_tablespace_max_bytes{host=\"$host\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDO|USERS\"}) * 100",
               "format": "table",
               "instant": true,
               "refId": "A"
@@ -2988,7 +2988,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "oracledb_tablespace_max_bytes{server=\"$server\", service=\"$service\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
+              "expr": "oracledb_tablespace_max_bytes{host=\"$host\", service=\"$service\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
               "format": "table",
               "range": true,
               "refId": "Total"
@@ -2998,7 +2998,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "oracledb_tablespace_bytes{server=\"$server\", service=\"$service\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
+              "expr": "oracledb_tablespace_bytes{host=\"$host\", service=\"$service\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
               "format": "table",
               "refId": "Used"
             },
@@ -3007,7 +3007,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "oracledb_tablespace_free{server=\"$server\", service=\"$service\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
+              "expr": "oracledb_tablespace_free{host=\"$host\", service=\"$service\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
               "format": "table",
               "refId": "Free"
             }
@@ -3228,7 +3228,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "oracledb_tablespace_max_bytes{server=\"$server\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
+              "expr": "oracledb_tablespace_max_bytes{host=\"$host\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
               "format": "table",
               "refId": "Total"
             },
@@ -3237,7 +3237,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "oracledb_tablespace_bytes{server=\"$server\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
+              "expr": "oracledb_tablespace_bytes{host=\"$host\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
               "format": "table",
               "refId": "Used"
             },
@@ -3246,7 +3246,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "oracledb_tablespace_free{server=\"$server\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
+              "expr": "oracledb_tablespace_free{host=\"$host\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
               "format": "table",
               "refId": "Free"
             }
@@ -3411,7 +3411,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "oracledb_tablespace_bytes{server=\"$server\", service=\"$service\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
+              "expr": "oracledb_tablespace_bytes{host=\"$host\", service=\"$service\", tablespace!~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
               "legendFormat": "{{tablespace}}",
               "refId": "A"
             }
@@ -3514,7 +3514,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "oracledb_tablespace_bytes{server=\"$server\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
+              "expr": "oracledb_tablespace_bytes{host=\"$host\", service=\"$service\", tablespace=~\"SYSTEM|SYSAUX|TEMP|UNDOTBS1|USERS\"}",
               "legendFormat": "{{tablespace}}",
               "refId": "A"
             }
@@ -3617,7 +3617,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "oracledb_cache_hit_ratio_value{server=\"$server\", service=\"$service\"}",
+              "expr": "oracledb_cache_hit_ratio_value{host=\"$host\", service=\"$service\"}",
               "format": "table",
               "instant": true,
               "refId": "A"
@@ -3789,7 +3789,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "(oracledb_resource_current_utilization{server=\"$server\"} / oracledb_resource_limit_value) * 100",
+              "expr": "(oracledb_resource_current_utilization{host=\"$host\"} / oracledb_resource_limit_value) * 100",
               "format": "table",
               "instant": true,
               "refId": "A"
@@ -3949,7 +3949,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum(increase(oracledb_activity_execute_count{server=\"$server\", service=\"$service\"}[$__range]))",
+              "expr": "sum(increase(oracledb_activity_execute_count{host=\"$host\", service=\"$service\"}[$__range]))",
               "legendFormat": "Executes",
               "range": true,
               "refId": "A"
@@ -3960,7 +3960,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum(increase(oracledb_activity_parse_count_total{server=\"$server\", service=\"$service\"}[$__range]))",
+              "expr": "sum(increase(oracledb_activity_parse_count_total{host=\"$host\", service=\"$service\"}[$__range]))",
               "legendFormat": "Parses",
               "range": true,
               "refId": "B"
@@ -4082,7 +4082,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "increase(sum(oracledb_activity_user_commits{server=\"$server\", service=\"$service\"})[$__range:])",
+              "expr": "increase(sum(oracledb_activity_user_commits{host=\"$host\", service=\"$service\"})[$__range:])",
               "legendFormat": "Commits",
               "range": true,
               "refId": "A"
@@ -4093,7 +4093,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "increase(sum(oracledb_activity_user_rollbacks{server=\"$server\", service=\"$service\"})[$__range:])",
+              "expr": "increase(sum(oracledb_activity_user_rollbacks{host=\"$host\", service=\"$service\"})[$__range:])",
               "legendFormat": "Rollbacks",
               "range": true,
               "refId": "B"
@@ -4215,7 +4215,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum by (service) (rate(oracledb_activity_execute_count{server=\"$server\", service=\"$service\"}[$__rate_interval]))",
+              "expr": "sum by (service) (rate(oracledb_activity_execute_count{host=\"$host\", service=\"$service\"}[$__rate_interval]))",
               "legendFormat": "Executes",
               "range": true,
               "refId": "A"
@@ -4226,7 +4226,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum by (service) (rate(oracledb_activity_parse_count_total{server=\"$server\", service=\"$service\"}[$__rate_interval]))",
+              "expr": "sum by (service) (rate(oracledb_activity_parse_count_total{host=\"$host\", service=\"$service\"}[$__rate_interval]))",
               "legendFormat": "Parses",
               "range": true,
               "refId": "B"
@@ -4348,7 +4348,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "rate(sum(oracledb_activity_user_commits{server=\"$server\", service=\"$service\"}) by (server, service) [$__rate_interval:])",
+              "expr": "rate(sum(oracledb_activity_user_commits{host=\"$host\", service=\"$service\"}) by (server, service) [$__rate_interval:])",
               "legendFormat": "Commits",
               "range": true,
               "refId": "A"
@@ -4359,7 +4359,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "rate(sum(oracledb_activity_user_rollbacks{server=\"$server\", service=\"$service\"}) by (server, service) [$__rate_interval:])",
+              "expr": "rate(sum(oracledb_activity_user_rollbacks{host=\"$host\", service=\"$service\"}) by (server, service) [$__rate_interval:])",
               "legendFormat": "Rollbacks",
               "range": true,
               "refId": "B"
@@ -4473,7 +4473,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum by (category) (\r\n  label_replace(\r\n    {__name__=~\"oracledb_wait_time_.*\", server=\"$server\"}, \r\n    \"category\", \"$1\", \"__name__\", \"oracledb_wait_time_(.*)\"\r\n  )\r\n)",
+              "expr": "sum by (category) (\r\n  label_replace(\r\n    {__name__=~\"oracledb_wait_time_.*\", host=\"$host\"}, \r\n    \"category\", \"$1\", \"__name__\", \"oracledb_wait_time_(.*)\"\r\n  )\r\n)",
               "format": "table",
               "instant": true,
               "refId": "A"
@@ -4645,7 +4645,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "sum(oracledb_sessions_value{server=\"$server\", service=\"$service\", type=\"USER\", status=\"ACTIVE\"})",
+              "expr": "sum(oracledb_sessions_value{host=\"$host\", service=\"$service\", type=\"USER\", status=\"ACTIVE\"})",
               "legendFormat": "ACTIVE",
               "refId": "A"
             },
@@ -4654,7 +4654,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "sum(oracledb_sessions_value{server=\"$server\", service=\"$service\", type=\"USER\", status=\"INACTIVE\"})",
+              "expr": "sum(oracledb_sessions_value{host=\"$host\", service=\"$service\", type=\"USER\", status=\"INACTIVE\"})",
               "legendFormat": "INACTIVE",
               "refId": "B"
             }
@@ -4761,7 +4761,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "sum(oracledb_sessions_value{server=\"$server\", service=\"$service\", type=\"BACKGROUND\"})",
+              "expr": "sum(oracledb_sessions_value{host=\"$host\", service=\"$service\", type=\"BACKGROUND\"})",
               "legendFormat": "Background Sessions",
               "refId": "A"
             }
@@ -4882,7 +4882,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "oracledb_process_count{server=\"$server\", service=\"$service\"}",
+              "expr": "oracledb_process_count{host=\"$host\", service=\"$service\"}",
               "legendFormat": "Processes",
               "refId": "A"
             }
@@ -5002,7 +5002,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "oracledb_exporter_last_scrape_duration_seconds{server=\"$server\", service=\"$service\"}",
+              "expr": "oracledb_exporter_last_scrape_duration_seconds{host=\"$host\", service=\"$service\"}",
               "legendFormat": "Total Scrape Duration",
               "refId": "A"
             }
@@ -5106,7 +5106,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "oracledb_exporter_scrapes_total{server=\"$server\", service=\"$service\"}",
+              "expr": "oracledb_exporter_scrapes_total{host=\"$host\", service=\"$service\"}",
               "legendFormat": "Scrapes Total",
               "refId": "A"
             }
@@ -5214,7 +5214,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "oracledb_exporter_last_database_scrape_duration_seconds{server=\"$server\", service=\"$service\"}",
+              "expr": "oracledb_exporter_last_database_scrape_duration_seconds{host=\"$host\", service=\"$service\"}",
               "legendFormat": "Database Scrape Duration",
               "refId": "A"
             }
@@ -5288,7 +5288,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "oracledb_exporter_last_scrape_error{server=\"$server\", service=\"$service\"}",
+              "expr": "oracledb_exporter_last_scrape_error{host=\"$host\", service=\"$service\"}",
               "format": "time_series",
               "instant": true,
               "refId": "A"
@@ -5328,28 +5328,15 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(up, server)",
-        "label": "Server",
-        "name": "server",
+        "definition": "label_values(up,host)",
+        "label": "Host",
+        "name": "host",
         "options": [],
-        "query": "label_values(up, server)",
-        "refresh": 1,
-        "type": "query"
-      },
-      {
-        "current": {
-          "text": "oracle-database",
-          "value": "oracle-database"
+        "query": {
+          "qryType": 1,
+          "query": "label_values(up,host)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(up{server=\"$server\"}, service)",
-        "label": "Service",
-        "name": "service",
-        "options": [],
-        "query": "label_values(up{server=\"$server\"}, service)",
         "refresh": 1,
         "type": "query"
       }
@@ -5361,7 +5348,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Database: Oacle Overview",
+  "title": "Database: Oracle",
   "uid": "db-oracle-overview",
-  "version": 70
+  "version": 6
 }

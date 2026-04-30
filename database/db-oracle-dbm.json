@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 99,
+  "id": 140,
   "links": [],
   "panels": [
     {
@@ -166,7 +166,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(oracledb_ora_active_sessions_count{server=\"$server\"})",
+          "expr": "sum(oracledb_ora_active_sessions_count{host=\"$host\"})",
           "legendFormat": "AAS Total",
           "refId": "A"
         }
@@ -267,7 +267,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(oracledb_ora_active_sessions_count{state=\"ON CPU\", server=\"$server\"})",
+          "expr": "sum(oracledb_ora_active_sessions_count{state=\"ON CPU\", host=\"$host\"})",
           "legendFormat": "Sessions on CPU",
           "range": true,
           "refId": "A"
@@ -365,7 +365,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_traffic_stats_value{name=\"logons cumulative\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_traffic_stats_value{name=\"logons cumulative\", host=\"$host\"}[5m])",
           "legendFormat": "Logons/sec",
           "refId": "A"
         }
@@ -462,7 +462,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_activity_user_commits{server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_activity_user_commits{host=\"$host\"}[5m])",
           "legendFormat": "Commits/sec",
           "refId": "A"
         }
@@ -559,7 +559,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_activity_user_rollbacks{server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_activity_user_rollbacks{host=\"$host\"}[5m])",
           "legendFormat": "Rollbacks/sec",
           "refId": "A"
         }
@@ -656,7 +656,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_redo_stats_value{name=\"redo size\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_redo_stats_value{name=\"redo size\", host=\"$host\"}[5m])",
           "legendFormat": "Redo Generation Rate",
           "refId": "A"
         }
@@ -753,7 +753,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(oracledb_sessions_value{type=\"BACKGROUND\", status=\"ACTIVE\", server=\"$server\"})",
+          "expr": "sum(oracledb_sessions_value{type=\"BACKGROUND\", status=\"ACTIVE\", host=\"$host\"})",
           "legendFormat": "Active Background",
           "refId": "A"
         }
@@ -854,7 +854,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(oracledb_ora_active_sessions_count{state=\"ON CPU\", server=\"$server\"}) - sum(oracledb_sessions_value{type=\"USER\", status=\"ACTIVE\", server=\"$server\"})",
+          "expr": "sum(oracledb_ora_active_sessions_count{state=\"ON CPU\", host=\"$host\"}) - sum(oracledb_sessions_value{type=\"USER\", status=\"ACTIVE\", host=\"$host\"})",
           "legendFormat": "Background on CPU",
           "range": true,
           "refId": "A"
@@ -956,7 +956,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(1 - (irate(oracledb_ora_redo_stats_value{name=\"redo buffer allocation retries\", server=\"$server\"}[5m]) / (irate(oracledb_ora_redo_stats_value{name=\"redo size\", server=\"$server\"}[5m]) OR on() vector(1)))) * 100",
+          "expr": "(1 - (irate(oracledb_ora_redo_stats_value{name=\"redo buffer allocation retries\", host=\"$host\"}[5m]) / (irate(oracledb_ora_redo_stats_value{name=\"redo size\", host=\"$host\"}[5m]) OR on() vector(1)))) * 100",
           "legendFormat": "Redo Hit Ratio",
           "range": true,
           "refId": "A"
@@ -1054,7 +1054,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_redo_stats_value{name=\"redo writes\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_redo_stats_value{name=\"redo writes\", host=\"$host\"}[5m])",
           "legendFormat": "Redo Writes/sec",
           "refId": "A"
         }
@@ -1155,7 +1155,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(sum(oracledb_ora_active_sessions_count{state=\"ON CPU\", server=\"$server\"}) / sum(oracledb_ora_active_sessions_count{server=\"$server\"})) * 100",
+          "expr": "(sum(oracledb_ora_active_sessions_count{state=\"ON CPU\", host=\"$host\"}) / sum(oracledb_ora_active_sessions_count{host=\"$host\"})) * 100",
           "legendFormat": "CPU/DB Time Ratio",
           "range": true,
           "refId": "A"
@@ -1253,7 +1253,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(sum(oracledb_ora_active_sessions_count{state!=\"ON CPU\", server=\"$server\"}) / sum(oracledb_ora_active_sessions_count{server=\"$server\"})) * 100",
+          "expr": "(sum(oracledb_ora_active_sessions_count{state!=\"ON CPU\", host=\"$host\"}) / sum(oracledb_ora_active_sessions_count{host=\"$host\"})) * 100",
           "legendFormat": "Wait/DB Time Ratio",
           "refId": "A"
         }
@@ -1376,7 +1376,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_parse_stats_value{name=\"parse count (total)\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_parse_stats_value{name=\"parse count (total)\", host=\"$host\"}[5m])",
           "legendFormat": "Total Parses/sec",
           "refId": "A"
         }
@@ -1473,7 +1473,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", host=\"$host\"}[5m])",
           "legendFormat": "Hard Parses/sec",
           "refId": "A"
         }
@@ -1570,7 +1570,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_cache_hit_ratio_value{cache_hit_type=\"Library Cache Hit Ratio\", server=\"$server\"}",
+          "expr": "oracledb_cache_hit_ratio_value{cache_hit_type=\"Library Cache Hit Ratio\", host=\"$host\"}",
           "legendFormat": "Library Cache Hit Ratio",
           "refId": "A"
         }
@@ -1693,7 +1693,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(oracledb_resource_current_utilization{resource_name=\"sessions\", server=\"$server\"} / oracledb_resource_limit_value{resource_name=\"sessions\", server=\"$server\"}) * 100",
+          "expr": "(oracledb_resource_current_utilization{resource_name=\"sessions\", host=\"$host\"} / oracledb_resource_limit_value{resource_name=\"sessions\", host=\"$host\"}) * 100",
           "legendFormat": "Session Usage %",
           "refId": "A"
         }
@@ -1790,7 +1790,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(oracledb_sessions_value{server=\"$server\"})",
+          "expr": "sum(oracledb_sessions_value{host=\"$host\"})",
           "legendFormat": "Total Sessions",
           "refId": "A"
         }
@@ -1891,7 +1891,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(1 - (irate(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", server=\"$server\"}[5m]) / (irate(oracledb_ora_parse_stats_value{name=\"parse count (total)\", server=\"$server\"}[5m]) OR on() vector(1)))) * 100",
+          "expr": "(1 - (irate(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", host=\"$host\"}[5m]) / (irate(oracledb_ora_parse_stats_value{name=\"parse count (total)\", host=\"$host\"}[5m]) OR on() vector(1)))) * 100",
           "legendFormat": "Soft Parse Ratio",
           "range": true,
           "refId": "A"
@@ -1989,7 +1989,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(1 - (irate(oracledb_ora_parse_stats_value{name=\"parse count (total)\", server=\"$server\"}[5m]) / (irate(oracledb_activity_execute_count{server=\"$server\"}[5m]) OR on() vector(1)))) * 100",
+          "expr": "(1 - (irate(oracledb_ora_parse_stats_value{name=\"parse count (total)\", host=\"$host\"}[5m]) / (irate(oracledb_activity_execute_count{host=\"$host\"}[5m]) OR on() vector(1)))) * 100",
           "legendFormat": "Exec without Parse",
           "refId": "A"
         }
@@ -2112,7 +2112,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_cache_hit_ratio_value{cache_hit_type=\"Row Cache Hit Ratio\", server=\"$server\"}",
+          "expr": "oracledb_cache_hit_ratio_value{cache_hit_type=\"Row Cache Hit Ratio\", host=\"$host\"}",
           "legendFormat": "Row Cache Hit Ratio",
           "refId": "A"
         }
@@ -2209,7 +2209,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_parse_stats_value{name=\"parse count (failures)\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_parse_stats_value{name=\"parse count (failures)\", host=\"$host\"}[5m])",
           "legendFormat": "Parse Failures/sec",
           "refId": "A"
         }
@@ -2306,7 +2306,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_db_system_value{name=\"sga_max_size\", server=\"$server\"} / 1024 / 1024",
+          "expr": "oracledb_db_system_value{name=\"sga_max_size\", host=\"$host\"} / 1024 / 1024",
           "legendFormat": "SGA Max Size",
           "refId": "A"
         }
@@ -2403,7 +2403,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_ora_memory_stats_bytes{name=\"total PGA allocated\", server=\"$server\"}",
+          "expr": "oracledb_ora_memory_stats_bytes{name=\"total PGA allocated\", host=\"$host\"}",
           "legendFormat": "Total PGA Allocated",
           "refId": "A"
         }
@@ -2504,7 +2504,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(oracledb_sga_stats_free_bytes{pool=\"shared pool\", server=\"$server\"} / (oracledb_db_system_value{name=\"sga_max_size\", server=\"$server\"} OR on() vector(1))) * 100",
+          "expr": "(oracledb_sga_stats_free_bytes{pool=\"shared pool\", host=\"$host\"} / (oracledb_db_system_value{name=\"sga_max_size\", host=\"$host\"} OR on() vector(1))) * 100",
           "legendFormat": "Shared Pool Free %",
           "range": true,
           "refId": "A"
@@ -2628,7 +2628,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_cache_hit_ratio_value{cache_hit_type=\"Buffer Cache Hit Ratio\", server=\"$server\"}",
+          "expr": "oracledb_cache_hit_ratio_value{cache_hit_type=\"Buffer Cache Hit Ratio\", host=\"$host\"}",
           "legendFormat": "Buffer Cache Hit Ratio",
           "refId": "A"
         }
@@ -2725,7 +2725,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_ora_pga_efficiency_hit_ratio{server=\"$server\"}",
+          "expr": "oracledb_ora_pga_efficiency_hit_ratio{host=\"$host\"}",
           "legendFormat": "PGA Hit Ratio",
           "refId": "A"
         }
@@ -2826,7 +2826,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(oracledb_transaction_stats_value{name=\"DB time\", server=\"$server\"}[$__rate_interval]) / 100",
+          "expr": "rate(oracledb_transaction_stats_value{name=\"DB time\", host=\"$host\"}[$__rate_interval]) / 100",
           "legendFormat": "Response Time Lag",
           "range": true,
           "refId": "A"
@@ -2924,7 +2924,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_compute_stats_value{name=\"table scans (long tables)\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_compute_stats_value{name=\"table scans (long tables)\", host=\"$host\"}[5m])",
           "legendFormat": "Long Scans/sec",
           "refId": "A"
         }
@@ -3073,7 +3073,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_io_throughput_value{name=\"session logical reads\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_io_throughput_value{name=\"session logical reads\", host=\"$host\"}[5m])",
           "legendFormat": "Logical Reads/sec",
           "refId": "A"
         }
@@ -3170,7 +3170,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_io_throughput_value{name=\"db block changes\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_io_throughput_value{name=\"db block changes\", host=\"$host\"}[5m])",
           "legendFormat": "Block Changes/sec",
           "refId": "A"
         }
@@ -3267,7 +3267,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_io_throughput_value{name=\"consistent changes\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_io_throughput_value{name=\"consistent changes\", host=\"$host\"}[5m])",
           "legendFormat": "Consistent Changes/sec",
           "refId": "A"
         }
@@ -3368,7 +3368,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(oracledb_compute_stats_value{name=\"sorts (memory)\", server=\"$server\"} / (oracledb_compute_stats_value{name=\"sorts (memory)\", server=\"$server\"} + oracledb_compute_stats_value{name=\"sorts (disk)\", server=\"$server\"} OR on() vector(1))) * 100",
+          "expr": "(oracledb_compute_stats_value{name=\"sorts (memory)\", host=\"$host\"} / (oracledb_compute_stats_value{name=\"sorts (memory)\", host=\"$host\"} + oracledb_compute_stats_value{name=\"sorts (disk)\", host=\"$host\"} OR on() vector(1))) * 100",
           "legendFormat": "Memory Sort Ratio",
           "range": true,
           "refId": "A"
@@ -3466,7 +3466,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_compute_stats_value{name=\"sorts (disk)\", server=\"$server\"}",
+          "expr": "oracledb_compute_stats_value{name=\"sorts (disk)\", host=\"$host\"}",
           "legendFormat": "Disk Sorts",
           "refId": "A"
         }
@@ -3563,7 +3563,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_compute_stats_value{name=\"sorts (rows)\", server=\"$server\"}[5m]) / (irate(oracledb_compute_stats_value{name=\"sorts (memory)\", server=\"$server\"}[5m]) + irate(oracledb_compute_stats_value{name=\"sorts (disk)\", server=\"$server\"}[5m]) OR on() vector(1))",
+          "expr": "irate(oracledb_compute_stats_value{name=\"sorts (rows)\", host=\"$host\"}[5m]) / (irate(oracledb_compute_stats_value{name=\"sorts (memory)\", host=\"$host\"}[5m]) + irate(oracledb_compute_stats_value{name=\"sorts (disk)\", host=\"$host\"}[5m]) OR on() vector(1))",
           "legendFormat": "Avg Rows/Sort",
           "refId": "A"
         }
@@ -3686,7 +3686,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(oracledb_ora_temp_usage_bytes_used{server=\"$server\"})",
+          "expr": "sum(oracledb_ora_temp_usage_bytes_used{host=\"$host\"})",
           "legendFormat": "Temp Used Bytes",
           "refId": "A"
         }
@@ -3787,7 +3787,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(irate(oracledb_compute_stats_value{name=\"sorts (memory)\", server=\"$server\"}[5m]) + irate(oracledb_compute_stats_value{name=\"sorts (disk)\", server=\"$server\"}[5m])) / (irate(oracledb_activity_execute_count{server=\"$server\"}[5m]) OR on() vector(1))",
+          "expr": "(irate(oracledb_compute_stats_value{name=\"sorts (memory)\", host=\"$host\"}[5m]) + irate(oracledb_compute_stats_value{name=\"sorts (disk)\", host=\"$host\"}[5m])) / (irate(oracledb_activity_execute_count{host=\"$host\"}[5m]) OR on() vector(1))",
           "legendFormat": "Sorts per User Call",
           "range": true,
           "refId": "A"
@@ -3888,7 +3888,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_io_throughput_value{name=\"physical read total bytes\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_io_throughput_value{name=\"physical read total bytes\", host=\"$host\"}[5m])",
           "legendFormat": "Physical Reads/s",
           "range": true,
           "refId": "A"
@@ -3990,7 +3990,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_physical_disk_value{name=\"physical reads\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_physical_disk_value{name=\"physical reads\", host=\"$host\"}[5m])",
           "legendFormat": "Read IOPS",
           "range": true,
           "refId": "A"
@@ -4114,7 +4114,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_io_throughput_value{name=\"physical write total bytes\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_io_throughput_value{name=\"physical write total bytes\", host=\"$host\"}[5m])",
           "legendFormat": "Physical Writes/s",
           "refId": "A"
         }
@@ -4214,7 +4214,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_physical_disk_value{name=\"physical writes\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_physical_disk_value{name=\"physical writes\", host=\"$host\"}[5m])",
           "legendFormat": "Write IOPS",
           "range": true,
           "refId": "A"
@@ -4312,7 +4312,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_contention_stats_value{name=\"enqueue deadlocks\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_contention_stats_value{name=\"enqueue deadlocks\", host=\"$host\"}[5m])",
           "legendFormat": "Deadlocks/sec",
           "refId": "A"
         }
@@ -4409,7 +4409,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_contention_stats_value{name=\"enqueue timeouts\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_contention_stats_value{name=\"enqueue timeouts\", host=\"$host\"}[5m])",
           "legendFormat": "Timeouts/sec",
           "refId": "A"
         }
@@ -4510,7 +4510,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_wait_time_user_io{server=\"$server\"}[5m]) / (irate(oracledb_physical_disk_value{name=\"physical reads\", server=\"$server\"}[5m]) OR on() vector(1))",
+          "expr": "irate(oracledb_wait_time_user_io{host=\"$host\"}[5m]) / (irate(oracledb_physical_disk_value{name=\"physical reads\", host=\"$host\"}[5m]) OR on() vector(1))",
           "legendFormat": "Avg Single Block Read (s)",
           "range": true,
           "refId": "A"
@@ -4612,7 +4612,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_compute_stats_value{name=\"DBWR checkpoints\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_compute_stats_value{name=\"DBWR checkpoints\", host=\"$host\"}[5m])",
           "legendFormat": "DBWR Checkpoints/s",
           "range": true,
           "refId": "A"
@@ -4736,7 +4736,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_contention_stats_value{name=\"branch node splits\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_contention_stats_value{name=\"branch node splits\", host=\"$host\"}[5m])",
           "legendFormat": "Branch Splits/sec",
           "refId": "A"
         }
@@ -4833,7 +4833,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_contention_stats_value{name=\"leaf node splits\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_contention_stats_value{name=\"leaf node splits\", host=\"$host\"}[5m])",
           "legendFormat": "Leaf Splits/sec",
           "refId": "A"
         }
@@ -4956,7 +4956,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_io_throughput_value{name=\"bytes sent via SQL*Net to client\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_io_throughput_value{name=\"bytes sent via SQL*Net to client\", host=\"$host\"}[5m])",
           "legendFormat": "Sent",
           "range": true,
           "refId": "A"
@@ -4967,7 +4967,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_ora_io_throughput_value{name=\"bytes received via SQL*Net from client\", server=\"$server\"}[5m])",
+          "expr": "irate(oracledb_ora_io_throughput_value{name=\"bytes received via SQL*Net from client\", host=\"$host\"}[5m])",
           "legendFormat": "Received",
           "range": true,
           "refId": "B"
@@ -5005,12 +5005,16 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(up, server)",
+        "definition": "label_values(up,host)",
         "includeAll": false,
-        "label": "Server",
-        "name": "server",
+        "label": "Host",
+        "name": "host",
         "options": [],
-        "query": "label_values(up, server)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(up,host)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -5026,5 +5030,5 @@
   "timezone": "browser",
   "title": "Database: Oracle DBM",
   "uid": "db-oracle-dbm",
-  "version": 20
+  "version": 2
 }

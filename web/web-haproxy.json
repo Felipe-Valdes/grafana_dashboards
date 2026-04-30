@@ -17,8 +17,8 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
-  "id": 94,
+  "graphTooltip": 1,
+  "id": 133,
   "links": [],
   "panels": [
     {
@@ -182,7 +182,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_frontend_bytes_out_total{server=\"$server\"}[$__rate_interval])) * 8",
+          "expr": "sum(rate(haproxy_frontend_bytes_out_total{host=\"$host\"}[$__rate_interval])) * 8",
           "legendFormat": "Bytes Out",
           "refId": "A"
         },
@@ -191,7 +191,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_frontend_bytes_in_total{server=\"$server\"}[$__rate_interval])) * 8",
+          "expr": "sum(rate(haproxy_frontend_bytes_in_total{host=\"$host\"}[$__rate_interval])) * 8",
           "legendFormat": "Bytes In",
           "refId": "B"
         }
@@ -316,7 +316,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(haproxy_frontend_current_sessions{server=\"$server\"})",
+          "expr": "sum(haproxy_frontend_current_sessions{host=\"$host\"})",
           "legendFormat": "Current",
           "refId": "A"
         },
@@ -325,7 +325,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(haproxy_frontend_limit_sessions{server=\"$server\"})",
+          "expr": "sum(haproxy_frontend_limit_sessions{host=\"$host\"})",
           "legendFormat": "Limit",
           "refId": "B"
         }
@@ -421,7 +421,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_frontend_connections_total{server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_frontend_connections_total{host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Sessions/s",
           "refId": "A"
         }
@@ -497,7 +497,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(\n  sum(increase(haproxy_frontend_http_responses_total{server=\"$server\", code=\"2xx\"}[$__range])) \n  / \n  sum(increase(haproxy_frontend_http_requests_total{server=\"$server\"}[$__range]))\n) * 100 OR vector(100)",
+          "expr": "(\n  sum(increase(haproxy_frontend_http_responses_total{host=\"$host\", code=\"2xx\"}[$__range])) \n  / \n  sum(increase(haproxy_frontend_http_requests_total{host=\"$host\"}[$__range]))\n) * 100 OR vector(100)",
           "legendFormat": "Success Rate",
           "range": true,
           "refId": "A"
@@ -594,7 +594,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_frontend_http_requests_total{server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_frontend_http_requests_total{host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Requests/s",
           "refId": "A"
         }
@@ -720,7 +720,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_frontend_denied_connections_total{server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_frontend_denied_connections_total{host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Denied Connections",
           "refId": "A"
         },
@@ -729,7 +729,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_frontend_denied_sessions_total{server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_frontend_denied_sessions_total{host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Denied Sessions",
           "refId": "B"
         }
@@ -800,7 +800,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "(sum(haproxy_frontend_current_sessions{server=\"$server\", proxy=\"http-in\"}) / sum(haproxy_frontend_limit_sessions{server=\"$server\", proxy=\"http-in\"})) * 100 OR vector(0)",
+          "expr": "(sum(haproxy_frontend_current_sessions{host=\"$host\", proxy=\"http-in\"}) / sum(haproxy_frontend_limit_sessions{host=\"$host\", proxy=\"http-in\"})) * 100 OR vector(0)",
           "legendFormat": "Capacity Used",
           "refId": "A"
         }
@@ -944,7 +944,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "clamp_min(\n  (\n    sum(increase(haproxy_backend_http_responses_total{server=\"$server\", code=\"2xx\"}[$__range])) \n    / \n    (sum(increase(haproxy_backend_http_requests_total{server=\"$server\"}[$__range])) > 0)\n  ) * 100, \n0) OR vector(100)",
+          "expr": "clamp_min(\n  (\n    sum(increase(haproxy_backend_http_responses_total{host=\"$host\", code=\"2xx\"}[$__range])) \n    / \n    (sum(increase(haproxy_backend_http_requests_total{host=\"$host\"}[$__range])) > 0)\n  ) * 100, \n0) OR vector(100)",
           "refId": "A"
         }
       ],
@@ -1069,7 +1069,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_backend_bytes_in_total{server=\"$server\"}[$__rate_interval])) * 8",
+          "expr": "sum(rate(haproxy_backend_bytes_in_total{host=\"$host\"}[$__rate_interval])) * 8",
           "legendFormat": "Bytes In",
           "refId": "A"
         },
@@ -1078,7 +1078,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_backend_bytes_out_total{server=\"$server\"}[$__rate_interval])) * 8",
+          "expr": "sum(rate(haproxy_backend_bytes_out_total{host=\"$host\"}[$__rate_interval])) * 8",
           "legendFormat": "Bytes Out",
           "refId": "B"
         }
@@ -1174,7 +1174,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_backend_sessions_total{server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_backend_sessions_total{host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Sessions/s",
           "refId": "A"
         }
@@ -1299,7 +1299,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(haproxy_backend_current_sessions{server=\"$server\"})",
+          "expr": "sum(haproxy_backend_current_sessions{host=\"$host\"})",
           "legendFormat": "Current",
           "refId": "A"
         },
@@ -1308,7 +1308,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(haproxy_backend_limit_sessions{server=\"$server\"})",
+          "expr": "sum(haproxy_backend_limit_sessions{host=\"$host\"})",
           "legendFormat": "Limit",
           "refId": "B"
         }
@@ -1431,7 +1431,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "haproxy_server_response_time_average_seconds{server=\"$server\"}",
+          "expr": "haproxy_server_response_time_average_seconds{host=\"$host\"}",
           "legendFormat": "{{exported_server}}",
           "refId": "B"
         }
@@ -1507,7 +1507,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(sum(haproxy_backend_current_sessions{server=\"$server\", proxy=\"php_servers\"}) / sum(haproxy_backend_limit_sessions{server=\"$server\", proxy=\"php_servers\"})) * 100 OR vector(0)",
+          "expr": "(sum(haproxy_backend_current_sessions{host=\"$host\", proxy=\"php_servers\"}) / sum(haproxy_backend_limit_sessions{host=\"$host\", proxy=\"php_servers\"})) * 100 OR vector(0)",
           "legendFormat": "Backend Load",
           "range": true,
           "refId": "A"
@@ -1639,7 +1639,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(haproxy_server_connect_time_average_seconds{server=\"$server\"}) * 1000",
+          "expr": "sum(haproxy_server_connect_time_average_seconds{host=\"$host\"}) * 1000",
           "legendFormat": "Connect Time",
           "refId": "B"
         }
@@ -1761,7 +1761,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_backend_retry_warnings_total{server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_backend_retry_warnings_total{host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Retries",
           "refId": "A"
         },
@@ -1770,7 +1770,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_backend_redispatch_warnings_total{server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_backend_redispatch_warnings_total{host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Redispatches",
           "refId": "B"
         }
@@ -1866,7 +1866,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(haproxy_backend_queue_time_average_seconds{server=\"$server\"}) * 1000",
+          "expr": "sum(haproxy_backend_queue_time_average_seconds{host=\"$host\"}) * 1000",
           "legendFormat": "Queue Time",
           "refId": "A"
         }
@@ -1992,7 +1992,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_backend_requests_denied_total{server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_backend_requests_denied_total{host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Req Denied",
           "refId": "A"
         },
@@ -2001,7 +2001,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_backend_responses_denied_total{server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_backend_responses_denied_total{host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Resp Denied",
           "refId": "B"
         }
@@ -2069,7 +2069,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(haproxy_backend_current_queue{server=\"$server\", proxy=\"php_servers\"})",
+          "expr": "sum(haproxy_backend_current_queue{host=\"$host\", proxy=\"php_servers\"})",
           "legendFormat": "Queued Requests",
           "refId": "A"
         }
@@ -2195,7 +2195,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_frontend_http_responses_total{code=\"3xx\", server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_frontend_http_responses_total{code=\"3xx\", host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Frontend 3xx",
           "refId": "A"
         },
@@ -2204,7 +2204,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_backend_http_responses_total{code=\"3xx\", server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_backend_http_responses_total{code=\"3xx\", host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Backend 3xx",
           "refId": "B"
         }
@@ -2330,7 +2330,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_frontend_http_responses_total{code=\"4xx\", server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_frontend_http_responses_total{code=\"4xx\", host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Frontend 4xx",
           "refId": "A"
         },
@@ -2339,7 +2339,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_backend_http_responses_total{code=\"4xx\", server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_backend_http_responses_total{code=\"4xx\", host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Backend 4xx",
           "refId": "B"
         }
@@ -2465,7 +2465,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_frontend_http_responses_total{code=\"5xx\", server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_frontend_http_responses_total{code=\"5xx\", host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Frontend 5xx",
           "refId": "A"
         },
@@ -2474,7 +2474,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_backend_http_responses_total{code=\"5xx\", server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_backend_http_responses_total{code=\"5xx\", host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Backend 5xx",
           "refId": "B"
         }
@@ -2600,7 +2600,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_frontend_request_errors_total{server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_frontend_request_errors_total{host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Frontend Errors",
           "refId": "A"
         },
@@ -2609,7 +2609,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_backend_response_errors_total{server=\"$server\"}[$__rate_interval]))",
+          "expr": "sum(rate(haproxy_backend_response_errors_total{host=\"$host\"}[$__rate_interval]))",
           "legendFormat": "Backend Errors",
           "refId": "B"
         }
@@ -2674,7 +2674,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(haproxy_backend_connection_errors_total{server=\"$server\", proxy=\"php_servers\"}[$__range]))",
+          "expr": "sum(rate(haproxy_backend_connection_errors_total{host=\"$host\", proxy=\"php_servers\"}[$__range]))",
           "legendFormat": "Error Rate",
           "refId": "A"
         }
@@ -2743,7 +2743,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(haproxy_backend_response_time_average_seconds{server=\"$server\", proxy=\"php_servers\"}) * 1000 OR vector(0)",
+          "expr": "sum(haproxy_backend_response_time_average_seconds{host=\"$host\", proxy=\"php_servers\"}) * 1000 OR vector(0)",
           "legendFormat": "Latency",
           "refId": "A"
         }
@@ -2910,7 +2910,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(haproxy_server_status{state=\"UP\", server=\"$server\"})",
+          "expr": "sum(haproxy_server_status{state=\"UP\", host=\"$host\"})",
           "legendFormat": "UP",
           "refId": "A"
         },
@@ -2919,7 +2919,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(haproxy_server_status{state=\"DOWN\", server=\"$server\"})",
+          "expr": "sum(haproxy_server_status{state=\"DOWN\", host=\"$host\"})",
           "legendFormat": "DOWN",
           "refId": "B"
         },
@@ -2928,7 +2928,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(haproxy_server_status{state=\"MAINT\", server=\"$server\"})",
+          "expr": "sum(haproxy_server_status{state=\"MAINT\", host=\"$host\"})",
           "legendFormat": "MAINT",
           "refId": "C"
         }
@@ -2965,12 +2965,16 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(up, server)",
+        "definition": "label_values(up,host)",
         "includeAll": false,
-        "label": "Server",
-        "name": "server",
+        "label": "Host",
+        "name": "host",
         "options": [],
-        "query": "label_values(up, server)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(up,host)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -2979,12 +2983,12 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Web: HAProxy",
   "uid": "web-haproxy",
-  "version": 25
+  "version": 2
 }

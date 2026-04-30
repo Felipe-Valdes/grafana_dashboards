@@ -17,8 +17,8 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
-  "id": 98,
+  "graphTooltip": 1,
+  "id": 142,
   "links": [],
   "panels": [
     {
@@ -172,7 +172,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(irate(redis_keyspace_hits_total{server=\"$server\"}[5m])) / (sum(irate(redis_keyspace_hits_total{server=\"$server\"}[5m])) + sum(irate(redis_keyspace_misses_total{server=\"$server\"}[5m])))",
+          "expr": "sum(irate(redis_keyspace_hits_total{host=\"$host\"}[5m])) / (sum(irate(redis_keyspace_hits_total{host=\"$host\"}[5m])) + sum(irate(redis_keyspace_misses_total{host=\"$host\"}[5m])))",
           "legendFormat": "Hit Rate",
           "range": true,
           "refId": "A"
@@ -234,7 +234,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_blocked_clients{server=\"$server\"}) or vector(0)",
+          "expr": "sum(redis_blocked_clients{host=\"$host\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -329,7 +329,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_connected_clients{server=\"$server\"}",
+          "expr": "redis_connected_clients{host=\"$host\"}",
           "legendFormat": "Connected Clients",
           "refId": "A"
         }
@@ -425,7 +425,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_blocked_clients{server=\"$server\"}",
+          "expr": "redis_blocked_clients{host=\"$host\"}",
           "legendFormat": "Blocked Clients",
           "refId": "A"
         }
@@ -488,7 +488,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(redis_db_keys{server=\"$server\"}) or vector(0)",
+          "expr": "sum(redis_db_keys{host=\"$host\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -548,7 +548,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_rdb_changes_since_last_save{server=\"$server\"}) or vector(0)",
+          "expr": "sum(redis_rdb_changes_since_last_save{host=\"$host\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -621,7 +621,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_master_link_status{server=\"$server\"}",
+          "expr": "redis_master_link_status{host=\"$host\"}",
           "refId": "A"
         }
       ],
@@ -716,7 +716,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_connected_slaves{server=\"$server\"}",
+          "expr": "redis_connected_slaves{host=\"$host\"}",
           "legendFormat": "Replicas",
           "refId": "A"
         }
@@ -812,7 +812,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(redis_rejected_connections_total{server=\"$server\"}[5m])",
+          "expr": "irate(redis_rejected_connections_total{host=\"$host\"}[5m])",
           "legendFormat": "Rejected Connections",
           "refId": "A"
         }
@@ -874,7 +874,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(redis_commands_processed_total{server=\"$server\"}[5m])) or vector(0)",
+          "expr": "sum(irate(redis_commands_processed_total{host=\"$host\"}[5m])) or vector(0)",
           "refId": "A"
         }
       ],
@@ -1051,7 +1051,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_exporter_last_scrape_duration_seconds{server=\"$server\"}",
+          "expr": "redis_exporter_last_scrape_duration_seconds{host=\"$host\"}",
           "legendFormat": "{{instance}}",
           "refId": "A"
         }
@@ -1152,7 +1152,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "(sum(redis_memory_used_bytes{server=\"$server\"}) by (instance) / sum(redis_memory_max_bytes{server=\"$server\"}) by (instance)) * 100",
+          "expr": "(sum(redis_memory_used_bytes{host=\"$host\"}) by (instance) / sum(redis_memory_max_bytes{host=\"$host\"}) by (instance)) * 100",
           "legendFormat": "{{instance}}",
           "refId": "A"
         }
@@ -1248,7 +1248,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_db_keys{server=\"$server\"})",
+          "expr": "sum(redis_db_keys{host=\"$host\"})",
           "legendFormat": "Total Keys",
           "refId": "A"
         }
@@ -1314,7 +1314,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_db_keys{server=\"$server\"}) or vector(0)",
+          "expr": "sum(redis_db_keys{host=\"$host\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -1409,7 +1409,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_db_keys{server=\"$server\"}",
+          "expr": "redis_db_keys{host=\"$host\"}",
           "legendFormat": "DB {{db}}",
           "refId": "A"
         }
@@ -1505,7 +1505,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(redis_expired_keys_total{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(redis_expired_keys_total{host=\"$host\"}[5m]))",
           "legendFormat": "Expired Keys",
           "refId": "A"
         }
@@ -1571,7 +1571,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_db_keys_expiring{server=\"$server\"}) or vector(0)",
+          "expr": "sum(redis_db_keys_expiring{host=\"$host\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -1666,7 +1666,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_slowlog_last_duration_seconds{server=\"$server\"}",
+          "expr": "redis_slowlog_last_duration_seconds{host=\"$host\"}",
           "legendFormat": "Last Duration",
           "refId": "A"
         }
@@ -1731,7 +1731,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_slowlog_length{server=\"$server\"}) or vector(0)",
+          "expr": "sum(redis_slowlog_length{host=\"$host\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -1826,7 +1826,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(redis_evicted_keys_total{server=\"$server\"}[5m]))",
+          "expr": "sum(irate(redis_evicted_keys_total{host=\"$host\"}[5m]))",
           "legendFormat": "Evicted Keys",
           "refId": "A"
         }
@@ -1922,7 +1922,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_master_repl_offset{server=\"$server\"} - on (instance) redis_slave_repl_offset{server=\"$server\"}",
+          "expr": "redis_master_repl_offset{host=\"$host\"} - on (instance) redis_slave_repl_offset{host=\"$host\"}",
           "legendFormat": "Replication Offset Delay",
           "refId": "A"
         }
@@ -2018,7 +2018,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_memory_used_bytes{server=\"$server\"})",
+          "expr": "sum(redis_memory_used_bytes{host=\"$host\"})",
           "legendFormat": "Memory Used",
           "refId": "A"
         }
@@ -2118,7 +2118,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(redis_cpu_user_seconds_total{server=\"$server\"}[5m]) + irate(redis_cpu_sys_seconds_total{server=\"$server\"}[5m])) * 100",
+          "expr": "sum(irate(redis_cpu_user_seconds_total{host=\"$host\"}[5m]) + irate(redis_cpu_sys_seconds_total{host=\"$host\"}[5m])) * 100",
           "legendFormat": "CPU Usage",
           "refId": "A"
         }
@@ -2180,7 +2180,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_mem_fragmentation_ratio{server=\"$server\"}) or vector(0)",
+          "expr": "sum(redis_mem_fragmentation_ratio{host=\"$host\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -2275,7 +2275,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_mem_fragmentation_ratio{server=\"$server\"}",
+          "expr": "redis_mem_fragmentation_ratio{host=\"$host\"}",
           "legendFormat": "Fragmentation Ratio",
           "refId": "A"
         }
@@ -2341,7 +2341,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(redis_keyspace_hits_total{server=\"$server\"}[5m])) / (sum(rate(redis_keyspace_hits_total{server=\"$server\"}[5m])) + sum(rate(redis_keyspace_misses_total{server=\"$server\"}[5m]))) or vector(0)",
+          "expr": "sum(rate(redis_keyspace_hits_total{host=\"$host\"}[5m])) / (sum(rate(redis_keyspace_hits_total{host=\"$host\"}[5m])) + sum(rate(redis_keyspace_misses_total{host=\"$host\"}[5m]))) or vector(0)",
           "refId": "A"
         }
       ],
@@ -2436,7 +2436,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(redis_keyspace_hits_total{server=\"$server\"}[5m]) / (rate(redis_keyspace_hits_total{server=\"$server\"}[5m]) + rate(redis_keyspace_misses_total{server=\"$server\"}[5m]))",
+          "expr": "rate(redis_keyspace_hits_total{host=\"$host\"}[5m]) / (rate(redis_keyspace_hits_total{host=\"$host\"}[5m]) + rate(redis_keyspace_misses_total{host=\"$host\"}[5m]))",
           "legendFormat": "Hit Rate",
           "refId": "A"
         }
@@ -2473,12 +2473,16 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(up, server)",
+        "definition": "label_values(up,host)",
         "includeAll": false,
-        "label": "Server",
-        "name": "server",
+        "label": "Host",
+        "name": "host",
         "options": [],
-        "query": "label_values(up, server)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(up,host)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -2494,5 +2498,5 @@
   "timezone": "browser",
   "title": "Databse: Redis",
   "uid": "db-redis",
-  "version": 13
+  "version": 2
 }

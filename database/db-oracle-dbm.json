@@ -39,7 +39,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Activity\n </span></div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; padding-left: 20px; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Activity\n </span></div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -65,7 +65,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Transactions\n </span></div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; padding-left: 20px; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Transactions\n </span></div>",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.2",
@@ -1279,7 +1279,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  SQL Parsing\n </span></div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; padding-left: 20px; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  SQL Parsing\n </span></div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -1596,7 +1596,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Session Limits\n </span></div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; padding-left: 20px; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Session Limits\n </span></div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -2015,7 +2015,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Memory\n </span></div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; padding-left: 20px; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Memory\n </span></div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -2531,7 +2531,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  SQL execution\n </span></div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; padding-left: 20px; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  SQL execution\n </span></div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -2950,7 +2950,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Logical IO\n </span></div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; padding-left: 20px; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Logical IO\n </span></div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -2976,7 +2976,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Sorts\n </span></div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; padding-left: 20px; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Sorts\n </span></div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -3589,7 +3589,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Physical IO\n </span></div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; padding-left: 20px; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Physical IO\n </span></div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -4017,7 +4017,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Locks\n </span></div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; padding-left: 20px; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Locks\n </span></div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -4639,7 +4639,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Indexes\n </span></div>",
+        "content": "<div style=\"position: relative; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #E9ECEF; padding-left: 20px; border: none; border-radius: 0;\">\n <span style=\"font-size: 18px; color: #495057; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Indexes\n </span></div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -5030,5 +5030,5 @@
   "timezone": "browser",
   "title": "Database: Oracle DBM",
   "uid": "db-oracle-dbm",
-  "version": 2
+  "version": 4
 }

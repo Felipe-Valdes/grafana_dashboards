@@ -22,7 +22,7 @@
   "links": [],
   "panels": [
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -30,8 +30,343 @@
         "y": 0
       },
       "id": 100,
-      "panels": [],
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 4,
+            "x": 0,
+            "y": 1
+          },
+          "id": 2420,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden;\">\n  <img src=\"https://www.svgrepo.com/show/448221/docker.svg\" style=\"height: 80%; width: auto; object-fit: contain;\" />\n</div>",
+            "mode": "html"
+          },
+          "pluginVersion": "12.3.2",
+          "title": "",
+          "transparent": true,
+          "type": "text"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "red",
+                    "value": 0
+                  },
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 5,
+            "x": 4,
+            "y": 1
+          },
+          "id": 3108,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "text": {
+              "titleSize": 12,
+              "valueSize": 60
+            },
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "count(container_tasks_state{host=\"$host\", name!=\"\", state=\"running\", container!=\"POD\"}) - count(container_last_seen{host=\"$host\", name!=\"\", container!=\"POD\"}) + count(container_tasks_state{host=\"$host\", name!=\"\", state=\"running\", container!=\"POD\"})",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Running Containers",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 5,
+            "x": 9,
+            "y": 1
+          },
+          "id": 3109,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "text": {
+              "titleSize": 12,
+              "valueSize": 60
+            },
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "count(container_last_seen{host=\"$host\", name!=\"\", container!=\"POD\"}) - count(container_tasks_state{host=\"$host\", name!=\"\", state=\"running\"})",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Issued Containers",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "fixed"
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "match": "0",
+                    "result": {
+                      "color": "red",
+                      "text": "Offline"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 5,
+            "x": 14,
+            "y": 1
+          },
+          "id": 2112,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "text": {
+              "titleSize": 12,
+              "valueSize": 40
+            },
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "avg(time() - container_start_time_seconds{host=\"$host\", name!=\"\"})",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Avg Container Uptime",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "fixed"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "dtdurationms"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 5,
+            "x": 19,
+            "y": 1
+          },
+          "id": 3110,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "text": {
+              "titleSize": 12,
+              "valueSize": 40
+            },
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "(time() - max(container_start_time_seconds{host=\"$host\", name!=\"\", container!=\"POD\"})) * 1000",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Last Container Deployment",
+          "transparent": true,
+          "type": "stat"
+        }
+      ],
       "title": "General",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 3115,
+      "panels": [],
+      "title": "Overview",
       "type": "row"
     },
     {
@@ -40,19 +375,45 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 4,
+        "h": 2,
+        "w": 12,
         "x": 0,
-        "y": 1
+        "y": 2
       },
-      "id": 2420,
+      "id": 3114,
       "options": {
         "code": {
           "language": "plaintext",
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden;\">\n  <img src=\"https://www.svgrepo.com/show/448221/docker.svg\" style=\"height: 80%; width: auto; object-fit: contain;\" />\n</div>",
+        "content": "<div style=\"display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #1565C0; padding-left: 20px;\">\n <span style=\"font-size: 18px; color: #FFFFFF; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  CPU \n </span>\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 12,
+        "x": 12,
+        "y": 2
+      },
+      "id": 3116,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #B15EFF; padding-left: 20px;\">\n <span style=\"font-size: 18px; color: #FFFFFF; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Memory \n </span>\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -86,7 +447,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#1565C0",
+                "color": "green",
                 "value": 0
               },
               {
@@ -150,10 +511,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 4,
-        "y": 1
+        "h": 10,
+        "w": 5,
+        "x": 0,
+        "y": 4
       },
       "id": 3099,
       "options": {
@@ -198,6 +559,148 @@
       "type": "table"
     },
     {
+      "description": "Tendencia histórica del uso de CPU por contenedor:\n- {{name}}: Evolución del consumo de recursos de cómputo de cada contenedor individual (Top 10).\n- AVERAGE (Línea Negra Punteada): Promedio de uso de CPU de todos los contenedores en el host.\n- Interpretación: Identifica microservicios con fugas de recursos o que requieren ajuste de limits/requests.\n- Valores esperados: Uso estable dentro de los límites. Valores cercanos al 100% indican riesgo de CPU Throttling.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AVERAGE"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "black",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    8,
+                    5
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 5
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "opacity"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 7,
+        "x": 5,
+        "y": 4
+      },
+      "id": 172,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "topk(10, sum by (name) (rate(container_cpu_usage_seconds_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval]) * 100))",
+          "legendFormat": "{{name}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "avg(sum by (name) (rate(container_cpu_usage_seconds_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval]) * 100))",
+          "legendFormat": "AVERAGE",
+          "refId": "B"
+        }
+      ],
+      "title": "Top 10 Containers - CPU Usage (%)",
+      "type": "timeseries"
+    },
+    {
       "datasource": {
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
@@ -224,7 +727,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#B15EFF",
+                "color": "green",
                 "value": 0
               },
               {
@@ -288,10 +791,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 14,
-        "y": 1
+        "h": 10,
+        "w": 5,
+        "x": 12,
+        "y": 4
       },
       "id": 3097,
       "options": {
@@ -336,60 +839,122 @@
       "type": "table"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
+      "description": "Consumo de memoria RAM por contenedor expresado en porcentaje respecto al total del host:\n- {{name}} (Top 10): Porcentaje de memoria RAM física utilizada por cada contenedor.\n- AVERAGE (Línea Negra Punteada): Promedio porcentual de consumo de todos los contenedores.\n- Interpretación: Permite visualizar qué fracción de los recursos totales del nodo consume cada microservicio.\n- Valores esperados: Uso dentro de los límites de reserva definidos para el servicio.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
-          "decimals": 0,
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "green",
                 "value": 0
               },
               {
-                "color": "green",
-                "value": 0
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AVERAGE"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "black",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    8,
+                    5
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 5
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "opacity"
               }
             ]
           }
-        },
-        "overrides": []
+        ]
       },
       "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 0,
-        "y": 6
+        "h": 10,
+        "w": 7,
+        "x": 17,
+        "y": 4
       },
-      "id": 3108,
+      "id": 12,
       "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 60
-        },
-        "textMode": "value",
-        "wideLayout": true
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
       },
       "pluginVersion": "12.3.2",
       "targets": [
@@ -398,85 +963,74 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "editorMode": "code",
-          "expr": "count(container_tasks_state{host=\"$host\", name!=\"\", state=\"running\", container!=\"POD\"}) - count(container_last_seen{host=\"$host\", name!=\"\", container!=\"POD\"}) + count(container_tasks_state{host=\"$host\", name!=\"\", state=\"running\", container!=\"POD\"})",
-          "instant": true,
+          "expr": "topk(10, (sum by (name) (avg_over_time(container_memory_working_set_bytes{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval])) / on() group_left() machine_memory_bytes{host=\"$host\"}) * 100)",
+          "legendFormat": "{{name}}",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "avg((sum by (name) (avg_over_time(container_memory_working_set_bytes{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval])) / on() group_left() machine_memory_bytes{host=\"$host\"}) * 100)",
+          "legendFormat": "AVERAGE",
+          "refId": "B"
         }
       ],
-      "title": "Running Containers",
-      "transparent": true,
-      "type": "stat"
+      "title": "Top 10 Containers - Memory Usage (%)",
+      "type": "timeseries"
     },
     {
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
-          }
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 4,
+        "h": 2,
+        "w": 12,
         "x": 0,
-        "y": 9
+        "y": 14
       },
-      "id": 3109,
+      "id": 3117,
       "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
         },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 60
-        },
-        "textMode": "value",
-        "wideLayout": true
+        "content": "<div style=\"display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #00ACC1; padding-left: 20px;\">\n <span style=\"font-size: 18px; color: #FFFFFF; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Networking \n </span>\n</div>",
+        "mode": "html"
       },
       "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "count(container_last_seen{host=\"$host\", name!=\"\", container!=\"POD\"}) - count(container_tasks_state{host=\"$host\", name!=\"\", state=\"running\"})",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Issued Containers",
+      "title": "",
       "transparent": true,
-      "type": "stat"
+      "type": "text"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "id": 3118,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; background-color: #546E7A; padding-left: 20px;\">\n <span style=\"font-size: 18px; color: #FFFFFF; font-family: 'Segoe UI', Tahoma, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;\">\n  Disk I/O \n </span>\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
     },
     {
       "datasource": {
@@ -504,7 +1058,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#00ACC1",
+                "color": "green",
                 "value": 0
               },
               {
@@ -568,10 +1122,10 @@
         ]
       },
       "gridPos": {
-        "h": 9,
-        "w": 10,
-        "x": 4,
-        "y": 9
+        "h": 8,
+        "w": 5,
+        "x": 0,
+        "y": 16
       },
       "id": 3100,
       "options": {
@@ -616,6 +1170,144 @@
       "type": "table"
     },
     {
+      "description": "Tendencia histórica del tráfico de red total por contenedor:\n- {{name}} (Top 10): Suma de tráfico de entrada y salida para cada contenedor individual.\n- AVERAGE (Línea Negra Punteada): Promedio de tráfico de red de todos los contenedores en el host.\n- Interpretación: Identifica microservicios con alta demanda de red que puedan impactar la latencia de otros servicios.\n- Valores esperados: Tráfico proporcional a la función del servicio (ej. mayor en bases de datos o APIs externas).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AVERAGE"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "black",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    8,
+                    5
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 5
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "opacity"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 7,
+        "x": 5,
+        "y": 16
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "topk(10, sum by (name) (rate(container_network_receive_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_network_transmit_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval])) * 8)",
+          "legendFormat": "{{name}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "avg(sum by (name) (rate(container_network_receive_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_network_transmit_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval]))) * 8",
+          "legendFormat": "AVERAGE",
+          "refId": "B"
+        }
+      ],
+      "title": "Top 10 Containers - Network Traffic (bps)",
+      "type": "timeseries"
+    },
+    {
       "datasource": {
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
@@ -642,7 +1334,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#546E7A",
+                "color": "green",
                 "value": 0
               },
               {
@@ -706,10 +1398,10 @@
         ]
       },
       "gridPos": {
-        "h": 9,
-        "w": 10,
-        "x": 14,
-        "y": 9
+        "h": 10,
+        "w": 5,
+        "x": 12,
+        "y": 16
       },
       "id": 3101,
       "options": {
@@ -754,172 +1446,7 @@
       "type": "table"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "text",
-            "mode": "fixed"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "0",
-                "result": {
-                  "color": "red",
-                  "text": "Offline"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 0,
-        "y": 12
-      },
-      "id": 2112,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 40
-        },
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "avg(time() - container_start_time_seconds{host=\"$host\", name!=\"\"})",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Avg Container Uptime",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "text",
-            "mode": "fixed"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "dtdurationms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 0,
-        "y": 15
-      },
-      "id": 3110,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 40
-        },
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "(time() - max(container_start_time_seconds{host=\"$host\", name!=\"\", container!=\"POD\"})) * 1000",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Last Container Deployment",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 18
-      },
-      "id": 200,
-      "panels": [],
-      "title": "CPU",
-      "type": "row"
-    },
-    {
-      "description": "Tendencia histórica del uso de CPU del contenedor:\n- Container CPU Trend: Muestra la evolución del consumo de recursos de cómputo específicos del contenedor seleccionado.\n- Interpretación: Permite identificar si un microservicio está experimentando picos inusuales o si requiere un ajuste en sus 'limits' y 'requests' de Docker.\n- Valores esperados: Uso estable dentro de los límites definidos. Un valor cercano al 100% (o al límite del contenedor) indica que el servicio podría presentar latencias por estrangulamiento de CPU (CPU Throttling).",
+      "description": "Tendencia histórica del throughput de disco total por contenedor:\n- {{name}} (Top 10): Suma de velocidad de lectura y escritura para cada contenedor individual.\n- AVERAGE (Línea Negra Punteada): Promedio de transferencia de datos en disco de todos los contenedores en el host.\n- Interpretación: Identifica microservicios con alta demanda de almacenamiento que puedan saturar el bus de datos.\n- Valores esperados: Actividad intermitente según la carga. Picos sostenidos sugieren procesos intensivos de logueo o bases de datos sin optimizar.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -943,174 +1470,7 @@
             },
             "insertNulls": false,
             "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "AVERAGE"
-            },
-            "properties": [
-              {
-                "id": "custom.lineWidth",
-                "value": 3
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [
-                    0.5,
-                    5
-                  ],
-                  "fill": "dot"
-                }
-              },
-              {
-                "id": "custom.lineInterpolation",
-                "value": "stepAfter"
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 16,
-        "w": 24,
-        "x": 0,
-        "y": 19
-      },
-      "id": 171,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "topk(20, sum by (name) (rate(container_cpu_usage_seconds_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m]) * 100))",
-          "legendFormat": "{{name}}",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "avg(sum by (name) (rate(container_cpu_usage_seconds_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m]) * 100))",
-          "legendFormat": "AVERAGE",
-          "refId": "B"
-        }
-      ],
-      "title": "Top 20 Containers - CPU Usage (%)",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 35
-      },
-      "id": 300,
-      "panels": [],
-      "title": "Memory",
-      "type": "row"
-    },
-    {
-      "description": "Tendencia histórica del uso de Memoria RAM del contenedor:\n- RAM Usage Trend: Muestra la evolución del consumo de memoria física (Working Set) de los microservicios con mayor carga.\n- Interpretación: Permite identificar fugas de memoria (memory leaks) o si el contenedor está cerca de ser finalizado por el OOM Killer (Out Of Memory).\n- Valores esperados: Consumo estable. Un crecimiento constante sin liberaciones sugiere la necesidad de optimizar el código o aumentar los límites de RAM asignados.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
+            "lineWidth": 3,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
@@ -1134,375 +1494,6 @@
               {
                 "color": "green",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "AVERAGE"
-            },
-            "properties": [
-              {
-                "id": "custom.lineWidth",
-                "value": 3
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [
-                    0.5,
-                    5
-                  ],
-                  "fill": "dot"
-                }
-              },
-              {
-                "id": "custom.lineInterpolation",
-                "value": "stepAfter"
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 16,
-        "w": 24,
-        "x": 0,
-        "y": 36
-      },
-      "id": 11,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "p50",
-            "stdDev",
-            "p95",
-            "p99",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "topk(20, sum by (name) (container_memory_working_set_bytes{host=\"$host\", name!=\"\", container!=\"POD\"}))",
-          "legendFormat": "{{name}}",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "avg(sum by (name) (container_memory_working_set_bytes{host=\"$host\", name!=\"\", container!=\"POD\"}))",
-          "legendFormat": "AVERAGE",
-          "refId": "B"
-        }
-      ],
-      "title": "Top 20 Containers - Memory Usage",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 52
-      },
-      "id": 400,
-      "panels": [],
-      "title": "Networking",
-      "type": "row"
-    },
-    {
-      "description": "Monitoreo de red en modo espejo:\n- Parte Superior (>0): Tráfico de entrada (IN).\n- Parte Inferior (<0): Tráfico de salida (OUT).",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": true,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "bps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/(OUT:|AVG_OUT).*/"
-            },
-            "properties": [
-              {
-                "id": "custom.transform",
-                "value": "negative-Y"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "AVG_IN"
-            },
-            "properties": [
-              {
-                "id": "custom.lineWidth",
-                "value": 3
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [
-                    0.5,
-                    5
-                  ],
-                  "fill": "dot"
-                }
-              },
-              {
-                "id": "custom.lineInterpolation",
-                "value": "stepAfter"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "AVG_OUT"
-            },
-            "properties": [
-              {
-                "id": "custom.lineWidth",
-                "value": 3
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [
-                    0.5,
-                    5
-                  ],
-                  "fill": "dot"
-                }
-              },
-              {
-                "id": "custom.lineInterpolation",
-                "value": "stepAfter"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 16,
-        "w": 24,
-        "x": 0,
-        "y": 53
-      },
-      "id": 3112,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "expr": "topk(7, sum by (name) (rate(container_network_receive_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
-          "legendFormat": "IN: {{name}}",
-          "refId": "A"
-        },
-        {
-          "expr": "topk(7, sum by (name) (rate(container_network_transmit_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
-          "legendFormat": "OUT: {{name}}",
-          "refId": "B"
-        },
-        {
-          "expr": "avg(sum by (name) (rate(container_network_receive_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
-          "legendFormat": "AVG_IN",
-          "refId": "C"
-        },
-        {
-          "expr": "avg(sum by (name) (rate(container_network_transmit_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m]) * 8))",
-          "legendFormat": "AVG_OUT",
-          "refId": "D"
-        }
-      ],
-      "title": "Top 10 Containers - Network Traffic (Mirror)",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 69
-      },
-      "id": 500,
-      "panels": [],
-      "title": "Disk I/O",
-      "type": "row"
-    },
-    {
-      "description": "Monitoreo de lectura y escritura en disco:\n- Parte Superior (>0): Velocidad de Escritura (Write).\n- Parte Inferior (<0): Velocidad de Lectura (Read).",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": true,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -1511,132 +1502,85 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "/(Read:|AVG_READ).*/"
+              "id": "byName",
+              "options": "AVERAGE"
             },
             "properties": [
               {
-                "id": "custom.transform",
-                "value": "negative-Y"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "AVG_READ"
-            },
-            "properties": [
+                "id": "color",
+                "value": {
+                  "fixedColor": "black",
+                  "mode": "fixed"
+                }
+              },
               {
                 "id": "custom.lineWidth",
                 "value": 3
               },
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
-                  "mode": "fixed"
-                }
-              },
-              {
                 "id": "custom.lineStyle",
                 "value": {
                   "dash": [
-                    0.5,
+                    8,
                     5
                   ],
-                  "fill": "dot"
+                  "fill": "dash"
                 }
               },
               {
-                "id": "custom.lineInterpolation",
-                "value": "stepAfter"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "AVG_WRITE"
-            },
-            "properties": [
-              {
-                "id": "custom.lineWidth",
-                "value": 3
+                "id": "custom.fillOpacity",
+                "value": 5
               },
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [
-                    0.5,
-                    5
-                  ],
-                  "fill": "dot"
-                }
-              },
-              {
-                "id": "custom.lineInterpolation",
-                "value": "stepAfter"
+                "id": "custom.gradientMode",
+                "value": "opacity"
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 16,
-        "w": 24,
-        "x": 0,
-        "y": 70
+        "h": 10,
+        "w": 7,
+        "x": 17,
+        "y": 16
       },
-      "id": 3113,
+      "id": 14,
       "options": {
         "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "right",
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "topk(7, sum by (name) (rate(container_fs_writes_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m])))",
-          "legendFormat": "Write: {{name}}",
-          "refId": "B"
-        },
-        {
-          "expr": "topk(7, sum by (name) (rate(container_fs_reads_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m])))",
-          "legendFormat": "Read: {{name}}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "topk(10, sum by (name) (rate(container_fs_reads_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval])))",
+          "legendFormat": "{{name}}",
           "refId": "A"
         },
         {
-          "expr": "avg(sum by (name) (rate(container_fs_writes_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m])))",
-          "legendFormat": "AVG_WRITE",
-          "refId": "D"
-        },
-        {
-          "expr": "avg(sum by (name) (rate(container_fs_reads_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[1m])))",
-          "legendFormat": "AVG_READ",
-          "refId": "C"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "avg(sum by (name) (rate(container_fs_reads_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{host=\"$host\", name!=\"\", container!=\"POD\"}[$__rate_interval])))",
+          "legendFormat": "AVERAGE",
+          "refId": "B"
         }
       ],
-      "title": "Top 10 Containers - Disk I/O Traffic (Mirror)",
+      "title": "Top 10 Containers - Disk I/O Traffic (Bps)",
       "type": "timeseries"
     }
   ],
@@ -1693,5 +1637,5 @@
   "timezone": "browser",
   "title": "Container: Docker Daemon",
   "uid": "container-docker-daemon",
-  "version": 3
+  "version": 8
 }

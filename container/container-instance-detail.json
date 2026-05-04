@@ -3837,38 +3837,6 @@
         "regex": "",
         "sort": 1,
         "type": "query"
-      },
-      {
-        "current": {
-          "text": "1",
-          "value": "1"
-        },
-        "label": "Intensity",
-        "name": "threshold",
-        "options": [
-          {
-            "selected": true,
-            "text": "Low",
-            "value": "1"
-          },
-          {
-            "selected": false,
-            "text": "Medium",
-            "value": "2"
-          },
-          {
-            "selected": false,
-            "text": "High",
-            "value": "3"
-          },
-          {
-            "selected": false,
-            "text": "Critical",
-            "value": "4"
-          }
-        ],
-        "query": "Low : 1, Medium : 2, High : 3, Critical : 4",
-        "type": "custom"
       }
     ]
   },
@@ -3880,5 +3848,5 @@
   "timezone": "browser",
   "title": "Container: Instance Detail",
   "uid": "container-instance-detail",
-  "version": 2
+  "version": 4
 }

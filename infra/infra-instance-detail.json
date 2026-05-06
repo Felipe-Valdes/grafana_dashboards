@@ -5127,7 +5127,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 49
+            "y": 87
           },
           "id": 812,
           "options": {
@@ -5182,7 +5182,7 @@
       "type": "row"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -5190,894 +5190,946 @@
         "y": 41
       },
       "id": 500,
-      "panels": [
-        {
-          "description": "Inventario detallado y estado de ocupación de sistemas de archivos de la infraestructura.",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false
-              },
-              "decimals": 1,
-              "mappings": [],
-              "thresholds": {
-                "mode": "percent",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "orange",
-                    "value": 80
-                  },
-                  {
-                    "color": "red",
-                    "value": 90
-                  }
-                ]
-              },
-              "unit": "decbytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 24,
-            "x": 0,
-            "y": 107
-          },
-          "id": 508,
-          "options": {
-            "cellHeight": "sm",
-            "showHeader": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "expr": "node_filesystem_size_bytes{hostname=\"$hostname\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
-              "format": "table",
-              "refId": "Total"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "expr": "node_filesystem_size_bytes{hostname=\"$hostname\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"} - node_filesystem_free_bytes{hostname=\"$hostname\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
-              "format": "table",
-              "refId": "Used"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "expr": "node_filesystem_avail_bytes{hostname=\"$hostname\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
-              "format": "table",
-              "refId": "Free"
-            }
-          ],
-          "title": "Partition List & Usage",
-          "transformations": [
-            {
-              "id": "seriesToColumns",
-              "options": {
-                "byField": "mountpoint"
-              }
-            },
-            {
-              "id": "calculateField",
-              "options": {
-                "alias": "Usage %",
-                "binaryImp": {
-                  "left": "Used",
-                  "operator": "/",
-                  "right": "Total"
-                },
-                "mode": "binaryExpression"
-              }
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "__name__": true,
-                  "app": true,
-                  "device 2": true,
-                  "device 3": true,
-                  "fstype 2": true,
-                  "fstype 3": true,
-                  "hostname": true,
-                  "instance": true,
-                  "job": true,
-                  "service": true
-                },
-                "indexByName": {
-                  "Free": 5,
-                  "Total": 3,
-                  "Usage %": 6,
-                  "Used": 4,
-                  "device 1": 0,
-                  "fstype 1": 2,
-                  "mountpoint": 1
-                },
-                "renameByName": {
-                  "Free": "Free Space",
-                  "Total": "Total Capacity",
-                  "Used": "Used Space",
-                  "device 1": "Device",
-                  "fstype 1": "FS Type",
-                  "mountpoint": "Mount Point"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "description": "Latencia promedio de E/S por dispositivo:\n- {{device}}: Tiempo de respuesta combinado (Read+Write) para cada disco.\n- AVERAGE TOTAL (Línea Negra Punteada): Latencia promedio de todo el subsistema.\n- Interpretación: Permite identificar rápidamente qué disco físico está causando lentitud en el sistema.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 2,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "ms"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "AVERAGE TOTAL"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "black",
-                      "mode": "fixed"
-                    }
-                  },
-                  {
-                    "id": "custom.lineWidth",
-                    "value": 3
-                  },
-                  {
-                    "id": "custom.lineStyle",
-                    "value": {
-                      "dash": [
-                        8,
-                        5
-                      ],
-                      "fill": "dash"
-                    }
-                  },
-                  {
-                    "id": "custom.fillOpacity",
-                    "value": 5
-                  },
-                  {
-                    "id": "custom.gradientMode",
-                    "value": "opacity"
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 11,
-            "w": 24,
-            "x": 0,
-            "y": 114
-          },
-          "id": 805,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "p50",
-                "stdDev",
-                "p95",
-                "p99",
-                "max",
-                "min",
-                "sum"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "expr": "(rate(node_disk_read_time_seconds_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])) / (rate(node_disk_reads_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_writes_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])) * 1000",
-              "legendFormat": "Disk: {{device}}",
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "expr": "avg((rate(node_disk_read_time_seconds_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])) / (rate(node_disk_reads_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_writes_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])) * 1000)",
-              "legendFormat": "AVERAGE TOTAL",
-              "refId": "B"
-            }
-          ],
-          "title": "Disk Latency BY DEVICE (ms)",
-          "type": "timeseries"
-        },
-        {
-          "description": "Velocidad de lectura por dispositivo físico:\n- {{device}}: Tasa de transferencia de lectura para cada disco individual.\n- AVERAGE TOTAL (Línea Negra Punteada): Promedio de lectura de todo el subsistema de almacenamiento.\n- Interpretación: Identifica qué discos están soportando la mayor carga de lectura en el servidor.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 2,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "KBs"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "AVERAGE TOTAL"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "black",
-                      "mode": "fixed"
-                    }
-                  },
-                  {
-                    "id": "custom.lineWidth",
-                    "value": 3
-                  },
-                  {
-                    "id": "custom.lineStyle",
-                    "value": {
-                      "dash": [
-                        8,
-                        5
-                      ],
-                      "fill": "dash"
-                    }
-                  },
-                  {
-                    "id": "custom.fillOpacity",
-                    "value": 5
-                  },
-                  {
-                    "id": "custom.gradientMode",
-                    "value": "opacity"
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 0,
-            "y": 125
-          },
-          "id": 806,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "p50",
-                "stdDev",
-                "p95",
-                "p99",
-                "max",
-                "min",
-                "sum"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "expr": "rate(node_disk_read_bytes_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
-              "legendFormat": "Disk: {{device}}",
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "expr": "avg(rate(node_disk_read_bytes_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
-              "legendFormat": "AVERAGE TOTAL",
-              "refId": "B"
-            }
-          ],
-          "title": "Disk read (kb/s, by device)",
-          "type": "timeseries"
-        },
-        {
-          "description": "Velocidad de escritura por dispositivo físico:\n- {{device}}: Tasa de transferencia de escritura para cada disco individual.\n- AVERAGE TOTAL (Línea Negra Punteada): Promedio de escritura de todo el subsistema de almacenamiento.\n- Interpretación: Identifica qué discos están recibiendo la mayor carga de persistencia de datos.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 2,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "KBs"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "AVERAGE TOTAL"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "black",
-                      "mode": "fixed"
-                    }
-                  },
-                  {
-                    "id": "custom.lineWidth",
-                    "value": 3
-                  },
-                  {
-                    "id": "custom.lineStyle",
-                    "value": {
-                      "dash": [
-                        8,
-                        5
-                      ],
-                      "fill": "dash"
-                    }
-                  },
-                  {
-                    "id": "custom.fillOpacity",
-                    "value": 5
-                  },
-                  {
-                    "id": "custom.gradientMode",
-                    "value": "opacity"
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 12,
-            "y": 125
-          },
-          "id": 807,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "p50",
-                "stdDev",
-                "p95",
-                "p99",
-                "max",
-                "min",
-                "sum"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "expr": "rate(node_disk_written_bytes_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
-              "legendFormat": "Disk: {{device}}",
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "expr": "avg(rate(node_disk_written_bytes_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
-              "legendFormat": "AVERAGE TOTAL",
-              "refId": "B"
-            }
-          ],
-          "title": "Disk write (kb/s, by device)",
-          "type": "timeseries"
-        },
-        {
-          "description": "Frecuencia de operaciones de lectura por segundo para cada disco:\n- {{device}}: Operaciones de lectura individuales por disco físico.\n- AVERAGE TOTAL (Línea Negra Punteada): Media de operaciones de lectura del sistema.\n- Interpretación: Útil para identificar si un disco específico está procesando una cantidad excesiva de peticiones pequeñas.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 2,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "iops"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "AVERAGE TOTAL"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "black",
-                      "mode": "fixed"
-                    }
-                  },
-                  {
-                    "id": "custom.lineWidth",
-                    "value": 3
-                  },
-                  {
-                    "id": "custom.lineStyle",
-                    "value": {
-                      "dash": [
-                        8,
-                        5
-                      ],
-                      "fill": "dash"
-                    }
-                  },
-                  {
-                    "id": "custom.fillOpacity",
-                    "value": 5
-                  },
-                  {
-                    "id": "custom.gradientMode",
-                    "value": "opacity"
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 0,
-            "y": 135
-          },
-          "id": 808,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "p50",
-                "stdDev",
-                "p95",
-                "p99",
-                "max",
-                "min",
-                "sum"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "expr": "irate(node_disk_reads_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
-              "legendFormat": "Disk: {{device}}",
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "expr": "avg(irate(node_disk_reads_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
-              "legendFormat": "AVERAGE TOTAL",
-              "refId": "B"
-            }
-          ],
-          "title": "Read rate (per sec, by device)",
-          "type": "timeseries"
-        },
-        {
-          "description": "Frecuencia de operaciones de escritura por segundo para cada disco:\n- {{device}}: Operaciones de escritura individuales por disco físico.\n- AVERAGE TOTAL (Línea Negra Punteada): Media de operaciones de escritura del sistema.\n- Interpretación: Clave para ver la intensidad de grabación de datos en cada unidad de almacenamiento.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 2,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "iops"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "AVERAGE TOTAL"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "black",
-                      "mode": "fixed"
-                    }
-                  },
-                  {
-                    "id": "custom.lineWidth",
-                    "value": 3
-                  },
-                  {
-                    "id": "custom.lineStyle",
-                    "value": {
-                      "dash": [
-                        8,
-                        5
-                      ],
-                      "fill": "dash"
-                    }
-                  },
-                  {
-                    "id": "custom.fillOpacity",
-                    "value": 5
-                  },
-                  {
-                    "id": "custom.gradientMode",
-                    "value": "opacity"
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 12,
-            "y": 135
-          },
-          "id": 809,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "mean",
-                "p50",
-                "stdDev",
-                "p95",
-                "p99",
-                "max",
-                "min",
-                "sum"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "expr": "irate(node_disk_writes_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
-              "legendFormat": "Disk: {{device}}",
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "expr": "avg(irate(node_disk_writes_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
-              "legendFormat": "AVERAGE TOTAL",
-              "refId": "B"
-            }
-          ],
-          "title": "Write rate (per sec, by device)",
-          "type": "timeseries"
-        }
-      ],
+      "panels": [],
       "title": "Disk I/O",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus"
+      },
+      "description": "Inventario detallado y estado de ocupación de sistemas de archivos de la infraestructura.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "percent",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 80
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #Total"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 139
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #Used"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 389
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #Free"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 462
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mount Point"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 299
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 42
+      },
+      "id": 508,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "node_filesystem_size_bytes{hostname=\"$hostname\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
+          "format": "table",
+          "refId": "Total"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "node_filesystem_size_bytes{hostname=\"$hostname\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"} - node_filesystem_free_bytes{hostname=\"$hostname\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
+          "format": "table",
+          "refId": "Used"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "node_filesystem_avail_bytes{hostname=\"$hostname\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
+          "format": "table",
+          "refId": "Free"
+        }
+      ],
+      "title": "Partition List & Usage",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "mountpoint"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Usage %",
+            "binaryImp": {
+              "left": "Used",
+              "operator": "/",
+              "right": "Total"
+            },
+            "mode": "binaryExpression"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "app": true,
+              "device": true,
+              "env": true,
+              "fstype": true,
+              "hostname": true,
+              "instance": true,
+              "job": true,
+              "service": true,
+              "service_layer": true,
+              "target_type": true
+            },
+            "indexByName": {
+              "Free": 5,
+              "Total": 3,
+              "Usage %": 6,
+              "Used": 4,
+              "device 1": 0,
+              "fstype 1": 2,
+              "mountpoint": 1
+            },
+            "renameByName": {
+              "Free": "Free Space",
+              "Total": "Total Capacity",
+              "Used": "Used Space",
+              "device 1": "Device",
+              "fstype 1": "FS Type",
+              "mountpoint": "Mount Point"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "description": "Latencia promedio de E/S por dispositivo:\n- {{device}}: Tiempo de respuesta combinado (Read+Write) para cada disco.\n- AVERAGE TOTAL (Línea Negra Punteada): Latencia promedio de todo el subsistema.\n- Interpretación: Permite identificar rápidamente qué disco físico está causando lentitud en el sistema.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AVERAGE TOTAL"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "black",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    8,
+                    5
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 5
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "opacity"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 49
+      },
+      "id": 805,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "mean",
+            "p50",
+            "stdDev",
+            "p95",
+            "p99",
+            "max",
+            "min",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "(rate(node_disk_read_time_seconds_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])) / (rate(node_disk_reads_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_writes_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])) * 1000",
+          "legendFormat": "Disk: {{device}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "avg((rate(node_disk_read_time_seconds_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])) / (rate(node_disk_reads_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_writes_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])) * 1000)",
+          "legendFormat": "AVERAGE TOTAL",
+          "refId": "B"
+        }
+      ],
+      "title": "Disk Latency BY DEVICE (ms)",
+      "type": "timeseries"
+    },
+    {
+      "description": "Velocidad de lectura por dispositivo físico:\n- {{device}}: Tasa de transferencia de lectura para cada disco individual.\n- AVERAGE TOTAL (Línea Negra Punteada): Promedio de lectura de todo el subsistema de almacenamiento.\n- Interpretación: Identifica qué discos están soportando la mayor carga de lectura en el servidor.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "KBs"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AVERAGE TOTAL"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "black",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    8,
+                    5
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 5
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "opacity"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 60
+      },
+      "id": 806,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "mean",
+            "p50",
+            "stdDev",
+            "p95",
+            "p99",
+            "max",
+            "min",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "rate(node_disk_read_bytes_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
+          "legendFormat": "Disk: {{device}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "avg(rate(node_disk_read_bytes_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
+          "legendFormat": "AVERAGE TOTAL",
+          "refId": "B"
+        }
+      ],
+      "title": "Disk read (kb/s, by device)",
+      "type": "timeseries"
+    },
+    {
+      "description": "Velocidad de escritura por dispositivo físico:\n- {{device}}: Tasa de transferencia de escritura para cada disco individual.\n- AVERAGE TOTAL (Línea Negra Punteada): Promedio de escritura de todo el subsistema de almacenamiento.\n- Interpretación: Identifica qué discos están recibiendo la mayor carga de persistencia de datos.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "KBs"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AVERAGE TOTAL"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "black",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    8,
+                    5
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 5
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "opacity"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 60
+      },
+      "id": 807,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "mean",
+            "p50",
+            "stdDev",
+            "p95",
+            "p99",
+            "max",
+            "min",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "rate(node_disk_written_bytes_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
+          "legendFormat": "Disk: {{device}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "avg(rate(node_disk_written_bytes_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
+          "legendFormat": "AVERAGE TOTAL",
+          "refId": "B"
+        }
+      ],
+      "title": "Disk write (kb/s, by device)",
+      "type": "timeseries"
+    },
+    {
+      "description": "Frecuencia de operaciones de lectura por segundo para cada disco:\n- {{device}}: Operaciones de lectura individuales por disco físico.\n- AVERAGE TOTAL (Línea Negra Punteada): Media de operaciones de lectura del sistema.\n- Interpretación: Útil para identificar si un disco específico está procesando una cantidad excesiva de peticiones pequeñas.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "iops"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AVERAGE TOTAL"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "black",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    8,
+                    5
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 5
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "opacity"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 70
+      },
+      "id": 808,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "mean",
+            "p50",
+            "stdDev",
+            "p95",
+            "p99",
+            "max",
+            "min",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "irate(node_disk_reads_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
+          "legendFormat": "Disk: {{device}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "avg(irate(node_disk_reads_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
+          "legendFormat": "AVERAGE TOTAL",
+          "refId": "B"
+        }
+      ],
+      "title": "Read rate (per sec, by device)",
+      "type": "timeseries"
+    },
+    {
+      "description": "Frecuencia de operaciones de escritura por segundo para cada disco:\n- {{device}}: Operaciones de escritura individuales por disco físico.\n- AVERAGE TOTAL (Línea Negra Punteada): Media de operaciones de escritura del sistema.\n- Interpretación: Clave para ver la intensidad de grabación de datos en cada unidad de almacenamiento.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "iops"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AVERAGE TOTAL"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "black",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    8,
+                    5
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 5
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "opacity"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 70
+      },
+      "id": 809,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "mean",
+            "p50",
+            "stdDev",
+            "p95",
+            "p99",
+            "max",
+            "min",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "irate(node_disk_writes_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
+          "legendFormat": "Disk: {{device}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "avg(irate(node_disk_writes_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
+          "legendFormat": "AVERAGE TOTAL",
+          "refId": "B"
+        }
+      ],
+      "title": "Write rate (per sec, by device)",
+      "type": "timeseries"
     }
   ],
   "preload": false,
@@ -6133,5 +6185,5 @@
   "timezone": "browser",
   "title": "Infra: Instance Detail",
   "uid": "infra-instance-detail",
-  "version": 46
+  "version": 48
 }

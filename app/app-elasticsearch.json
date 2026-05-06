@@ -132,7 +132,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(irate(elasticsearch_indices_docs{host=\"$host\"}[5m]))",
+          "expr": "sum(irate(elasticsearch_indices_docs{hostname=\"$hostname\"}[5m]))",
           "legendFormat": "Doc Growth/s",
           "range": true,
           "refId": "A"
@@ -230,7 +230,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(irate(elasticsearch_indices_indexing_index_time_seconds_total{host=\"$host\"}[5m]) / irate(elasticsearch_indices_indexing_index_total{host=\"$host\"}[5m])) * 1000",
+          "expr": "(irate(elasticsearch_indices_indexing_index_time_seconds_total{hostname=\"$hostname\"}[5m]) / irate(elasticsearch_indices_indexing_index_total{hostname=\"$hostname\"}[5m])) * 1000",
           "legendFormat": "Indexing Latency",
           "refId": "A"
         }
@@ -323,7 +323,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(irate(elasticsearch_indices_indexing_index_time_seconds_total{host=\"$host\"}[5m])) * 1000",
+          "expr": "sum(irate(elasticsearch_indices_indexing_index_time_seconds_total{hostname=\"$hostname\"}[5m])) * 1000",
           "legendFormat": "Indexing Time",
           "range": true,
           "refId": "A"
@@ -417,7 +417,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(elasticsearch_indices_segments_memory_bytes{host=\"$host\"})",
+          "expr": "sum(elasticsearch_indices_segments_memory_bytes{hostname=\"$hostname\"})",
           "legendFormat": "Index Memory",
           "range": true,
           "refId": "A"
@@ -542,7 +542,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "elasticsearch_cluster_health_number_of_nodes{host=\"$host\"}",
+          "expr": "elasticsearch_cluster_health_number_of_nodes{hostname=\"$hostname\"}",
           "legendFormat": "Total Nodes",
           "range": true,
           "refId": "A"
@@ -553,7 +553,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "elasticsearch_cluster_health_number_of_data_nodes{host=\"$host\"}",
+          "expr": "elasticsearch_cluster_health_number_of_data_nodes{hostname=\"$hostname\"}",
           "legendFormat": "Data Nodes",
           "range": true,
           "refId": "B"
@@ -678,7 +678,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "elasticsearch_cluster_health_active_shards{host=\"$host\"}",
+          "expr": "elasticsearch_cluster_health_active_shards{hostname=\"$hostname\"}",
           "legendFormat": "Active Shards",
           "range": true,
           "refId": "A"
@@ -689,7 +689,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "elasticsearch_cluster_health_active_primary_shards{host=\"$host\"}",
+          "expr": "elasticsearch_cluster_health_active_primary_shards{hostname=\"$hostname\"}",
           "legendFormat": "Primary Shards",
           "range": true,
           "refId": "B"
@@ -782,7 +782,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (host) (elasticsearch_indices_segments_count{host=\"$host\"})",
+          "expr": "sum by (host) (elasticsearch_indices_segments_count{hostname=\"$hostname\"})",
           "legendFormat": "{{host}}",
           "range": true,
           "refId": "A"
@@ -878,7 +878,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "elasticsearch_os_load1{host=\"$host\"}",
+          "expr": "elasticsearch_os_load1{hostname=\"$hostname\"}",
           "legendFormat": "Load 1m",
           "refId": "A"
         },
@@ -887,7 +887,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "elasticsearch_os_load5{host=\"$host\"}",
+          "expr": "elasticsearch_os_load5{hostname=\"$hostname\"}",
           "legendFormat": "Load 5m",
           "refId": "B"
         },
@@ -896,7 +896,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "elasticsearch_os_load15{host=\"$host\"}",
+          "expr": "elasticsearch_os_load15{hostname=\"$hostname\"}",
           "legendFormat": "Load 15m",
           "refId": "C"
         }
@@ -993,7 +993,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(elasticsearch_process_cpu_percent{host=\"$host\"})",
+          "expr": "sum(elasticsearch_process_cpu_percent{hostname=\"$hostname\"})",
           "legendFormat": "CPU Usage",
           "range": true,
           "refId": "A"
@@ -1091,7 +1091,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "elasticsearch_os_load1{host=\"$host\"} / ON() (count(elasticsearch_os_load1{host=\"$host\"})) * 10",
+          "expr": "elasticsearch_os_load1{hostname=\"$hostname\"} / ON() (count(elasticsearch_os_load1{hostname=\"$hostname\"})) * 10",
           "legendFormat": "I/O Pressure Index",
           "range": true,
           "refId": "A"
@@ -1220,7 +1220,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(elasticsearch_os_mem_used_bytes{host=\"$host\"})",
+          "expr": "sum(elasticsearch_os_mem_used_bytes{hostname=\"$hostname\"})",
           "legendFormat": "Used Memory",
           "refId": "A"
         },
@@ -1230,7 +1230,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(elasticsearch_os_mem_free_bytes{host=\"$host\"})",
+          "expr": "sum(elasticsearch_os_mem_free_bytes{hostname=\"$hostname\"})",
           "legendFormat": "Free Memory",
           "refId": "B"
         }
@@ -1354,7 +1354,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(irate(elasticsearch_transport_rx_size_bytes_total{host=\"$host\"}[5m]))",
+          "expr": "sum(irate(elasticsearch_transport_rx_size_bytes_total{hostname=\"$hostname\"}[5m]))",
           "legendFormat": "RX (In)",
           "range": true,
           "refId": "A"
@@ -1365,7 +1365,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(irate(elasticsearch_transport_tx_size_bytes_total{host=\"$host\"}[5m]))",
+          "expr": "sum(irate(elasticsearch_transport_tx_size_bytes_total{hostname=\"$hostname\"}[5m]))",
           "legendFormat": "TX (Out)",
           "range": true,
           "refId": "B"
@@ -1403,14 +1403,14 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(up,host)",
+        "definition": "label_values(up,hostname)",
         "includeAll": false,
-        "label": "Host",
-        "name": "host",
+        "label": "Hostname",
+        "name": "hostname",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(up,host)",
+          "query": "label_values(up,hostname)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -1421,12 +1421,12 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "App: Elasticsearch",
   "uid": "app-elasticsearch",
-  "version": 3
+  "version": 8
 }

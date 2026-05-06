@@ -17,7 +17,7 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
+  "graphTooltip": 1,
   "id": 132,
   "links": [],
   "panels": [
@@ -332,19 +332,23 @@
       },
       {
         "current": {
-          "text": "master",
-          "value": "master"
+          "text": "athena",
+          "value": "athena"
         },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(up, server)",
+        "definition": "label_values(up,hostname)",
         "includeAll": false,
-        "label": "Host",
-        "name": "host",
+        "label": "Hostname",
+        "name": "hostname",
         "options": [],
-        "query": "label_values(up, server)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(up,hostname)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -360,5 +364,5 @@
   "timezone": "browser",
   "title": "template",
   "uid": "dashboard-template",
-  "version": 1
+  "version": 4
 }

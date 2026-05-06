@@ -51,7 +51,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; gap: 10px; overflow: hidden; padding: 1px;\">\n  <img src=\"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/linux.svg\" style=\"height: 55%; width: auto; filter: invert(0.8);\" />\n  <span style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 600; color: text; letter-spacing: 1px; line-height: 1.2; text-transform: capitalize;\">${host}</span>\n</div>",
+        "content": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; gap: 10px; overflow: hidden; padding: 1px;\">\n  <img src=\"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/linux.svg\" style=\"height: 55%; width: auto; filter: invert(0.8);\" />\n  <span style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 600; color: text; letter-spacing: 1px; line-height: 1.2; text-transform: capitalize;\">${hostname}</span>\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -119,7 +119,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "time() - node_boot_time_seconds{host=\"$host\"}",
+          "expr": "time() - node_boot_time_seconds{hostname=\"$hostname\"}",
           "instant": true,
           "refId": "A"
         }
@@ -183,7 +183,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "label_replace(node_boot_time_seconds{host=\"$host\"}, \"ip\", \"$1\", \"instance\", \"([^:]+):.*\")",
+          "expr": "label_replace(node_boot_time_seconds{hostname=\"$hostname\"}, \"ip\", \"$1\", \"instance\", \"([^:]+):.*\")",
           "format": "table",
           "instant": true,
           "legendFormat": "{{ip}}",
@@ -267,7 +267,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "node_os_info{host=\"$host\"}",
+          "expr": "node_os_info{hostname=\"$hostname\"}",
           "format": "table",
           "instant": true,
           "legendFormat": "{{pretty_name}}",
@@ -341,7 +341,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "node_uname_info{host=\"$host\"}",
+          "expr": "node_uname_info{hostname=\"$hostname\"}",
           "format": "table",
           "instant": true,
           "legendFormat": "{{release}}",
@@ -414,7 +414,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "count(node_cpu_seconds_total{host=\"$host\", mode=\"idle\"})",
+          "expr": "count(node_cpu_seconds_total{hostname=\"$hostname\", mode=\"idle\"})",
           "instant": true,
           "refId": "A"
         }
@@ -497,7 +497,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "100 - (avg by (host) (rate(node_cpu_seconds_total{host=\"$host\", mode=\"idle\"}[5m])) * 100)",
+          "expr": "100 - (avg by (hostname) (rate(node_cpu_seconds_total{hostname=\"$hostname\", mode=\"idle\"}[5m])) * 100)",
           "instant": true,
           "refId": "A"
         }
@@ -564,7 +564,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "node_memory_MemTotal_bytes{host=\"$host\"}",
+          "expr": "node_memory_MemTotal_bytes{hostname=\"$hostname\"}",
           "instant": true,
           "refId": "A"
         }
@@ -643,7 +643,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "100 * (1 - (node_memory_MemAvailable_bytes{host=\"$host\"} / node_memory_MemTotal_bytes{host=\"$host\"}))",
+          "expr": "100 * (1 - (node_memory_MemAvailable_bytes{hostname=\"$hostname\"} / node_memory_MemTotal_bytes{hostname=\"$hostname\"}))",
           "instant": true,
           "refId": "A"
         }
@@ -709,7 +709,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "max(node_network_speed_bytes{host=\"$host\", device!~\"lo|veth.*\"}) * 8",
+          "expr": "max(node_network_speed_bytes{hostname=\"$hostname\", device!~\"lo|veth.*\"}) * 8",
           "instant": true,
           "refId": "A"
         }
@@ -780,7 +780,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "max( (irate(node_network_receive_bytes_total{host=\"$host\", device!~\"lo|docker.*|veth.*\"}[5m]) * 100) / (node_network_speed_bytes{host=\"$host\"} > 0) )",
+          "expr": "max( (irate(node_network_receive_bytes_total{hostname=\"$hostname\", device!~\"lo|docker.*|veth.*\"}[5m]) * 100) / (node_network_speed_bytes{hostname=\"$hostname\"} > 0) )",
           "instant": true,
           "refId": "A"
         }
@@ -847,7 +847,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "node_filesystem_size_bytes{host=\"$host\", mountpoint=\"/\"}",
+          "expr": "node_filesystem_size_bytes{hostname=\"$hostname\", mountpoint=\"/\"}",
           "legendFormat": "Total",
           "range": true,
           "refId": "B"
@@ -932,7 +932,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "100 * (1 - (node_filesystem_avail_bytes{host=\"$host\", mountpoint=\"/\"} / node_filesystem_size_bytes{host=\"$host\", mountpoint=\"/\"}))",
+          "expr": "100 * (1 - (node_filesystem_avail_bytes{hostname=\"$hostname\", mountpoint=\"/\"} / node_filesystem_size_bytes{hostname=\"$hostname\", mountpoint=\"/\"}))",
           "instant": true,
           "refId": "A"
         }
@@ -1089,7 +1089,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "100 - (avg by (host) (irate(node_cpu_seconds_total{host=\"$host\", mode=\"idle\"}[$__rate_interval])) * 100)",
+          "expr": "100 - (avg by (hostname) (irate(node_cpu_seconds_total{hostname=\"$hostname\", mode=\"idle\"}[$__rate_interval])) * 100)",
           "legendFormat": "CPU Usage",
           "refId": "Uso"
         }
@@ -1212,12 +1212,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "irate(node_context_switches_total{host=\"$host\"}[$__rate_interval])",
+          "expr": "irate(node_context_switches_total{hostname=\"$hostname\"}[$__rate_interval])",
           "legendFormat": "Switches",
           "refId": "A"
         },
         {
-          "expr": "irate(node_intr_total{host=\"$host\"}[$__rate_interval])",
+          "expr": "irate(node_intr_total{hostname=\"$hostname\"}[$__rate_interval])",
           "legendFormat": "Interrupts",
           "refId": "B"
         }
@@ -1338,12 +1338,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_procs_running{host=\"$host\"}",
+          "expr": "node_procs_running{hostname=\"$hostname\"}",
           "legendFormat": "Running",
           "refId": "A"
         },
         {
-          "expr": "node_procs_blocked{host=\"$host\"}",
+          "expr": "node_procs_blocked{hostname=\"$hostname\"}",
           "legendFormat": "Blocked",
           "refId": "B"
         }
@@ -1469,12 +1469,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_memory_MemTotal_bytes{host=\"$host\"}-node_memory_MemAvailable_bytes{host=\"$host\"}",
+          "expr": "node_memory_MemTotal_bytes{hostname=\"$hostname\"}-node_memory_MemAvailable_bytes{hostname=\"$hostname\"}",
           "legendFormat": "Memory Usage",
           "refId": "A"
         },
         {
-          "expr": "node_memory_MemTotal_bytes{host=\"$host\"}",
+          "expr": "node_memory_MemTotal_bytes{hostname=\"$hostname\"}",
           "legendFormat": "Total Capacity",
           "refId": "B"
         }
@@ -1599,12 +1599,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_memory_Committed_AS_bytes{host=\"$host\"}",
+          "expr": "node_memory_Committed_AS_bytes{hostname=\"$hostname\"}",
           "legendFormat": "Committed",
           "refId": "A"
         },
         {
-          "expr": "node_memory_MemTotal_bytes{host=\"$host\"}",
+          "expr": "node_memory_MemTotal_bytes{hostname=\"$hostname\"}",
           "legendFormat": "Total Memory",
           "refId": "B"
         }
@@ -1730,12 +1730,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_memory_SwapTotal_bytes{host=\"$host\"} - node_memory_SwapFree_bytes{host=\"$host\"}",
+          "expr": "node_memory_SwapTotal_bytes{hostname=\"$hostname\"} - node_memory_SwapFree_bytes{hostname=\"$hostname\"}",
           "legendFormat": "Swap Usage",
           "refId": "A"
         },
         {
-          "expr": "node_memory_SwapTotal_bytes{host=\"$host\"}",
+          "expr": "node_memory_SwapTotal_bytes{hostname=\"$hostname\"}",
           "legendFormat": "Total Swap",
           "refId": "B"
         }
@@ -1852,12 +1852,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "sum(rate(node_softnet_processed_total{host=\"$host\"}[$__rate_interval]))",
+          "expr": "sum(rate(node_softnet_processed_total{hostname=\"$hostname\"}[$__rate_interval]))",
           "legendFormat": "Processed",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(node_softnet_dropped_total{host=\"$host\"}[$__rate_interval]))",
+          "expr": "sum(rate(node_softnet_dropped_total{hostname=\"$hostname\"}[$__rate_interval]))",
           "legendFormat": "Dropped",
           "refId": "B"
         }
@@ -1949,7 +1949,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "avg(irate(node_cpu_seconds_total{host=\"$host\", mode=\"softirq\"}[$__rate_interval])) * 100",
+          "expr": "avg(irate(node_cpu_seconds_total{hostname=\"$hostname\", mode=\"softirq\"}[$__rate_interval])) * 100",
           "legendFormat": "SoftIRQs",
           "refId": "A"
         }
@@ -2040,7 +2040,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_entropy_available_bits{host=\"$host\"}",
+          "expr": "node_entropy_available_bits{hostname=\"$hostname\"}",
           "legendFormat": "Entropy Bits",
           "refId": "A"
         }
@@ -2163,12 +2163,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "avg by (host) (node_memory_MemTotal_bytes{host=\"$host\"}-node_memory_MemFree_bytes{host=\"$host\"}-node_memory_Cached_bytes{host=\"$host\"}-node_memory_Buffers_bytes{host=\"$host\"}-node_memory_SReclaimable_bytes{host=\"$host\"})",
+          "expr": "avg by (hostname) (node_memory_MemTotal_bytes{hostname=\"$hostname\"}-node_memory_MemFree_bytes{hostname=\"$hostname\"}-node_memory_Cached_bytes{hostname=\"$hostname\"}-node_memory_Buffers_bytes{hostname=\"$hostname\"}-node_memory_SReclaimable_bytes{hostname=\"$hostname\"})",
           "legendFormat": "RSS (Apps)",
           "refId": "B"
         },
         {
-          "expr": "avg by (host) ((node_memory_MemTotal_bytes{host=\"$host\"}-node_memory_MemAvailable_bytes{host=\"$host\"}) - (node_memory_MemTotal_bytes{host=\"$host\"}-node_memory_MemFree_bytes{host=\"$host\"}-node_memory_Cached_bytes{host=\"$host\"}-node_memory_Buffers_bytes{host=\"$host\"}-node_memory_SReclaimable_bytes{host=\"$host\"}))",
+          "expr": "avg by (hostname) ((node_memory_MemTotal_bytes{hostname=\"$hostname\"}-node_memory_MemAvailable_bytes{hostname=\"$hostname\"}) - (node_memory_MemTotal_bytes{hostname=\"$hostname\"}-node_memory_MemFree_bytes{hostname=\"$hostname\"}-node_memory_Cached_bytes{hostname=\"$hostname\"}-node_memory_Buffers_bytes{hostname=\"$hostname\"}-node_memory_SReclaimable_bytes{hostname=\"$hostname\"}))",
           "legendFormat": "Kernel",
           "refId": "A"
         }
@@ -2261,7 +2261,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "avg by (host) (node_memory_Cached_bytes{host=\"$host\"} + node_memory_Buffers_bytes{host=\"$host\"} + node_memory_SReclaimable_bytes{host=\"$host\"})",
+          "expr": "avg by (hostname) (node_memory_Cached_bytes{hostname=\"$hostname\"} + node_memory_Buffers_bytes{hostname=\"$hostname\"} + node_memory_SReclaimable_bytes{hostname=\"$hostname\"})",
           "legendFormat": "Cache/Buffers",
           "refId": "C"
         }
@@ -2382,12 +2382,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "rate(node_vmstat_pgfault{host=\"$host\"}[$__rate_interval])",
+          "expr": "rate(node_vmstat_pgfault{hostname=\"$hostname\"}[$__rate_interval])",
           "legendFormat": "Page Faults",
           "refId": "A"
         },
         {
-          "expr": "rate(node_vmstat_pgmajfault{host=\"$host\"}[$__rate_interval])",
+          "expr": "rate(node_vmstat_pgmajfault{hostname=\"$hostname\"}[$__rate_interval])",
           "legendFormat": "Major Faults",
           "refId": "B"
         }
@@ -2479,7 +2479,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "avg(irate(node_cpu_seconds_total{host=\"$host\", mode=\"steal\"}[$__rate_interval])) * 100",
+          "expr": "avg(irate(node_cpu_seconds_total{hostname=\"$hostname\", mode=\"steal\"}[$__rate_interval])) * 100",
           "legendFormat": "Steal Time",
           "refId": "A"
         }
@@ -2571,7 +2571,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "node_load1{host=\"$host\"}",
+          "expr": "node_load1{hostname=\"$hostname\"}",
           "legendFormat": "System Load",
           "refId": "A"
         }
@@ -2663,7 +2663,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "(node_memory_Dirty_bytes{host=\"$host\"} / node_memory_MemTotal_bytes{host=\"$host\"}) * 100",
+          "expr": "(node_memory_Dirty_bytes{hostname=\"$hostname\"} / node_memory_MemTotal_bytes{hostname=\"$hostname\"}) * 100",
           "legendFormat": "Dirty Memory %",
           "refId": "A"
         }
@@ -2837,12 +2837,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "sum(node_network_receive_bytes_total{host=\"$host\", device!~\"lo|veth.*\"}) - sum(node_network_receive_bytes_total{host=\"$host\", device!~\"lo|veth.*\"} @ start())",
+          "expr": "sum(node_network_receive_bytes_total{hostname=\"$hostname\", device!~\"lo|veth.*\"}) - sum(node_network_receive_bytes_total{hostname=\"$hostname\", device!~\"lo|veth.*\"} @ start())",
           "legendFormat": "Total Inbound Data",
           "refId": "A"
         },
         {
-          "expr": "sum(node_network_transmit_bytes_total{host=\"$host\", device!~\"lo|veth.*\"}) - sum(node_network_transmit_bytes_total{host=\"$host\", device!~\"lo|veth.*\"} @ start())",
+          "expr": "sum(node_network_transmit_bytes_total{hostname=\"$hostname\", device!~\"lo|veth.*\"}) - sum(node_network_transmit_bytes_total{hostname=\"$hostname\", device!~\"lo|veth.*\"} @ start())",
           "legendFormat": "Total Outbound Data",
           "refId": "B"
         }
@@ -2964,7 +2964,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(rate(node_network_receive_bytes_total{host=\"$host\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
+          "expr": "sum(rate(node_network_receive_bytes_total{hostname=\"$hostname\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
           "legendFormat": "IN",
           "refId": "A"
         },
@@ -2973,7 +2973,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(rate(node_network_transmit_bytes_total{host=\"$host\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
+          "expr": "sum(rate(node_network_transmit_bytes_total{hostname=\"$hostname\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
           "legendFormat": "OUT",
           "refId": "B"
         }
@@ -3065,7 +3065,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "avg(irate(node_network_receive_packets_total{host=\"$host\", device!~\"lo|veth.*\"}[$__rate_interval]) + irate(node_network_transmit_packets_total{host=\"$host\", device!~\"lo|veth.*\"}[$__rate_interval]))",
+          "expr": "avg(irate(node_network_receive_packets_total{hostname=\"$hostname\", device!~\"lo|veth.*\"}[$__rate_interval]) + irate(node_network_transmit_packets_total{hostname=\"$hostname\", device!~\"lo|veth.*\"}[$__rate_interval]))",
           "legendFormat": "Average Packets/s",
           "refId": "A"
         }
@@ -3220,17 +3220,17 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_filesystem_size_bytes{host=\"$host\", mountpoint=\"/\"} - node_filesystem_avail_bytes{host=\"$host\", mountpoint=\"/\"}",
+          "expr": "node_filesystem_size_bytes{hostname=\"$hostname\", mountpoint=\"/\"} - node_filesystem_avail_bytes{hostname=\"$hostname\", mountpoint=\"/\"}",
           "legendFormat": "Storage Usage",
           "refId": "A"
         },
         {
-          "expr": "node_filesystem_avail_bytes{host=\"$host\", mountpoint=\"/\"}",
+          "expr": "node_filesystem_avail_bytes{hostname=\"$hostname\", mountpoint=\"/\"}",
           "legendFormat": "Free Space",
           "refId": "C"
         },
         {
-          "expr": "node_filesystem_size_bytes{host=\"$host\", mountpoint=\"/\"}",
+          "expr": "node_filesystem_size_bytes{hostname=\"$hostname\", mountpoint=\"/\"}",
           "legendFormat": "Total Capacity",
           "refId": "B"
         }
@@ -3352,12 +3352,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "sum(node_disk_written_bytes_total{host=\"$host\"}) - sum(node_disk_written_bytes_total{host=\"$host\"} @ start())",
+          "expr": "sum(node_disk_written_bytes_total{hostname=\"$hostname\"}) - sum(node_disk_written_bytes_total{hostname=\"$hostname\"} @ start())",
           "legendFormat": "Total Written",
           "refId": "A"
         },
         {
-          "expr": "sum(node_disk_read_bytes_total{host=\"$host\"}) - sum(node_disk_read_bytes_total{host=\"$host\"} @ start())",
+          "expr": "sum(node_disk_read_bytes_total{hostname=\"$hostname\"}) - sum(node_disk_read_bytes_total{hostname=\"$hostname\"} @ start())",
           "legendFormat": "Total Read",
           "refId": "B"
         }
@@ -3479,7 +3479,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "avg(rate(node_disk_write_time_seconds_total{host=\"$host\"}[$__rate_interval]) * 1000)",
+          "expr": "avg(rate(node_disk_write_time_seconds_total{hostname=\"$hostname\"}[$__rate_interval]) * 1000)",
           "legendFormat": "Write Latency",
           "refId": "A"
         },
@@ -3488,7 +3488,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "avg(rate(node_disk_read_time_seconds_total{host=\"$host\"}[$__rate_interval]) * 1000)",
+          "expr": "avg(rate(node_disk_read_time_seconds_total{hostname=\"$hostname\"}[$__rate_interval]) * 1000)",
           "legendFormat": "Read Latency",
           "refId": "B"
         }
@@ -3614,12 +3614,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "sum by (host) (node_netstat_Tcp_CurrEstab{host=\"$host\"})",
+          "expr": "sum by (hostname) (node_netstat_Tcp_CurrEstab{hostname=\"$hostname\"})",
           "legendFormat": "Established",
           "refId": "A"
         },
         {
-          "expr": "node_nf_conntrack_entries{host=\"$host\"} / node_nf_conntrack_entries_limit{host=\"$host\"} * 100",
+          "expr": "node_nf_conntrack_entries{hostname=\"$hostname\"} / node_nf_conntrack_entries_limit{hostname=\"$hostname\"} * 100",
           "legendFormat": "Saturation",
           "refId": "B"
         }
@@ -3711,7 +3711,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum by (host) (irate(node_netstat_Udp_OutDatagrams{host=\"$host\"}[2m]))",
+          "expr": "sum by (hostname) (irate(node_netstat_Udp_OutDatagrams{hostname=\"$hostname\"}[2m]))",
           "legendFormat": "DNS Queries / sec",
           "refId": "A"
         }
@@ -3804,7 +3804,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "sum(rate(node_network_receive_bytes_total{host=\"$host\", device!~\"lo|veth.*\"}[$__rate_interval])) * 8",
+          "expr": "sum(rate(node_network_receive_bytes_total{hostname=\"$hostname\", device!~\"lo|veth.*\"}[$__rate_interval])) * 8",
           "legendFormat": "Download Speed",
           "refId": "A"
         }
@@ -3896,7 +3896,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "avg(irate(node_cpu_seconds_total{host=\"$host\", mode=\"iowait\"}[$__rate_interval])) * 100",
+          "expr": "avg(irate(node_cpu_seconds_total{hostname=\"$hostname\", mode=\"iowait\"}[$__rate_interval])) * 100",
           "legendFormat": "I/O Wait",
           "refId": "A"
         }
@@ -3987,7 +3987,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "rate(node_pressure_io_waiting_seconds_total{host=\"$host\"}[$__rate_interval])",
+          "expr": "rate(node_pressure_io_waiting_seconds_total{hostname=\"$hostname\"}[$__rate_interval])",
           "legendFormat": "I/O Pressure",
           "refId": "A"
         }
@@ -4108,12 +4108,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "sum(irate(node_disk_writes_completed_total{host=\"$host\"}[$__rate_interval]))",
+          "expr": "sum(irate(node_disk_writes_completed_total{hostname=\"$hostname\"}[$__rate_interval]))",
           "legendFormat": "Write IOPS",
           "refId": "B"
         },
         {
-          "expr": "sum(irate(node_disk_reads_completed_total{host=\"$host\"}[$__rate_interval]))",
+          "expr": "sum(irate(node_disk_reads_completed_total{hostname=\"$hostname\"}[$__rate_interval]))",
           "legendFormat": "Read IOPS",
           "refId": "A"
         }
@@ -4220,7 +4220,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "node_nf_conntrack_entries{host=\"$host\"} / node_nf_conntrack_entries_limit{host=\"$host\"}",
+          "expr": "node_nf_conntrack_entries{hostname=\"$hostname\"} / node_nf_conntrack_entries_limit{hostname=\"$hostname\"}",
           "legendFormat": "Saturation",
           "refId": "A"
         }
@@ -4314,7 +4314,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "max by (host) ( (irate(node_network_receive_bytes_total{host=\"$host\", device!~\"lo|docker.*|veth.*\"}[5m]) * 100) / (node_network_speed_bytes{host=\"$host\"} > 0) )",
+          "expr": "max by (hostname) ( (irate(node_network_receive_bytes_total{hostname=\"$hostname\", device!~\"lo|docker.*|veth.*\"}[5m]) * 100) / (node_network_speed_bytes{hostname=\"$hostname\"} > 0) )",
           "legendFormat": "Utilization %",
           "refId": "A"
         }
@@ -4436,7 +4436,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(irate(node_network_receive_errs_total{host=\"$host\", device!~\"lo|veth.*\"}[$__rate_interval]) + irate(node_network_transmit_errs_total{host=\"$host\", device!~\"lo|veth.*\"}[$__rate_interval]))",
+          "expr": "sum(irate(node_network_receive_errs_total{hostname=\"$hostname\", device!~\"lo|veth.*\"}[$__rate_interval]) + irate(node_network_transmit_errs_total{hostname=\"$hostname\", device!~\"lo|veth.*\"}[$__rate_interval]))",
           "legendFormat": "Network Errors",
           "refId": "A"
         },
@@ -4445,7 +4445,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(irate(node_network_receive_drop_total{host=\"$host\", device!~\"lo|veth.*\"}[$__rate_interval]) + irate(node_network_transmit_drop_total{host=\"$host\", device!~\"lo|veth.*\"}[$__rate_interval]))",
+          "expr": "sum(irate(node_network_receive_drop_total{hostname=\"$hostname\", device!~\"lo|veth.*\"}[$__rate_interval]) + irate(node_network_transmit_drop_total{hostname=\"$hostname\", device!~\"lo|veth.*\"}[$__rate_interval]))",
           "legendFormat": "Packets Dropped",
           "refId": "B"
         }
@@ -4566,12 +4566,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "sum(rate(node_disk_written_bytes_total{host=\"$host\"}[$__rate_interval]))",
+          "expr": "sum(rate(node_disk_written_bytes_total{hostname=\"$hostname\"}[$__rate_interval]))",
           "legendFormat": "Write",
           "refId": "B"
         },
         {
-          "expr": "sum(rate(node_disk_read_bytes_total{host=\"$host\"}[$__rate_interval]))",
+          "expr": "sum(rate(node_disk_read_bytes_total{hostname=\"$hostname\"}[$__rate_interval]))",
           "legendFormat": "Read",
           "refId": "A"
         }
@@ -4674,7 +4674,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "expr": "(1 - node_filesystem_files_free{host=\"$host\", mountpoint=\"/\"} / node_filesystem_files{host=\"$host\", mountpoint=\"/\"}) * 100",
+          "expr": "(1 - node_filesystem_files_free{hostname=\"$hostname\", mountpoint=\"/\"} / node_filesystem_files{hostname=\"$hostname\", mountpoint=\"/\"}) * 100",
           "legendFormat": "Inodes Used",
           "refId": "A"
         }
@@ -4794,7 +4794,7 @@
             "h": 16,
             "w": 24,
             "x": 0,
-            "y": 447
+            "y": 39
           },
           "id": 542,
           "options": {
@@ -4828,7 +4828,7 @@
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "100 - (irate(node_cpu_seconds_total{host=\"$host\", mode=\"idle\"}[$__rate_interval]) * 100)",
+              "expr": "100 - (irate(node_cpu_seconds_total{hostname=\"$hostname\", mode=\"idle\"}[$__rate_interval]) * 100)",
               "legendFormat": "Core {{cpu}}",
               "refId": "A"
             },
@@ -4838,7 +4838,7 @@
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "avg(100 - (irate(node_cpu_seconds_total{host=\"$host\", mode=\"idle\"}[$__rate_interval]) * 100))",
+              "expr": "avg(100 - (irate(node_cpu_seconds_total{hostname=\"$hostname\", mode=\"idle\"}[$__rate_interval]) * 100))",
               "legendFormat": "AVERAGE TOTAL",
               "refId": "B"
             }
@@ -4975,7 +4975,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 430
+            "y": 41
           },
           "id": 811,
           "options": {
@@ -5008,7 +5008,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "rate(node_network_receive_bytes_total{host=\"$host\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])",
+              "expr": "rate(node_network_receive_bytes_total{hostname=\"$hostname\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])",
               "legendFormat": "IN: {{device}}",
               "refId": "A"
             },
@@ -5017,7 +5017,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "avg(rate(node_network_receive_bytes_total{host=\"$host\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
+              "expr": "avg(rate(node_network_receive_bytes_total{hostname=\"$hostname\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
               "legendFormat": "AVERAGE TOTAL",
               "refId": "B"
             }
@@ -5127,7 +5127,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 438
+            "y": 49
           },
           "id": 812,
           "options": {
@@ -5160,7 +5160,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "rate(node_network_transmit_bytes_total{host=\"$host\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])",
+              "expr": "rate(node_network_transmit_bytes_total{hostname=\"$hostname\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])",
               "legendFormat": "OUT: {{device}}",
               "refId": "A"
             },
@@ -5169,7 +5169,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "avg(rate(node_network_transmit_bytes_total{host=\"$host\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
+              "expr": "avg(rate(node_network_transmit_bytes_total{hostname=\"$hostname\", device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
               "legendFormat": "AVERAGE TOTAL",
               "refId": "B"
             }
@@ -5232,7 +5232,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 39
+            "y": 107
           },
           "id": 508,
           "options": {
@@ -5246,7 +5246,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "node_filesystem_size_bytes{host=\"$host\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
+              "expr": "node_filesystem_size_bytes{hostname=\"$hostname\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
               "format": "table",
               "refId": "Total"
             },
@@ -5255,7 +5255,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "node_filesystem_size_bytes{host=\"$host\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"} - node_filesystem_free_bytes{host=\"$host\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
+              "expr": "node_filesystem_size_bytes{hostname=\"$hostname\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"} - node_filesystem_free_bytes{hostname=\"$hostname\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
               "format": "table",
               "refId": "Used"
             },
@@ -5264,7 +5264,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "node_filesystem_avail_bytes{host=\"$host\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
+              "expr": "node_filesystem_avail_bytes{hostname=\"$hostname\", fstype!~\"tmpfs|overlay|shm|devpts|sysfs|proc\"}",
               "format": "table",
               "refId": "Free"
             }
@@ -5300,7 +5300,7 @@
                   "device 3": true,
                   "fstype 2": true,
                   "fstype 3": true,
-                  "host": true,
+                  "hostname": true,
                   "instance": true,
                   "job": true,
                   "service": true
@@ -5425,7 +5425,7 @@
             "h": 11,
             "w": 24,
             "x": 0,
-            "y": 46
+            "y": 114
           },
           "id": 805,
           "options": {
@@ -5458,7 +5458,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "(rate(node_disk_read_time_seconds_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval])) / (rate(node_disk_reads_completed_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_writes_completed_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval])) * 1000",
+              "expr": "(rate(node_disk_read_time_seconds_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])) / (rate(node_disk_reads_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_writes_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])) * 1000",
               "legendFormat": "Disk: {{device}}",
               "refId": "A"
             },
@@ -5467,7 +5467,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "avg((rate(node_disk_read_time_seconds_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval])) / (rate(node_disk_reads_completed_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_writes_completed_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval])) * 1000)",
+              "expr": "avg((rate(node_disk_read_time_seconds_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_write_time_seconds_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])) / (rate(node_disk_reads_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_writes_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])) * 1000)",
               "legendFormat": "AVERAGE TOTAL",
               "refId": "B"
             }
@@ -5573,7 +5573,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 57
+            "y": 125
           },
           "id": 806,
           "options": {
@@ -5606,7 +5606,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "rate(node_disk_read_bytes_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
+              "expr": "rate(node_disk_read_bytes_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
               "legendFormat": "Disk: {{device}}",
               "refId": "A"
             },
@@ -5615,7 +5615,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "avg(rate(node_disk_read_bytes_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
+              "expr": "avg(rate(node_disk_read_bytes_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
               "legendFormat": "AVERAGE TOTAL",
               "refId": "B"
             }
@@ -5721,7 +5721,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 57
+            "y": 125
           },
           "id": 807,
           "options": {
@@ -5754,7 +5754,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "rate(node_disk_written_bytes_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
+              "expr": "rate(node_disk_written_bytes_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
               "legendFormat": "Disk: {{device}}",
               "refId": "A"
             },
@@ -5763,7 +5763,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "avg(rate(node_disk_written_bytes_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
+              "expr": "avg(rate(node_disk_written_bytes_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
               "legendFormat": "AVERAGE TOTAL",
               "refId": "B"
             }
@@ -5873,7 +5873,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 67
+            "y": 135
           },
           "id": 808,
           "options": {
@@ -5906,7 +5906,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "irate(node_disk_reads_completed_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
+              "expr": "irate(node_disk_reads_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
               "legendFormat": "Disk: {{device}}",
               "refId": "A"
             },
@@ -5915,7 +5915,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "avg(irate(node_disk_reads_completed_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
+              "expr": "avg(irate(node_disk_reads_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
               "legendFormat": "AVERAGE TOTAL",
               "refId": "B"
             }
@@ -6025,7 +6025,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 67
+            "y": 135
           },
           "id": 809,
           "options": {
@@ -6058,7 +6058,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "irate(node_disk_writes_completed_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
+              "expr": "irate(node_disk_writes_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval])",
               "legendFormat": "Disk: {{device}}",
               "refId": "A"
             },
@@ -6067,7 +6067,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "avg(irate(node_disk_writes_completed_total{host=\"$host\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
+              "expr": "avg(irate(node_disk_writes_completed_total{hostname=\"$hostname\", device!~\"loop.*|sr.*\"}[$__rate_interval]))",
               "legendFormat": "AVERAGE TOTAL",
               "refId": "B"
             }
@@ -6108,14 +6108,14 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(up,host)",
+        "definition": "label_values(up,hostname)",
         "includeAll": false,
-        "label": "Host",
-        "name": "host",
+        "label": "Hostname",
+        "name": "hostname",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(up,host)",
+          "query": "label_values(up,hostname)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -6133,5 +6133,5 @@
   "timezone": "browser",
   "title": "Infra: Instance Detail",
   "uid": "infra-instance-detail",
-  "version": 42
+  "version": 46
 }

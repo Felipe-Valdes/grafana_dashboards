@@ -447,7 +447,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "host"
+              "options": "hostname"
             },
             "properties": [
               {
@@ -459,8 +459,8 @@
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "Ver detalle de ${__data.fields.host}",
-                    "url": "/d/infra-instance-detail?var-datasource=${datasource}&var-host=${__data.fields.host}"
+                    "title": "Ver detalle de ${__data.fields.hostname}",
+                    "url": "/d/infra-instance-detail?var-datasource=${datasource}&var-hostname=${__data.fields.hostname}"
                   }
                 ]
               }
@@ -512,7 +512,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "(1 - avg by (host) (rate(node_cpu_seconds_total{mode=\"idle\"}[$__rate_interval]))) * 100",
+          "expr": "(1 - avg by (hostname) (rate(node_cpu_seconds_total{mode=\"idle\"}[$__rate_interval]))) * 100",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -528,7 +528,7 @@
             },
             "indexByName": {
               "Value": 1,
-              "host": 0
+              "hostname": 0
             }
           }
         }
@@ -539,7 +539,7 @@
       "datasource": {
         "type": "prometheus"
       },
-      "description": "Tendencia histórica del uso de CPU por servidor:\n- {{host}}: Evolución del consumo de recursos de cómputo de cada host individual.\n- AVERAGE (Línea Negra Punteada): Promedio de uso de CPU de toda la infraestructura.\n- Interpretación: Permite identificar picos de carga en el sistema operativo host o procesos fuera de contenedores comparándolos con la media global.\n- Valores esperados: Uso estable. Valores persistentes sobre el 80% indican necesidad de escalado horizontal o vertical del hardware.",
+      "description": "Tendencia histórica del uso de CPU por servidor:\n- {{hostname}}: Evolución del consumo de recursos de cómputo de cada host individual.\n- AVERAGE (Línea Negra Punteada): Promedio de uso de CPU de toda la infraestructura.\n- Interpretación: Permite identificar picos de carga en el sistema operativo host o procesos fuera de contenedores comparándolos con la media global.\n- Valores esperados: Uso estable. Valores persistentes sobre el 80% indican necesidad de escalado horizontal o vertical del hardware.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -663,8 +663,8 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "(1 - avg by (host) (rate(node_cpu_seconds_total{mode=\"idle\"}[$__rate_interval]))) * 100",
-          "legendFormat": "Host: {{host}}",
+          "expr": "(1 - avg by (hostname) (rate(node_cpu_seconds_total{mode=\"idle\"}[$__rate_interval]))) * 100",
+          "legendFormat": "hostname: {{hostname}}",
           "refId": "A"
         },
         {
@@ -726,7 +726,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "host"
+              "options": "hostname"
             },
             "properties": [
               {
@@ -738,8 +738,8 @@
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "Ver detalle de ${__data.fields.host}",
-                    "url": "/d/infra-instance-detail?var-datasource=${datasource}&var-host=${__data.fields.host}"
+                    "title": "Ver detalle de ${__data.fields.hostname}",
+                    "url": "/d/infra-instance-detail?var-datasource=${datasource}&var-hostname=${__data.fields.hostname}"
                   }
                 ]
               }
@@ -811,11 +811,11 @@
             },
             "indexByName": {
               "Value": 1,
-              "host": 0
+              "hostname": 0
             },
             "renameByName": {
               "Value": "% RAM Consumption",
-              "host": "Host Name"
+              "hostname": "Host Name"
             }
           }
         }
@@ -823,7 +823,7 @@
       "type": "table"
     },
     {
-      "description": "Tendencia histórica del uso de RAM por servidor:\n- {{host}}: Evolución del consumo de memoria física de cada host individual.\n- AVERAGE (Línea Negra Punteada): Promedio de uso de memoria de toda la flota.\n- Interpretación: Permite identificar fugas de memoria (memory leaks) a nivel de sistema operativo o procesos comparándolos con la media global.\n- Valores esperados: Consumo estable. Un crecimiento constante sin liberación sugiere la necesidad de revisión de servicios zombies o procesos de sistema.",
+      "description": "Tendencia histórica del uso de RAM por servidor:\n- {{hostname}}: Evolución del consumo de memoria física de cada host individual.\n- AVERAGE (Línea Negra Punteada): Promedio de uso de memoria de toda la flota.\n- Interpretación: Permite identificar fugas de memoria (memory leaks) a nivel de sistema operativo o procesos comparándolos con la media global.\n- Valores esperados: Consumo estable. Un crecimiento constante sin liberación sugiere la necesidad de revisión de servicios zombies o procesos de sistema.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -948,7 +948,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "expr": "((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * 100",
-          "legendFormat": "{{host}}",
+          "legendFormat": "{{hostname}}",
           "refId": "A"
         },
         {
@@ -1066,7 +1066,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "host"
+              "options": "hostname"
             },
             "properties": [
               {
@@ -1078,8 +1078,8 @@
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "Ver detalle de ${__data.fields.host}",
-                    "url": "/d/infra-instance-detail?var-datasource=${datasource}&var-host=${__data.fields.host}"
+                    "title": "Ver detalle de ${__data.fields.hostname}",
+                    "url": "/d/infra-instance-detail?var-datasource=${datasource}&var-hostname=${__data.fields.hostname}"
                   }
                 ]
               }
@@ -1131,7 +1131,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "sum by (host) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]) + rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
+          "expr": "sum by (hostname) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]) + rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -1147,7 +1147,7 @@
             },
             "indexByName": {
               "Value": 1,
-              "host": 0
+              "hostname": 0
             }
           }
         }
@@ -1155,7 +1155,7 @@
       "type": "table"
     },
     {
-      "description": "Tendencia histórica del tráfico de red total por servidor:\n- {{host}}: Suma de tráfico de entrada y salida para cada host individual.\n- AVERAGE TOTAL (Línea Negra Punteada): Promedio de tráfico de red de toda la flota.\n- Interpretación: Permite identificar qué nodos generan mayor carga en la red troncal del hospital.\n- Valores esperados: Comportamiento acorde a la criticidad del servicio. Picos aislados son normales durante respaldos o transferencias de imágenes médicas.",
+      "description": "Tendencia histórica del tráfico de red total por servidor:\n- {{hostname}}: Suma de tráfico de entrada y salida para cada host individual.\n- AVERAGE TOTAL (Línea Negra Punteada): Promedio de tráfico de red de toda la flota.\n- Interpretación: Permite identificar qué nodos generan mayor carga en la red troncal del hospital.\n- Valores esperados: Comportamiento acorde a la criticidad del servicio. Picos aislados son normales durante respaldos o transferencias de imágenes médicas.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1275,8 +1275,8 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum by (host) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]) + rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])) * 8",
-          "legendFormat": "Host: {{host}}",
+          "expr": "sum by (hostname) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]) + rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])) * 8",
+          "legendFormat": "hostname: {{hostname}}",
           "refId": "A"
         },
         {
@@ -1284,7 +1284,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "avg(sum by (host) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]) + rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))) * 8",
+          "expr": "avg(sum by (hostname) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]) + rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval]))) * 8",
           "legendFormat": "AVERAGE TOTAL",
           "refId": "B"
         }
@@ -1338,7 +1338,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "host"
+              "options": "hostname"
             },
             "properties": [
               {
@@ -1350,8 +1350,8 @@
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "Ver detalle de ${__data.fields.host}",
-                    "url": "/d/infra-instance-detail?var-datasource=${datasource}&var-host=${__data.fields.host}"
+                    "title": "Ver detalle de ${__data.fields.hostname}",
+                    "url": "/d/infra-instance-detail?var-datasource=${datasource}&var-hostname=${__data.fields.hostname}"
                   }
                 ]
               }
@@ -1426,11 +1426,11 @@
             },
             "indexByName": {
               "Value": 1,
-              "host": 0
+              "hostname": 0
             },
             "renameByName": {
               "Value": "% Disk Usage",
-              "host": "Host Name"
+              "hostname": "Host Name"
             }
           }
         }
@@ -1438,7 +1438,7 @@
       "type": "table"
     },
     {
-      "description": "Tendencia histórica del throughput de disco total por servidor:\n- {{host}}: Suma de velocidad de lectura y escritura para cada host individual.\n- AVERAGE TOTAL (Línea Negra Punteada): Promedio de transferencia de datos en disco de toda la flota.\n- Interpretación: Identifica qué servidores están realizando un uso intensivo del subsistema de almacenamiento. Útil para detectar procesos de indexación o respaldos fuera de horario.\n- Valores esperados: Actividad según la carga de la aplicación. Picos sostenidos con alta latencia indican saturación del hardware de almacenamiento.",
+      "description": "Tendencia histórica del throughput de disco total por servidor:\n- {{hostname}}: Suma de velocidad de lectura y escritura para cada host individual.\n- AVERAGE TOTAL (Línea Negra Punteada): Promedio de transferencia de datos en disco de toda la flota.\n- Interpretación: Identifica qué servidores están realizando un uso intensivo del subsistema de almacenamiento. Útil para detectar procesos de indexación o respaldos fuera de horario.\n- Valores esperados: Actividad según la carga de la aplicación. Picos sostenidos con alta latencia indican saturación del hardware de almacenamiento.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1558,8 +1558,8 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum by (host) (rate(node_disk_read_bytes_total{device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_written_bytes_total{device!~\"loop.*|sr.*\"}[$__rate_interval]))",
-          "legendFormat": "Host: {{host}}",
+          "expr": "sum by (hostname) (rate(node_disk_read_bytes_total{device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_written_bytes_total{device!~\"loop.*|sr.*\"}[$__rate_interval]))",
+          "legendFormat": "hostname: {{hostname}}",
           "refId": "A"
         },
         {
@@ -1567,7 +1567,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "avg(sum by (host) (rate(node_disk_read_bytes_total{device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_written_bytes_total{device!~\"loop.*|sr.*\"}[$__rate_interval])))",
+          "expr": "avg(sum by (hostname) (rate(node_disk_read_bytes_total{device!~\"loop.*|sr.*\"}[$__rate_interval]) + rate(node_disk_written_bytes_total{device!~\"loop.*|sr.*\"}[$__rate_interval])))",
           "legendFormat": "AVERAGE TOTAL",
           "refId": "B"
         }
@@ -1604,5 +1604,5 @@
   "timezone": "",
   "title": "Infra: Fleet Overview",
   "uid": "infra-fleet-overview",
-  "version": 11
+  "version": 14
 }

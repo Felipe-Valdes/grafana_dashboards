@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 149,
+  "id": 160,
   "links": [],
   "panels": [
     {
@@ -1160,7 +1160,7 @@
       "type": "table"
     },
     {
-      "description": "Tendencia histórica del tráfico de red total por servidor:\n- {{hostname}}: Suma de tráfico de entrada y salida para cada host individual.\n- AVERAGE TOTAL (Línea Negra Punteada): Promedio de tráfico de red de toda la flota.\n- Interpretación: Permite identificar qué nodos generan mayor carga en la red troncal del hospital.\n- Valores esperados: Comportamiento acorde a la criticidad del servicio. Picos aislados son normales durante respaldos o transferencias de imágenes médicas.",
+      "description": "Tendencia histórica del tráfico de red total por servidor:\n- {{hostname}}: Suma de tráfico de entrada y salida para cada host individual.\n- AVERAGE TOTAL (Línea Negra Punteada): Promedio de tráfico de red de toda la flota.\n- Interpretación: Permite identificar qué nodos generan mayor carga en la red troncal.\n- Valores esperados: Comportamiento acorde a la criticidad del servicio. Picos aislados son normales durante respaldos o transferencias.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1616,5 +1616,5 @@
   "timezone": "",
   "title": "Infra: Fleet Overview",
   "uid": "infra-fleet-overview",
-  "version": 16
+  "version": 4
 }

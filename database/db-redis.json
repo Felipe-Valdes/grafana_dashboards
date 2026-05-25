@@ -172,7 +172,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(irate(redis_keyspace_hits_total{hostname=\"$hostname\"}[5m])) / (sum(irate(redis_keyspace_hits_total{hostname=\"$hostname\"}[5m])) + sum(irate(redis_keyspace_misses_total{hostname=\"$hostname\"}[5m])))",
+          "expr": "sum(irate(redis_keyspace_hits_total{hostname=\"$hostname\", job=\"$job\"}[5m])) / (sum(irate(redis_keyspace_hits_total{hostname=\"$hostname\", job=\"$job\"}[5m])) + sum(irate(redis_keyspace_misses_total{hostname=\"$hostname\", job=\"$job\"}[5m])))",
           "legendFormat": "Hit Rate",
           "range": true,
           "refId": "A"
@@ -234,7 +234,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_blocked_clients{hostname=\"$hostname\"}) or vector(0)",
+          "expr": "sum(redis_blocked_clients{hostname=\"$hostname\", job=\"$job\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -329,7 +329,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_connected_clients{hostname=\"$hostname\"}",
+          "expr": "redis_connected_clients{hostname=\"$hostname\", job=\"$job\"}",
           "legendFormat": "Connected Clients",
           "refId": "A"
         }
@@ -425,7 +425,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_blocked_clients{hostname=\"$hostname\"}",
+          "expr": "redis_blocked_clients{hostname=\"$hostname\", job=\"$job\"}",
           "legendFormat": "Blocked Clients",
           "refId": "A"
         }
@@ -488,7 +488,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(redis_db_keys{hostname=\"$hostname\"}) or vector(0)",
+          "expr": "sum(redis_db_keys{hostname=\"$hostname\", job=\"$job\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -548,7 +548,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_rdb_changes_since_last_save{hostname=\"$hostname\"}) or vector(0)",
+          "expr": "sum(redis_rdb_changes_since_last_save{hostname=\"$hostname\", job=\"$job\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -621,7 +621,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_master_link_status{hostname=\"$hostname\"}",
+          "expr": "redis_master_link_status{hostname=\"$hostname\", job=\"$job\"}",
           "refId": "A"
         }
       ],
@@ -716,7 +716,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_connected_slaves{hostname=\"$hostname\"}",
+          "expr": "redis_connected_slaves{hostname=\"$hostname\", job=\"$job\"}",
           "legendFormat": "Replicas",
           "refId": "A"
         }
@@ -812,7 +812,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(redis_rejected_connections_total{hostname=\"$hostname\"}[5m])",
+          "expr": "irate(redis_rejected_connections_total{hostname=\"$hostname\", job=\"$job\"}[5m])",
           "legendFormat": "Rejected Connections",
           "refId": "A"
         }
@@ -874,7 +874,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(redis_commands_processed_total{hostname=\"$hostname\"}[5m])) or vector(0)",
+          "expr": "sum(irate(redis_commands_processed_total{hostname=\"$hostname\", job=\"$job\"}[5m])) or vector(0)",
           "refId": "A"
         }
       ],
@@ -1051,7 +1051,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_exporter_last_scrape_duration_seconds{hostname=\"$hostname\"}",
+          "expr": "redis_exporter_last_scrape_duration_seconds{hostname=\"$hostname\", job=\"$job\"}",
           "legendFormat": "{{instance}}",
           "refId": "A"
         }
@@ -1152,7 +1152,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "(sum(redis_memory_used_bytes{hostname=\"$hostname\"}) by (instance) / sum(redis_memory_max_bytes{hostname=\"$hostname\"}) by (instance)) * 100",
+          "expr": "(sum(redis_memory_used_bytes{hostname=\"$hostname\", job=\"$job\"}) by (instance) / sum(redis_memory_max_bytes{hostname=\"$hostname\", job=\"$job\"}) by (instance)) * 100",
           "legendFormat": "{{instance}}",
           "refId": "A"
         }
@@ -1248,7 +1248,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_db_keys{hostname=\"$hostname\"})",
+          "expr": "sum(redis_db_keys{hostname=\"$hostname\", job=\"$job\"})",
           "legendFormat": "Total Keys",
           "refId": "A"
         }
@@ -1314,7 +1314,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_db_keys{hostname=\"$hostname\"}) or vector(0)",
+          "expr": "sum(redis_db_keys{hostname=\"$hostname\", job=\"$job\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -1409,7 +1409,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_db_keys{hostname=\"$hostname\"}",
+          "expr": "redis_db_keys{hostname=\"$hostname\", job=\"$job\"}",
           "legendFormat": "DB {{db}}",
           "refId": "A"
         }
@@ -1505,7 +1505,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(redis_expired_keys_total{hostname=\"$hostname\"}[5m]))",
+          "expr": "sum(irate(redis_expired_keys_total{hostname=\"$hostname\", job=\"$job\"}[5m]))",
           "legendFormat": "Expired Keys",
           "refId": "A"
         }
@@ -1571,7 +1571,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_db_keys_expiring{hostname=\"$hostname\"}) or vector(0)",
+          "expr": "sum(redis_db_keys_expiring{hostname=\"$hostname\", job=\"$job\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -1666,7 +1666,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_slowlog_last_duration_seconds{hostname=\"$hostname\"}",
+          "expr": "redis_slowlog_last_duration_seconds{hostname=\"$hostname\", job=\"$job\"}",
           "legendFormat": "Last Duration",
           "refId": "A"
         }
@@ -1731,7 +1731,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_slowlog_length{hostname=\"$hostname\"}) or vector(0)",
+          "expr": "sum(redis_slowlog_length{hostname=\"$hostname\", job=\"$job\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -1826,7 +1826,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(redis_evicted_keys_total{hostname=\"$hostname\"}[5m]))",
+          "expr": "sum(irate(redis_evicted_keys_total{hostname=\"$hostname\", job=\"$job\"}[5m]))",
           "legendFormat": "Evicted Keys",
           "refId": "A"
         }
@@ -1922,7 +1922,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_master_repl_offset{hostname=\"$hostname\"} - on (instance) redis_slave_repl_offset{hostname=\"$hostname\"}",
+          "expr": "redis_master_repl_offset{hostname=\"$hostname\", job=\"$job\"} - on (instance) redis_slave_repl_offset{hostname=\"$hostname\", job=\"$job\"}",
           "legendFormat": "Replication Offset Delay",
           "refId": "A"
         }
@@ -2018,7 +2018,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_memory_used_bytes{hostname=\"$hostname\"})",
+          "expr": "sum(redis_memory_used_bytes{hostname=\"$hostname\", job=\"$job\"})",
           "legendFormat": "Memory Used",
           "refId": "A"
         }
@@ -2118,7 +2118,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(irate(redis_cpu_user_seconds_total{hostname=\"$hostname\"}[5m]) + irate(redis_cpu_sys_seconds_total{hostname=\"$hostname\"}[5m])) * 100",
+          "expr": "sum(irate(redis_cpu_user_seconds_total{hostname=\"$hostname\", job=\"$job\"}[5m]) + irate(redis_cpu_sys_seconds_total{hostname=\"$hostname\", job=\"$job\"}[5m])) * 100",
           "legendFormat": "CPU Usage",
           "refId": "A"
         }
@@ -2180,7 +2180,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(redis_mem_fragmentation_ratio{hostname=\"$hostname\"}) or vector(0)",
+          "expr": "sum(redis_mem_fragmentation_ratio{hostname=\"$hostname\", job=\"$job\"}) or vector(0)",
           "refId": "A"
         }
       ],
@@ -2275,7 +2275,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "redis_mem_fragmentation_ratio{hostname=\"$hostname\"}",
+          "expr": "redis_mem_fragmentation_ratio{hostname=\"$hostname\", job=\"$job\"}",
           "legendFormat": "Fragmentation Ratio",
           "refId": "A"
         }
@@ -2341,7 +2341,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(redis_keyspace_hits_total{hostname=\"$hostname\"}[5m])) / (sum(rate(redis_keyspace_hits_total{hostname=\"$hostname\"}[5m])) + sum(rate(redis_keyspace_misses_total{hostname=\"$hostname\"}[5m]))) or vector(0)",
+          "expr": "sum(rate(redis_keyspace_hits_total{hostname=\"$hostname\", job=\"$job\"}[5m])) / (sum(rate(redis_keyspace_hits_total{hostname=\"$hostname\", job=\"$job\"}[5m])) + sum(rate(redis_keyspace_misses_total{hostname=\"$hostname\", job=\"$job\"}[5m]))) or vector(0)",
           "refId": "A"
         }
       ],
@@ -2436,7 +2436,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(redis_keyspace_hits_total{hostname=\"$hostname\"}[5m]) / (rate(redis_keyspace_hits_total{hostname=\"$hostname\"}[5m]) + rate(redis_keyspace_misses_total{hostname=\"$hostname\"}[5m]))",
+          "expr": "rate(redis_keyspace_hits_total{hostname=\"$hostname\", job=\"$job\"}[5m]) / (rate(redis_keyspace_hits_total{hostname=\"$hostname\", job=\"$job\"}[5m]) + rate(redis_keyspace_misses_total{hostname=\"$hostname\", job=\"$job\"}[5m]))",
           "legendFormat": "Hit Rate",
           "refId": "A"
         }
@@ -2487,6 +2487,17 @@
         "regex": "",
         "sort": 1,
         "type": "query"
+      },
+      {
+        "current": {
+          "text": "redis",
+          "value": "redis"
+        },
+        "hide": 2,
+        "name": "job",
+        "query": "redis",
+        "skipUrlSync": true,
+        "type": "constant"
       }
     ]
   },

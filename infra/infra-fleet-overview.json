@@ -1605,6 +1605,17 @@
         "query": "prometheus",
         "refresh": 1,
         "type": "datasource"
+      },
+      {
+        "current": {
+          "text": "node-exporter",
+          "value": "node-exporter"
+        },
+        "hide": 2,
+        "name": "job",
+        "query": "node-exporter",
+        "skipUrlSync": true,
+        "type": "constant"
       }
     ]
   },

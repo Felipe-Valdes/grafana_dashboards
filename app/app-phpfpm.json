@@ -1914,6 +1914,17 @@
         "regex": "",
         "sort": 1,
         "type": "query"
+      },
+      {
+        "current": {
+          "text": "php-fpm",
+          "value": "php-fpm"
+        },
+        "hide": 2,
+        "name": "job",
+        "query": "php-fpm",
+        "skipUrlSync": true,
+        "type": "constant"
       }
     ]
   },

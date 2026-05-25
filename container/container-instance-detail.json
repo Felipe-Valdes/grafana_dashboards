@@ -3487,6 +3487,17 @@
         "regex": "",
         "sort": 1,
         "type": "query"
+      },
+      {
+        "current": {
+          "text": "cadvisor",
+          "value": "cadvisor"
+        },
+        "hide": 2,
+        "name": "job",
+        "query": "cadvisor",
+        "skipUrlSync": true,
+        "type": "constant"
       }
     ]
   },

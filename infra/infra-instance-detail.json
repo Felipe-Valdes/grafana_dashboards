@@ -6174,6 +6174,17 @@
         "regex": "",
         "sort": 1,
         "type": "query"
+      },
+      {
+        "current": {
+          "text": "node-exporter",
+          "value": "node-exporter"
+        },
+        "hide": 2,
+        "name": "job",
+        "query": "node-exporter",
+        "skipUrlSync": true,
+        "type": "constant"
       }
     ]
   },

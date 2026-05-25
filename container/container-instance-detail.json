@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 131,
+  "id": 157,
   "links": [],
   "panels": [
     {
@@ -3487,17 +3487,6 @@
         "regex": "",
         "sort": 1,
         "type": "query"
-      },
-      {
-        "current": {
-          "text": "cadvisor",
-          "value": "cadvisor"
-        },
-        "hide": 2,
-        "name": "job",
-        "query": "cadvisor",
-        "skipUrlSync": true,
-        "type": "constant"
       }
     ]
   },
@@ -3509,5 +3498,5 @@
   "timezone": "browser",
   "title": "Container: Instance Detail",
   "uid": "container-instance-detail",
-  "version": 14
+  "version": 3
 }

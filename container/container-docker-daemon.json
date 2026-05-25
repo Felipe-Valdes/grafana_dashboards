@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 130,
+  "id": 162,
   "links": [],
   "panels": [
     {
@@ -1625,17 +1625,6 @@
         "regex": "",
         "sort": 1,
         "type": "query"
-      },
-      {
-        "current": {
-          "text": "cadvisor",
-          "value": "cadvisor"
-        },
-        "hide": 2,
-        "name": "job",
-        "query": "cadvisor",
-        "skipUrlSync": true,
-        "type": "constant"
       }
     ]
   },
@@ -1647,5 +1636,5 @@
   "timezone": "browser",
   "title": "Container: Docker Daemon",
   "uid": "container-docker-daemon",
-  "version": 11
+  "version": 3
 }

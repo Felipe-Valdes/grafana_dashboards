@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 145,
+  "id": 165,
   "links": [],
   "panels": [
     {
@@ -40,7 +40,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 5,
         "w": 4,
         "x": 0,
         "y": 1
@@ -52,7 +52,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; overflow: hidden;\">\n  <img src=\"https://www.vectorlogo.zone/logos/nginx/nginx-ar21.svg\" style=\"height: 85%; width: auto; object-fit: contain;\" />\n</div>",
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; overflow: hidden;\">\n  <img src=\"/public/img/custom/nginx-icon.svg\" style=\"height: 85%; width: auto; object-fit: contain;\" />\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -671,5 +671,5 @@
   "timezone": "browser",
   "title": "Web: NGINX",
   "uid": "web-nginx",
-  "version": 5
+  "version": 2
 }

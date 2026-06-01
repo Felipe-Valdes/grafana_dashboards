@@ -17,6 +17,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
+  "id": 156,
   "links": [],
   "panels": [
     {
@@ -37,10 +38,10 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;\">\n  <img src=\"https://www.vectorlogo.zone/logos/mysql/mysql-ar21.svg\" style=\"height: 80%; object-fit: contain;\" />\n</div>",
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;\">\n  <img src=\"/public/img/custom/-icon.svg\" style=\"height: 80%; object-fit: contain;\" />\n</div>",
         "mode": "html"
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "title": "",
       "transparent": true,
       "type": "text"
@@ -95,7 +96,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "mysql_global_status_aborted_connects",
@@ -149,7 +150,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "rate(mysql_global_status_threads_connected[5m])",
@@ -203,7 +204,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "mysql_global_status_threads_connected",
@@ -290,7 +291,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "rate(mysql_global_status_slow_queries[5m])",
@@ -377,7 +378,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "rate(mysql_global_status_commands_total{command=\"select\"}[5m])",
@@ -464,7 +465,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "rate(mysql_global_status_commands_total{command=\"insert\"}[5m])",
@@ -551,7 +552,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "rate(mysql_global_status_commands_total{command=\"update\"}[5m])",
@@ -638,7 +639,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "rate(mysql_global_status_commands_total{command=\"delete\"}[5m])",
@@ -725,7 +726,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "rate(mysql_global_status_queries[5m]) / rate(mysql_global_status_uptime[5m])",
@@ -756,7 +757,7 @@
         "content": "> The current rate of queries will naturally rise and fall, and as such it's not always an actionable metric based on fixed thresholds.",
         "mode": "markdown"
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "title": "",
       "type": "text"
     },
@@ -837,7 +838,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "mysql_global_status_threads_running",
@@ -924,7 +925,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "mysql_global_status_threads_connected",
@@ -955,7 +956,7 @@
         "content": "Most of the metrics and monitoring strategies outlined here also apply to MySQL-compatible technologies such as MariaDB and Percona Server.",
         "mode": "markdown"
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "title": "",
       "type": "text"
     },
@@ -1783,6 +1784,5 @@
   "timezone": "browser",
   "title": "MYSQL (Datadog Clone)",
   "uid": "adh8xqk",
-  "version": 10,
-  "weekStart": ""
+  "version": 1
 }

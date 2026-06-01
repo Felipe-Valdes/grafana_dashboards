@@ -18,6 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
+  "id": 168,
   "links": [],
   "panels": [
     {
@@ -38,10 +39,10 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1));\">\n  <img src=\"https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/proxmox.svg\" style=\"height: 90px; width: auto; margin-bottom: 5px;\" />\n  <span style=\"font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif; font-size: 30px; font-weight: 850; color: #E57000; letter-spacing: 1.5px; text-shadow: 1px 1px 0px rgba(255,255,255,0.5);\">PROXMOX</span>\n</div>",
+        "content": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1));\">\n  <img src=\"/public/img/custom/-icon.svg\" style=\"height: 90px; width: auto; margin-bottom: 5px;\" />\n  <span style=\"font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif; font-size: 30px; font-weight: 850; color: #E57000; letter-spacing: 1.5px; text-shadow: 1px 1px 0px rgba(255,255,255,0.5);\">PROXMOX</span>\n</div>",
         "mode": "html"
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "title": "",
       "transparent": true,
       "type": "text"
@@ -107,7 +108,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "pve_up{id=\"node/pax\"}",
@@ -237,7 +238,7 @@
         "cellHeight": "sm",
         "showHeader": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "columns": [
@@ -327,7 +328,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "count(pve_node_info)",
@@ -381,7 +382,7 @@
         "textMode": "name",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "pve_version_info",
@@ -434,7 +435,7 @@
         "frameIndex": 0,
         "showHeader": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "sort_desc((pve_memory_usage_bytes / pve_memory_size_bytes) * 100)",
@@ -522,7 +523,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "avg(pve_cpu_usage_ratio) by (id) * 100",
@@ -576,7 +577,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "count(pve_guest_info{type=\"lxc\"})",
@@ -630,7 +631,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "count(pve_up{id=~\"lxc/.*\"} == 1)",
@@ -718,7 +719,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "rate(pve_network_transmit_bytes_total{id=~\"lxc/.*\"}[5m])",
@@ -769,7 +770,7 @@
         "cellHeight": "sm",
         "showHeader": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "pve_guest_info{type=\"lxc\"}",
@@ -821,7 +822,7 @@
         "cellHeight": "sm",
         "showHeader": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "sort_desc((pve_memory_usage_bytes{id=~\"lxc/.*\"} / pve_memory_size_bytes{id=~\"lxc/.*\"}) * 100)",
@@ -909,7 +910,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "rate(pve_disk_written_bytes_total{id=~\"lxc/.*\"}[5m])",
@@ -997,7 +998,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "expr": "rate(pve_disk_written_bytes_total{id=~\"qemu/.*\"}[5m])",
@@ -1857,8 +1858,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Proxmox Datadog Clone ",
+  "title": "Proxmox Datadog Clone",
   "uid": "adml7mh",
-  "version": 8,
-  "weekStart": ""
+  "version": 2
 }

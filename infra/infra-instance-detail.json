@@ -17,6 +17,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
+  "id": 161,
   "links": [],
   "panels": [
     {
@@ -50,7 +51,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; gap: 10px; overflow: hidden; padding: 1px;\">\n  <img src=\"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/linux.svg\" style=\"height: 55%; width: auto; filter: invert(0.8);\" />\n  <span style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 600; color: text; letter-spacing: 1px; line-height: 1.2; text-transform: capitalize;\">${hostname}</span>\n</div>",
+        "content": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; gap: 10px; overflow: hidden; padding: 1px;\">\n  <img src=\"/public/img/custom/linux-icon.svg\" style=\"height: 55%; width: auto; filter: invert(0.8);\" />\n  <span style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 600; color: text; letter-spacing: 1px; line-height: 1.2; text-transform: capitalize;\">${hostname}</span>\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -6963,5 +6964,5 @@
   "timezone": "browser",
   "title": "Infra: Instance Detail",
   "uid": "infra-instance-detail",
-  "version": 15
+  "version": 18
 }

@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 0,
+  "id": 164,
   "links": [],
   "panels": [
     {
@@ -27,7 +27,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 13,
         "w": 6,
         "x": 0,
         "y": 0
@@ -39,7 +39,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; overflow: hidden;\">\n  <img src=\"https://www.vectorlogo.zone/logos/postgresql/postgresql-ar21.svg\" style=\"height: 85%; width: auto; object-fit: contain;\" />\n</div>",
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; overflow: hidden;\">\n  <img src=\"/public/img/custom/postgresql-icon.svg\" style=\"height: 85%; width: auto; object-fit: contain;\" />\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -2851,5 +2851,5 @@
   "timezone": "browser",
   "title": "Database: PostgreSQL",
   "uid": "db-postgresql",
-  "version": 7
+  "version": 9
 }

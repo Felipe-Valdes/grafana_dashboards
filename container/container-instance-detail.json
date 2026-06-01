@@ -52,7 +52,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 5px; box-sizing: border-box; overflow: hidden;\">\n  <img src=\"https://www.svgrepo.com/show/448221/docker.svg\" style=\"height: 65%; width: auto; object-fit: contain; margin-bottom: 8px; flex-shrink: 0;\" />\n  <div style=\"font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; font-size: 22px; font-weight: 700; color: #2496ed; line-height: 1; text-align: center; width: 100%; word-wrap: break-word; display: block;\">\n    $container\n  </div>\n</div>",
+        "content": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 5px; box-sizing: border-box; overflow: hidden;\">\n  <img src=\"/public/img/custom/docker-icon.svg\" style=\"height: 65%; width: auto; object-fit: contain; margin-bottom: 8px; flex-shrink: 0;\" />\n  <div style=\"font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; font-size: 24px; font-weight: 700; color: #1D63ED; line-height: 1; text-align: center; width: 100%; word-wrap: break-word; display: block;\">\n    $container\n  </div>\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -3498,5 +3498,5 @@
   "timezone": "browser",
   "title": "Container: Instance Detail",
   "uid": "container-instance-detail",
-  "version": 3
+  "version": 6
 }

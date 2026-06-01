@@ -1,1 +1,0 @@
-- "./grafana/provisioning/dashboards/json_files/icons:/usr/share/grafana/public/img/custom"

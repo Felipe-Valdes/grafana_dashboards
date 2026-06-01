@@ -52,7 +52,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden;\">\n  <img src=\"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/linux.svg\" style=\"height: 80%; width: auto; filter: invert(0.8);\" />\n</div>",
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden;\">\n  <img src=\"/public/img/custom/linux-icon.svg\" style=\"height: 80%; width: auto; filter: invert(0.8);\" />\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -1616,5 +1616,5 @@
   "timezone": "",
   "title": "Infra: Fleet Overview",
   "uid": "infra-fleet-overview",
-  "version": 4
+  "version": 6
 }

@@ -39,7 +39,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 0; box-sizing: border-box; overflow: hidden;\">\n  <img src=\"https://cdn.worldvectorlogo.com/logos/oracle-6.svg\" style=\"width: 90%; height: 90%; object-fit: contain;\" />\n</div>",
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 0; box-sizing: border-box; overflow: hidden;\">\n  <img src=\"/public/img/custom/oracle-icon.svg\" style=\"width: 90%; height: 90%; object-fit: contain;\" />\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -5391,5 +5391,5 @@
   "timezone": "",
   "title": "Database: Oracle",
   "uid": "db-oracle-overview",
-  "version": 3
+  "version": 7
 }

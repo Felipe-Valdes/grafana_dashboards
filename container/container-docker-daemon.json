@@ -52,7 +52,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden;\">\n  <img src=\"https://www.svgrepo.com/show/448221/docker.svg\" style=\"height: 80%; width: auto; object-fit: contain;\" />\n</div>",
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden;\">\n  <img src=\"/public/img/custom/docker-icon.svg\" style=\"height: 80%; width: auto; object-fit: contain;\" />\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -1636,5 +1636,5 @@
   "timezone": "browser",
   "title": "Container: Docker Daemon",
   "uid": "container-docker-daemon",
-  "version": 3
+  "version": 5
 }

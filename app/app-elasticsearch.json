@@ -39,7 +39,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; overflow: hidden;\">\n  <img src=\"https://www.vectorlogo.zone/logos/elastic/elastic-ar21.svg\" style=\"height: 85%; width: auto; object-fit: contain;\" />\n</div>",
+        "content": "<div style=\"display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; overflow: hidden;\">\n  <img src=\"/public/img/custom/elasticsearch-icon.svg\" style=\"height: 85%; width: auto; object-fit: contain;\" />\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -1439,5 +1439,5 @@
   "timezone": "browser",
   "title": "App: Elasticsearch",
   "uid": "app-elasticsearch",
-  "version": 6
+  "version": 8
 }

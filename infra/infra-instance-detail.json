@@ -1022,12 +1022,374 @@
       "type": "stat"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 9
+      },
+      "id": 848,
+      "panels": [],
+      "title": "Processes",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "- **Definición**: Matriz cronológica del estado de carga de los procesos del host.\n- **Interpretación**: Permite visualizar de forma síncrona si un incremento de CPU en un servicio (ej. Java) coincide con caídas o picos en otros procesos (ej. Nginx), mapeando la correlación de eventos en el tiempo.\n- **Valores esperados**: Bloques verdes dominantes. Cambios hacia espectros rojos indican saturación localizada.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "id": 849,
+      "options": {
+        "colWidth": 0.9,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "rowHeight": 0.9,
+        "showValue": "never",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "topk(10, sum by (groupname) (rate(namedprocess_namegroup_cpu_seconds_total{hostname=\"$hostname\", job=\"process-exporter\"}[$__rate_interval])) * 100)",
+          "legendFormat": "{{groupname}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Process Resource Allocation History",
+      "type": "status-history"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "- **Definición**: Matriz cronológica del consumo de memoria residente (RSS) por grupo de procesos.\n- **Interpretación**: Permite identificar fugas de memoria (Memory Leaks) persistentes en servicios específicos, aislando la memoria volátil real que el kernel asigna a cada aplicativo.\n- **Valores esperados**: Bloques verdes o amarillos estables. Pendientes ascendentes continuas hacia bloques rojos alertan una inminente activación del OOM Killer.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 268435456
+              },
+              {
+                "color": "orange",
+                "value": 1073741824
+              },
+              {
+                "color": "red",
+                "value": 3221225472
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "id": 850,
+      "options": {
+        "colWidth": 0.9,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "rowHeight": 0.9,
+        "showValue": "never",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "topk(10, sum by (groupname) (namedprocess_namegroup_memory_bytes{hostname=\"$hostname\", job=\"process-exporter\", memtype=\"resident\"}))",
+          "legendFormat": "{{groupname}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Process Memory Allocation History",
+      "type": "status-history"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "- **Definición**: Matriz cronológica de la tasa de transferencia de datos combinada (Lectura + Escritura) por segundo consumida por cada grupo de procesos.\n- **Interpretación**: Permite aislar con precisión qué servicio está generando un pico anómalo de tráfico en red o sockets internos. Crucial para detectar exfiltración de datos, tormentas de replicación de bases de datos o consultas masivas sin indexar.\n- **Valores esperados**: Bloques verdes dominantes durante la operación base. Transiciones hacia espectros amarillos (>500 KB/s) o rojos (>20 MB/s) alertan actividades masivas que requieren auditoría inmediata.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 512000
+              },
+              {
+                "color": "orange",
+                "value": 5242880
+              },
+              {
+                "color": "red",
+                "value": 20971520
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 23
+      },
+      "id": 853,
+      "options": {
+        "colWidth": 0.9,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "rowHeight": 0.9,
+        "showValue": "never",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "topk(10, sum by (groupname) (rate(namedprocess_namegroup_read_bytes_total{hostname=\"$hostname\", job=\"process-exporter\"}[$__rate_interval]) + rate(namedprocess_namegroup_write_bytes_total{hostname=\"$hostname\", job=\"process-exporter\"}[$__rate_interval])))",
+          "legendFormat": "{{groupname}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Process Network & Storage I/O Rate (Total Bps)",
+      "type": "status-history"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "- **Definición**: Matriz cronológica del volumen total de datos acumulados (en GB/MB) escritos en disco por cada grupo de procesos desde su inicio.\n- **Interpretación**: Permite identificar qué servicio específico está incrementando de tamaño de forma descontrolada a lo largo del tiempo. Si un proceso cambia de color (ej. de verde a amarillo/rojo), indica que está reteniendo o escribiendo datos persistentes masivos.\n- **Valores esperados**: Bloques estables. Transiciones verticales u horizontales hacia espectros rojos alertan sobre procesos que consumen almacenamiento rápidamente.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 5368709120
+              },
+              {
+                "color": "orange",
+                "value": 21474836480
+              },
+              {
+                "color": "red",
+                "value": 53687091200
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 23
+      },
+      "id": 854,
+      "options": {
+        "colWidth": 0.9,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "rowHeight": 0.9,
+        "showValue": "never",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "topk(10, max by (groupname) (namedprocess_namegroup_write_bytes_total{hostname=\"$hostname\", job=\"process-exporter\"}))",
+          "instant": false,
+          "legendFormat": "{{groupname}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Process Cumulative Disk Writes History",
+      "type": "status-history"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 35
       },
       "id": 200,
       "panels": [
@@ -1075,7 +1437,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 10
+            "y": 126
           },
           "id": 835,
           "options": {
@@ -1330,7 +1692,7 @@
             "h": 12,
             "w": 10,
             "x": 4,
-            "y": 10
+            "y": 126
           },
           "id": 837,
           "options": {
@@ -1471,7 +1833,7 @@
             "h": 12,
             "w": 10,
             "x": 14,
-            "y": 10
+            "y": 126
           },
           "id": 838,
           "options": {
@@ -1564,7 +1926,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 42
+            "y": 158
           },
           "id": 836,
           "options": {
@@ -1613,7 +1975,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 36
       },
       "id": 400,
       "panels": [
@@ -1712,7 +2074,7 @@
             "h": 12,
             "w": 12,
             "x": 0,
-            "y": 341
+            "y": 227
           },
           "id": 847,
           "options": {
@@ -1847,7 +2209,7 @@
             "h": 12,
             "w": 12,
             "x": 12,
-            "y": 341
+            "y": 227
           },
           "id": 846,
           "options": {
@@ -1897,7 +2259,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 37
       },
       "id": 300,
       "panels": [
@@ -1932,7 +2294,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 239
+            "y": 287
           },
           "id": 839,
           "options": {
@@ -2064,7 +2426,7 @@
             "h": 12,
             "w": 10,
             "x": 4,
-            "y": 239
+            "y": 287
           },
           "id": 841,
           "options": {
@@ -2184,7 +2546,7 @@
             "h": 12,
             "w": 10,
             "x": 14,
-            "y": 239
+            "y": 287
           },
           "id": 842,
           "options": {
@@ -2246,7 +2608,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 243
+            "y": 291
           },
           "id": 840,
           "options": {
@@ -2292,7 +2654,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 38
       },
       "id": 500,
       "panels": [
@@ -2424,7 +2786,7 @@
             "h": 12,
             "w": 8,
             "x": 0,
-            "y": 316
+            "y": 552
           },
           "id": 845,
           "options": {
@@ -2554,7 +2916,7 @@
             "h": 12,
             "w": 16,
             "x": 8,
-            "y": 316
+            "y": 552
           },
           "id": 508,
           "options": {
@@ -2745,7 +3107,7 @@
             "h": 12,
             "w": 8,
             "x": 0,
-            "y": 328
+            "y": 564
           },
           "id": 805,
           "options": {
@@ -2883,7 +3245,7 @@
             "h": 12,
             "w": 8,
             "x": 8,
-            "y": 328
+            "y": 564
           },
           "id": 843,
           "options": {
@@ -2988,7 +3350,7 @@
             "h": 12,
             "w": 8,
             "x": 16,
-            "y": 328
+            "y": 564
           },
           "id": 844,
           "options": {
@@ -3029,7 +3391,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 39
       },
       "id": 801,
       "panels": [
@@ -3042,7 +3404,7 @@
             "h": 2,
             "w": 12,
             "x": 0,
-            "y": 14
+            "y": 130
           },
           "id": 756,
           "options": {
@@ -3068,7 +3430,7 @@
             "h": 2,
             "w": 12,
             "x": 12,
-            "y": 14
+            "y": 130
           },
           "id": 757,
           "options": {
@@ -3146,7 +3508,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 16
+            "y": 132
           },
           "id": 784,
           "options": {
@@ -3273,7 +3635,7 @@
             "h": 4,
             "w": 4,
             "x": 4,
-            "y": 16
+            "y": 132
           },
           "id": 786,
           "options": {
@@ -3399,7 +3761,7 @@
             "h": 4,
             "w": 4,
             "x": 8,
-            "y": 16
+            "y": 132
           },
           "id": 821,
           "options": {
@@ -3530,7 +3892,7 @@
             "h": 4,
             "w": 4,
             "x": 12,
-            "y": 16
+            "y": 132
           },
           "id": 782,
           "options": {
@@ -3624,7 +3986,7 @@
             "h": 4,
             "w": 4,
             "x": 16,
-            "y": 16
+            "y": 132
           },
           "id": 793,
           "options": {
@@ -3749,7 +4111,7 @@
             "h": 4,
             "w": 4,
             "x": 20,
-            "y": 16
+            "y": 132
           },
           "id": 822,
           "options": {
@@ -3871,7 +4233,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 20
+            "y": 136
           },
           "id": 831,
           "options": {
@@ -3964,7 +4326,7 @@
             "h": 4,
             "w": 4,
             "x": 4,
-            "y": 20
+            "y": 136
           },
           "id": 789,
           "options": {
@@ -4059,7 +4421,7 @@
             "h": 4,
             "w": 4,
             "x": 8,
-            "y": 20
+            "y": 136
           },
           "id": 825,
           "options": {
@@ -4182,7 +4544,7 @@
             "h": 4,
             "w": 4,
             "x": 12,
-            "y": 20
+            "y": 136
           },
           "id": 794,
           "options": {
@@ -4309,7 +4671,7 @@
             "h": 4,
             "w": 4,
             "x": 16,
-            "y": 20
+            "y": 136
           },
           "id": 775,
           "options": {
@@ -4432,7 +4794,7 @@
             "h": 4,
             "w": 4,
             "x": 20,
-            "y": 20
+            "y": 136
           },
           "id": 776,
           "options": {
@@ -4533,7 +4895,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 24
+            "y": 140
           },
           "id": 790,
           "options": {
@@ -4625,7 +4987,7 @@
             "h": 4,
             "w": 4,
             "x": 4,
-            "y": 24
+            "y": 140
           },
           "id": 787,
           "options": {
@@ -4758,7 +5120,7 @@
             "h": 4,
             "w": 4,
             "x": 8,
-            "y": 24
+            "y": 140
           },
           "id": 542,
           "options": {
@@ -4861,7 +5223,7 @@
             "h": 4,
             "w": 4,
             "x": 12,
-            "y": 24
+            "y": 140
           },
           "id": 791,
           "options": {
@@ -4990,7 +5352,7 @@
             "h": 4,
             "w": 4,
             "x": 16,
-            "y": 24
+            "y": 140
           },
           "id": 792,
           "options": {
@@ -5121,7 +5483,7 @@
             "h": 4,
             "w": 4,
             "x": 20,
-            "y": 24
+            "y": 140
           },
           "id": 783,
           "options": {
@@ -5162,7 +5524,7 @@
             "h": 2,
             "w": 12,
             "x": 0,
-            "y": 28
+            "y": 144
           },
           "id": 759,
           "options": {
@@ -5188,7 +5550,7 @@
             "h": 2,
             "w": 12,
             "x": 12,
-            "y": 28
+            "y": 144
           },
           "id": 758,
           "options": {
@@ -5296,7 +5658,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 30
+            "y": 146
           },
           "id": 798,
           "options": {
@@ -5397,7 +5759,7 @@
             "h": 4,
             "w": 4,
             "x": 4,
-            "y": 30
+            "y": 146
           },
           "id": 800,
           "options": {
@@ -5519,7 +5881,7 @@
             "h": 4,
             "w": 4,
             "x": 8,
-            "y": 30
+            "y": 146
           },
           "id": 795,
           "options": {
@@ -5687,7 +6049,7 @@
             "h": 4,
             "w": 4,
             "x": 12,
-            "y": 30
+            "y": 146
           },
           "id": 774,
           "options": {
@@ -5800,7 +6162,7 @@
             "h": 4,
             "w": 4,
             "x": 16,
-            "y": 30
+            "y": 146
           },
           "id": 820,
           "options": {
@@ -5921,7 +6283,7 @@
             "h": 4,
             "w": 4,
             "x": 20,
-            "y": 30
+            "y": 146
           },
           "id": 780,
           "options": {
@@ -6048,7 +6410,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 34
+            "y": 150
           },
           "id": 737,
           "options": {
@@ -6143,7 +6505,7 @@
             "h": 4,
             "w": 4,
             "x": 4,
-            "y": 34
+            "y": 150
           },
           "id": 797,
           "options": {
@@ -6254,7 +6616,7 @@
             "h": 4,
             "w": 4,
             "x": 8,
-            "y": 34
+            "y": 150
           },
           "id": 823,
           "options": {
@@ -6342,7 +6704,7 @@
             "h": 4,
             "w": 4,
             "x": 12,
-            "y": 34
+            "y": 150
           },
           "id": 788,
           "options": {
@@ -6437,7 +6799,7 @@
             "h": 4,
             "w": 4,
             "x": 16,
-            "y": 34
+            "y": 150
           },
           "id": 824,
           "options": {
@@ -6563,7 +6925,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 38
+            "y": 154
           },
           "id": 796,
           "options": {
@@ -6661,7 +7023,7 @@
             "h": 4,
             "w": 4,
             "x": 4,
-            "y": 38
+            "y": 154
           },
           "id": 740,
           "options": {
@@ -6749,7 +7111,7 @@
             "h": 4,
             "w": 4,
             "x": 8,
-            "y": 38
+            "y": 154
           },
           "id": 799,
           "options": {
@@ -6874,7 +7236,7 @@
             "h": 4,
             "w": 4,
             "x": 12,
-            "y": 38
+            "y": 154
           },
           "id": 781,
           "options": {
@@ -6957,12 +7319,12 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Infra: Instance Detail",
   "uid": "infra-instance-detail",
-  "version": 18
+  "version": 21
 }

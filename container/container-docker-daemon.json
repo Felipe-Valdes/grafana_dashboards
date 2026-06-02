@@ -540,7 +540,7 @@
           "refId": "A"
         }
       ],
-      "title": "Containers - CPU Usage",
+      "title": "Containers - CPU Usage (%)",
       "transformations": [
         {
           "id": "organize",
@@ -558,7 +558,7 @@
       "type": "table"
     },
     {
-      "description": "Tendencia histórica del uso de CPU por contenedor:\n- {{name}}: Evolución del consumo de recursos de cómputo de cada contenedor individual (Top 10).\n- AVERAGE (Línea Negra Punteada): Promedio de uso de CPU de todos los contenedores en el host.\n- Interpretación: Identifica microservicios con fugas de recursos o que requieren ajuste de limits/requests.\n- Valores esperados: Uso estable dentro de los límites. Valores cercanos al 100% indican riesgo de CPU Throttling.",
+      "description": "Tendencia histórica del uso de CPU por contenedor:\n- Evolución del consumo de recursos de cómputo de cada contenedor individual (Top 10).\n- AVERAGE (Línea Negra Punteada): Promedio de uso de CPU de todos los contenedores en el host.\n- Interpretación: Identifica microservicios con fugas de recursos o que requieren ajuste de limits/requests.\n- Valores esperados: Uso estable dentro de los límites. Valores cercanos al 100% indican riesgo de CPU Throttling.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -820,7 +820,7 @@
           "refId": "A"
         }
       ],
-      "title": "Containers - Memory Usage",
+      "title": "Containers - Memory Usage (%)",
       "transformations": [
         {
           "id": "organize",
@@ -838,7 +838,7 @@
       "type": "table"
     },
     {
-      "description": "Consumo de memoria RAM por contenedor expresado en porcentaje respecto al total del host:\n- {{name}} (Top 10): Porcentaje de memoria RAM física utilizada por cada contenedor.\n- AVERAGE (Línea Negra Punteada): Promedio porcentual de consumo de todos los contenedores.\n- Interpretación: Permite visualizar qué fracción de los recursos totales del nodo consume cada microservicio.\n- Valores esperados: Uso dentro de los límites de reserva definidos para el servicio.",
+      "description": "Consumo de memoria RAM por contenedor expresado en bytes crudos (Working Set):\n-  (Top 10): Volumen de memoria RAM física utilizada por cada contenedor.\n- AVERAGE (Línea Negra Punteada): Promedio de consumo de todos los contenedores.\n- Interpretación: Permite visualizar la huella de memoria real en el nodo que consume cada microservicio.\n- Valores esperados: Uso estable que no exceda los límites de hardware configurados.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -886,14 +886,10 @@
               {
                 "color": "green",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
-          "unit": "percent"
+          "unit": "decbytes"
         },
         "overrides": [
           {
@@ -962,7 +958,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "topk(10, (sum by (name) (avg_over_time(container_memory_working_set_bytes{hostname=\"$hostname\", name!=\"\", container!=\"POD\"}[$__rate_interval])) / on() group_left() machine_memory_bytes{hostname=\"$hostname\"}) * 100)",
+          "expr": "topk(10, sum by (name) (avg_over_time(container_memory_working_set_bytes{hostname=\"$hostname\", name!=\"\", container!=\"POD\"}[$__rate_interval])))",
           "legendFormat": "{{name}}",
           "refId": "A"
         },
@@ -971,12 +967,12 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "avg((sum by (name) (avg_over_time(container_memory_working_set_bytes{hostname=\"$hostname\", name!=\"\", container!=\"POD\"}[$__rate_interval])) / on() group_left() machine_memory_bytes{hostname=\"$hostname\"}) * 100)",
+          "expr": "avg(sum by (name) (avg_over_time(container_memory_working_set_bytes{hostname=\"$hostname\", name!=\"\", container!=\"POD\"}[$__rate_interval])))",
           "legendFormat": "AVERAGE",
           "refId": "B"
         }
       ],
-      "title": "Top 10 Containers - Memory Usage (%)",
+      "title": "Top 10 Containers - Memory Usage (Bytes)",
       "type": "timeseries"
     },
     {
@@ -1108,7 +1104,7 @@
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "mode": "basic",
+                  "mode": "gradient",
                   "type": "gauge"
                 }
               },
@@ -1169,7 +1165,7 @@
       "type": "table"
     },
     {
-      "description": "Tendencia histórica del tráfico de red total por contenedor:\n- {{name}} (Top 10): Suma de tráfico de entrada y salida para cada contenedor individual.\n- AVERAGE (Línea Negra Punteada): Promedio de tráfico de red de todos los contenedores en el host.\n- Interpretación: Identifica microservicios con alta demanda de red que puedan impactar la latencia de otros servicios.\n- Valores esperados: Tráfico proporcional a la función del servicio (ej. mayor en bases de datos o APIs externas).",
+      "description": "Tendencia histórica del tráfico de red total por contenedor:\n-  (Top 10): Suma de tráfico de entrada y salida para cada contenedor individual.\n- AVERAGE (Línea Negra Punteada): Promedio de tráfico de red de todos los contenedores en el host.\n- Interpretación: Identifica microservicios con alta demanda de red que puedan impactar la latencia de otros servicios.\n- Valores esperados: Tráfico proporcional a la función del servicio (ej. mayor en bases de datos o APIs externas).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1309,9 +1305,9 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${datasource}"
       },
-      "description": "Carga total de disco (Suma de Lectura + Escritura). Haz clic en el nombre para ver detalles.",
+      "description": "Ranking en tiempo real del espacio físico real (en %) que consumen los archivos y capas de datos de cada contenedor en el disco. Haz clic en el nombre para ver detalles.",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -1327,7 +1323,7 @@
           },
           "decimals": 2,
           "mappings": [],
-          "max": 104857600,
+          "max": 100,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -1338,19 +1334,19 @@
               },
               {
                 "color": "yellow",
-                "value": 62914560
+                "value": 60
               },
               {
                 "color": "orange",
-                "value": 78643200
+                "value": 75
               },
               {
                 "color": "red",
-                "value": 94371840
+                "value": 90
               }
             ]
           },
-          "unit": "binBps"
+          "unit": "percent"
         },
         "overrides": [
           {
@@ -1384,13 +1380,13 @@
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "mode": "basic",
+                  "mode": "gradient",
                   "type": "gauge"
                 }
               },
               {
                 "id": "displayName",
-                "value": "Total I/O (Read+Write)"
+                "value": "% Disk Occupied"
               }
             ]
           }
@@ -1409,7 +1405,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Total I/O (Read+Write)"
+            "displayName": "% Disk Occupied"
           }
         ]
       },
@@ -1421,19 +1417,20 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (name) (\n  rate(container_fs_reads_bytes_total{hostname=\"$hostname\", name!=\"\", container!=\"POD\"}[$__rate_interval]) \n  + \n  rate(container_fs_writes_bytes_total{hostname=\"$hostname\", name!=\"\", container!=\"POD\"}[$__rate_interval])\n)",
+          "expr": "(sum by (name, hostname) (container_fs_usage_bytes{hostname=\"$hostname\", name!=\"\", container!=\"POD\"}) / on(hostname) group_left() topk by (hostname) (1, node_filesystem_size_bytes{hostname=\"$hostname\", mountpoint=\"/\"})) * 100",
           "format": "table",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Containers - Disk I/O Throughput",
+      "title": "Containers - Persistent Storage Space (%)",
       "transformations": [
         {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Time": true
+              "Time": true,
+              "hostname": true
             },
             "indexByName": {
               "Value": 1,
@@ -1445,7 +1442,7 @@
       "type": "table"
     },
     {
-      "description": "Tendencia histórica del throughput de disco total por contenedor:\n- {{name}} (Top 10): Suma de velocidad de lectura y escritura para cada contenedor individual.\n- AVERAGE (Línea Negra Punteada): Promedio de transferencia de datos en disco de todos los contenedores en el host.\n- Interpretación: Identifica microservicios con alta demanda de almacenamiento que puedan saturar el bus de datos.\n- Valores esperados: Actividad intermitente según la carga. Picos sostenidos sugieren procesos intensivos de logueo o bases de datos sin optimizar.",
+      "description": "Tendencia histórica de la velocidad de llenado del disco por contenedor:\n-  (Top 10): Tasa de crecimiento o consumo de espacio físico por segundo.\n- AVERAGE (Línea Negra Punteada): Promedio de crecimiento de almacenamiento de todos los contenedores.\n- Interpretación: Identifica microservicios que están acumulando archivos o logs de forma anómala (fugas de disco).\n- Valores esperados: Línea cercana a 0 Bps en operación normal. Picos o rampas sostenidas alertan de un llenado acelerado.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1525,14 +1522,6 @@
                   ],
                   "fill": "dash"
                 }
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 5
-              },
-              {
-                "id": "custom.gradientMode",
-                "value": "opacity"
               }
             ]
           }
@@ -1553,7 +1542,7 @@
           "showLegend": true
         },
         "tooltip": {
-          "hideZeros": false,
+          "hideZeros": true,
           "mode": "multi",
           "sort": "desc"
         }
@@ -1565,7 +1554,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "topk(10, sum by (name) (rate(container_fs_reads_bytes_total{hostname=\"$hostname\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{hostname=\"$hostname\", name!=\"\", container!=\"POD\"}[$__rate_interval])))",
+          "expr": "topk(10, sum by (name) (deriv(container_fs_usage_bytes{hostname=\"$hostname\", name!=\"\", container!=\"POD\"}[5m])))",
           "legendFormat": "{{name}}",
           "refId": "A"
         },
@@ -1574,12 +1563,12 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "avg(sum by (name) (rate(container_fs_reads_bytes_total{hostname=\"$hostname\", name!=\"\", container!=\"POD\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{hostname=\"$hostname\", name!=\"\", container!=\"POD\"}[$__rate_interval])))",
+          "expr": "avg(sum by (name) (deriv(container_fs_usage_bytes{hostname=\"$hostname\", name!=\"\", container!=\"POD\"}[5m])))",
           "legendFormat": "AVERAGE",
           "refId": "B"
         }
       ],
-      "title": "Top 10 Containers - Disk I/O Traffic (Bps)",
+      "title": "Top 10 Containers - Storage Growth Rate (Bps)",
       "type": "timeseries"
     }
   ],
@@ -1636,5 +1625,5 @@
   "timezone": "browser",
   "title": "Container: Docker Daemon",
   "uid": "container-docker-daemon",
-  "version": 5
+  "version": 11
 }

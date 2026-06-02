@@ -1029,1764 +1029,6 @@
         "x": 0,
         "y": 9
       },
-      "id": 848,
-      "panels": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "Cantidad total de procesos principales e independientes (excluyendo sub-hilos) que están siendo clasificados y monitoreados activamente por el process-exporter en este servidor.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "text",
-                    "value": 0
-                  },
-                  {
-                    "color": "text",
-                    "value": 1
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 4,
-            "x": 0,
-            "y": 473
-          },
-          "id": 861,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Total Monitored Processes",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "Suma global absoluta de todos los subprocesos e hilos activos gestionados por el kernel en el servidor.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "text",
-                    "value": 0
-                  },
-                  {
-                    "color": "text",
-                    "value": 1
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 4,
-            "x": 4,
-            "y": 473
-          },
-          "id": 856,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\"})",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Total System Threads",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "Cantidad global de hilos inactivos de manera voluntaria, a la espera de tráfico de red o llamadas de sistema del software.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "text",
-                    "value": 0
-                  },
-                  {
-                    "color": "text",
-                    "value": 1
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 4,
-            "x": 8,
-            "y": 473
-          },
-          "id": 858,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Sleeping\"})",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Total Sleeping Threads",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "Cantidad global de hilos que se encuentran ejecutando instrucciones o listos en la cola de la CPU.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "text",
-                    "value": 0
-                  },
-                  {
-                    "color": "text",
-                    "value": 1
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 4,
-            "x": 12,
-            "y": 473
-          },
-          "id": 857,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Running\"})",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Total Running Threads",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "Cantidad global de hilos congelados en espera ininterrumpible por hardware (generalmente saturación de lecturas/escrituras en Disco o SWAP).",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 1
-                  },
-                  {
-                    "color": "orange",
-                    "value": 10
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 4,
-            "x": 16,
-            "y": 473
-          },
-          "id": 859,
-          "options": {
-            "colorMode": "fixed",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Waiting\"})",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Total Waiting Threads (Disk I/O)",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "Cantidad de procesos que finalizaron pero cuyas estructuras no han sido liberadas por el proceso padre. Debe mantenerse estrictamente en 0.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 1
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 4,
-            "x": 20,
-            "y": 473
-          },
-          "id": 860,
-          "options": {
-            "colorMode": "fixed",
-            "graphMode": "none",
-            "justifyMode": "center",
-            "orientation": "auto",
-            "percentChangeColorMode": "standard",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Zombie\"})",
-              "instant": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Total Zombie Processes",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "- **Definición**: Historial temporal de la densidad y volumen de la carga operativa del host, contrastando procesos principales frente a subprocesos ligeros.\n- **Interpretación**: Permite evaluar de forma síncrona si un incremento en la actividad se debe al despliegue de nuevas instancias o servicios (pico en procesos) o a una alta demanda de concurrencia en hilos de las aplicaciones existentes (pico en hilos), aislando patrones de sobreventa de recursos o fugas de concurrencia.\n- **Valores esperados**: Líneas estables con picos controlados coincidentes con ventanas de mantenimiento o ciclos transaccionales del negocio. Un crecimiento sostenido o vertical sin justificación en la línea de hilos alerta de posible contención o saturación en el planificador.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "fixed"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": true,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 0,
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Processes"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#5794F2",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Threads"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#A352CC",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 4,
-            "x": 0,
-            "y": 477
-          },
-          "id": 862,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "hidden",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
-              "legendFormat": "Processes",
-              "range": true,
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\"})",
-              "legendFormat": "Threads",
-              "range": true,
-              "refId": "B"
-            }
-          ],
-          "title": "Total Processes vs Total Threads",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "- **Definición**: Historial temporal de la relación de concurrencia interna promedio, calculada como el cociente entre el total de hilos activos y el total de procesos independientes mapeados.\n- **Interpretación**: Permite medir el grado de paralelismo y la naturaleza del software corriendo en el host. Un incremento sostenido en este promedio, sin cambios en el número de procesos totales, delata que las aplicaciones están incrementando internamente su pool de hilos de trabajo, lo que ayuda a predecir saturación por bloqueos de sincronización antes de comprometer la CPU.\n- **Valores esperados**: Curva de tendencia estable con fluctuaciones acordes a la carga transaccional. Valores muy elevados sugieren aplicaciones con arquitecturas altamente multihilo (como entornos Java o bases de datos) que requieren un monitoreo estricto de hilos en CPU.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "fixed"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": true,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 1,
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Avg Threads/Proc"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#5794F2",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 4,
-            "x": 4,
-            "y": 477
-          },
-          "id": 863,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "hidden",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\"}) / sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
-              "legendFormat": "Avg Threads/Proc",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Average Threads per Process",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "- **Definición**: Historial temporal de la relación de hilos en reposo, calculado como el cociente entre el total de hilos en estado Sleeping y el total de procesos independientes mapeados.\n- **Interpretación**: Indica la capacidad o tamaño de reserva de subprocesos ociosos esperando eventos. Es normal que este promedio absorba casi la totalidad de la densidad del pool de la aplicación.\n- **Valores esperados**: Tendencia constante y proporcional al tamaño de los pools internos configurados en tu software.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "fixed"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": true,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 1,
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Avg Sleeping/Proc"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#5794F2",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 4,
-            "x": 8,
-            "y": 477
-          },
-          "id": 865,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "hidden",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Sleeping\"}) / sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
-              "legendFormat": "Avg Sleeping/Proc",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Avg Sleeping Threads per Process",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "- **Definición**: Historial temporal de la relación de hilos activos en CPU, calculado como el cociente entre el total de hilos en estado Running y el total de procesos independientes mapeados.\n- **Interpretación**: Mide la intensidad de ejecución promedio por aplicación. Un incremento en esta línea indica que las aplicaciones están demandando más ciclos de CPU simultáneos para sus tareas.\n- **Valores esperados**: Tendencia baja y estable con fluctuaciones correlacionadas al uso general de la CPU del servidor.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "fixed"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": true,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 1,
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Avg Running/Proc"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#5794F2",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 4,
-            "x": 12,
-            "y": 477
-          },
-          "id": 864,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "hidden",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Running\"}) / sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
-              "legendFormat": "Avg Running/Proc",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Avg Running Threads per Process",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "- **Definición**: Historial temporal del ratio de hilos retenidos por hardware, calculado como el cociente entre el total de hilos en estado Waiting y el total de procesos independientes mapeados.\n- **Interpretación**: Es el indicador histórico de latencia de E/S. Un incremento en este promedio revela que las aplicaciones del host están sufriendo cuellos de botella severos debido al almacenamiento (Disco duro o SWAP).\n- **Valores esperados**: Línea plana estrictamente posicionada en 0.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "fixed"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": true,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 1,
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Avg Waiting/Proc"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#FFB13B",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 4,
-            "x": 16,
-            "y": 477
-          },
-          "id": 866,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "hidden",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Waiting\"}) / sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
-              "legendFormat": "Avg Waiting/Proc",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Avg Waiting Threads per Process",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "- **Definición**: Historial temporal de subprocesos finalizados no liberados, calculado como el cociente entre el total de hilos en estado Zombie y el total de procesos independientes mapeados.\n- **Interpretación**: Mide la severidad de las fugas de procesos. Si el promedio sube, indica que hay aplicaciones fallando sistemáticamente al cerrar sus procesos hijos de manera correcta en el código.\n- **Valores esperados**: Debe mantenerse de forma permanente en 0.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "fixed"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": true,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 1,
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Avg Zombie/Proc"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#F2495C",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 4,
-            "x": 20,
-            "y": 477
-          },
-          "id": 867,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "hidden",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Zombie\"}) / sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
-              "legendFormat": "Avg Zombie/Proc",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Avg Zombie Processes per Process",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "- **Definición**: Matriz cronológica del estado de carga de los procesos del host.\n- **Interpretación**: Permite visualizar de forma síncrona si un incremento de CPU en un servicio (ej. Java) coincide con caídas o picos en otros procesos (ej. Nginx), mapeando la correlación de eventos en el tiempo.\n- **Valores esperados**: Bloques verdes dominantes. Cambios hacia espectros rojos indican saturación localizada.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "axisPlacement": "auto",
-                "fillOpacity": 80,
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineWidth": 1
-              },
-              "decimals": 1,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 10
-                  },
-                  {
-                    "color": "orange",
-                    "value": 50
-                  },
-                  {
-                    "color": "red",
-                    "value": 100
-                  }
-                ]
-              },
-              "unit": "percent"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 13,
-            "w": 12,
-            "x": 0,
-            "y": 510
-          },
-          "id": 849,
-          "options": {
-            "colWidth": 0.9,
-            "legend": {
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "rowHeight": 0.9,
-            "showValue": "never",
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "topk(10, sum by (groupname) (rate(namedprocess_namegroup_cpu_seconds_total{hostname=\"$hostname\", job=\"process-exporter\"}[$__rate_interval])) * 100)",
-              "legendFormat": "{{groupname}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Process Resource Allocation History",
-          "type": "status-history"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "- **Definición**: Matriz cronológica del consumo de memoria residente (RSS) por grupo de procesos.\n- **Interpretación**: Permite identificar fugas de memoria (Memory Leaks) persistentes en servicios específicos, aislando la memoria volátil real que el kernel asigna a cada aplicativo.\n- **Valores esperados**: Bloques verdes o amarillos estables. Pendientes ascendentes continuas hacia bloques rojos alertan una inminente activación del OOM Killer.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "axisPlacement": "auto",
-                "fillOpacity": 80,
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineWidth": 1
-              },
-              "decimals": 1,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 268435456
-                  },
-                  {
-                    "color": "orange",
-                    "value": 1073741824
-                  },
-                  {
-                    "color": "red",
-                    "value": 3221225472
-                  }
-                ]
-              },
-              "unit": "bytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 13,
-            "w": 12,
-            "x": 12,
-            "y": 510
-          },
-          "id": 850,
-          "options": {
-            "colWidth": 0.9,
-            "legend": {
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "rowHeight": 0.9,
-            "showValue": "never",
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "topk(10, sum by (groupname) (namedprocess_namegroup_memory_bytes{hostname=\"$hostname\", job=\"process-exporter\", memtype=\"resident\"}))",
-              "legendFormat": "{{groupname}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Process Memory Allocation History",
-          "type": "status-history"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "- **Definición**: Matriz cronológica de la tasa de transferencia de datos combinada (Lectura + Escritura) por segundo consumida por cada grupo de procesos.\n- **Interpretación**: Permite aislar con precisión qué servicio está generando un pico anómalo de tráfico en red o sockets internos. Crucial para detectar exfiltración de datos, tormentas de replicación de bases de datos o consultas masivas sin indexar.\n- **Valores esperados**: Bloques verdes dominantes durante la operación base. Transiciones hacia espectros amarillos (>500 KB/s) o rojos (>20 MB/s) alertan actividades masivas que requieren auditoría inmediata.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "axisPlacement": "auto",
-                "fillOpacity": 80,
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineWidth": 1
-              },
-              "decimals": 1,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 512000
-                  },
-                  {
-                    "color": "orange",
-                    "value": 5242880
-                  },
-                  {
-                    "color": "red",
-                    "value": 20971520
-                  }
-                ]
-              },
-              "unit": "Bps"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 12,
-            "w": 12,
-            "x": 0,
-            "y": 523
-          },
-          "id": 853,
-          "options": {
-            "colWidth": 0.9,
-            "legend": {
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "rowHeight": 0.9,
-            "showValue": "never",
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "topk(10, sum by (groupname) (rate(namedprocess_namegroup_read_bytes_total{hostname=\"$hostname\", job=\"process-exporter\"}[$__rate_interval]) + rate(namedprocess_namegroup_write_bytes_total{hostname=\"$hostname\", job=\"process-exporter\"}[$__rate_interval])))",
-              "legendFormat": "{{groupname}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Process Network & Storage I/O Rate (Total Bps)",
-          "type": "status-history"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "- **Definición**: Matriz cronológica del volumen total de datos acumulados (en GB/MB) escritos en disco por cada grupo de procesos desde su inicio.\n- **Interpretación**: Permite identificar qué servicio específico está incrementando de tamaño de forma descontrolada a lo largo del tiempo. Si un proceso cambia de color (ej. de verde a amarillo/rojo), indica que está reteniendo o escribiendo datos persistentes masivos.\n- **Valores esperados**: Bloques estables. Transiciones verticales u horizontales hacia espectros rojos alertan sobre procesos que consumen almacenamiento rápidamente.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "axisPlacement": "auto",
-                "fillOpacity": 80,
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineWidth": 1
-              },
-              "decimals": 1,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 5368709120
-                  },
-                  {
-                    "color": "orange",
-                    "value": 21474836480
-                  },
-                  {
-                    "color": "red",
-                    "value": 53687091200
-                  }
-                ]
-              },
-              "unit": "decbytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 12,
-            "w": 12,
-            "x": 12,
-            "y": 523
-          },
-          "id": 854,
-          "options": {
-            "colWidth": 0.9,
-            "legend": {
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "rowHeight": 0.9,
-            "showValue": "never",
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "topk(10, max by (groupname) (namedprocess_namegroup_write_bytes_total{hostname=\"$hostname\", job=\"process-exporter\"}))",
-              "instant": false,
-              "legendFormat": "{{groupname}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Process Cumulative Disk Writes History",
-          "type": "status-history"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "- **Definición**: Matriz cronológica de la tasa de cambios de contexto (voluntarios e involuntarios) por segundo consumida individualmente por cada grupo de procesos.\n- **Interpretación**: Permite aislar con precisión qué servicio está generando un estrés anómalo en el planificador del kernel. Crucial para mapear si un pico de CPU global coincide con un proceso específico que satura el sistema forzando al procesador a conmutar tareas constantemente.\n- **Valores esperados**: Bloques verdes dominantes durante la operación base. Transiciones hacia espectros amarillos (>500 ops/s) o rojos (>5000 ops/s) alertan de actividades masivas o mala gestión de hilos en la aplicación que requieren auditoría inmediata.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "axisPlacement": "auto",
-                "fillOpacity": 80,
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineWidth": 1
-              },
-              "decimals": 1,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 500
-                  },
-                  {
-                    "color": "orange",
-                    "value": 2000
-                  },
-                  {
-                    "color": "red",
-                    "value": 5000
-                  }
-                ]
-              },
-              "unit": "ops"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 12,
-            "w": 8,
-            "x": 0,
-            "y": 535
-          },
-          "id": 868,
-          "options": {
-            "colWidth": 0.9,
-            "legend": {
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "rowHeight": 0.9,
-            "showValue": "never",
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "topk(10, sum by (groupname) (rate(namedprocess_namegroup_context_switches_total{hostname=\"$hostname\", job=\"process-exporter\"}[$__rate_interval])))",
-              "legendFormat": "{{groupname}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Process Context Switches History",
-          "type": "status-history"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "- **Definición**: Matriz cronológica que expone el peor porcentaje de saturación de Descriptores de Archivos (File Descriptors) registrado dentro de cada grupo de procesos.\n- **Interpretación**: Alerta temprana crucial para evitar caídas del sistema. Si un servicio se aproxima a espectros naranjas o rojos, significa que está consumiendo casi el total del límite impuesto por el kernel (ulimit), arriesgando un colapso inminente por errores del tipo 'Too many open files'.\n- **Valores esperados**: Bloques verdes homogéneos dominando el tablero (idealmente <50%). Transiciones sostenidas a amarillo (>70%) o naranja (>85%) exigen una ampliación inmediata de límites en el sistema o una auditoría por fuga de descriptores/sockets.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "axisPlacement": "auto",
-                "fillOpacity": 80,
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineWidth": 1
-              },
-              "decimals": 1,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 0.7
-                  },
-                  {
-                    "color": "orange",
-                    "value": 0.85
-                  },
-                  {
-                    "color": "red",
-                    "value": 0.95
-                  }
-                ]
-              },
-              "unit": "percentunit"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 12,
-            "w": 8,
-            "x": 8,
-            "y": 535
-          },
-          "id": 869,
-          "options": {
-            "colWidth": 0.9,
-            "legend": {
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "rowHeight": 0.9,
-            "showValue": "never",
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "topk(10, max by (groupname) (namedprocess_namegroup_worst_fd_ratio{hostname=\"$hostname\", job=\"process-exporter\"}))",
-              "legendFormat": "{{groupname}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Process File Descriptors Saturation Ratio",
-          "type": "status-history"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "description": "- **Definición**: Matriz cronológica del volumen absoluto neto de Descriptores de Archivos (File Descriptors y sockets de red) mantenidos abiertos simultáneamente por cada grupo de procesos.\n- **Interpretación**: Permite auditar cuantitativamente el consumo de recursos del sistema por aplicación. Útil para identificar comportamientos anómalos o fugas de descriptores (*FD leaks*) si un proceso muestra una tendencia al alza constante en el número de archivos abiertos sin liberar el inventario.\n- **Valores esperados**: Bloques verdes estables correlacionados al volumen transaccional del servicio. Bloques amarillos (>500) o rojos (>3000) exigen revisar si la aplicación está sufriendo un estancamiento de conexiones o si requiere optimizar el cierre de descriptores en su código.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "axisPlacement": "auto",
-                "fillOpacity": 80,
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineWidth": 1
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 500
-                  },
-                  {
-                    "color": "orange",
-                    "value": 1500
-                  },
-                  {
-                    "color": "red",
-                    "value": 3000
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 12,
-            "w": 8,
-            "x": 16,
-            "y": 535
-          },
-          "id": 878,
-          "options": {
-            "colWidth": 0.9,
-            "legend": {
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "rowHeight": 0.9,
-            "showValue": "never",
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "expr": "topk(10, sum by (groupname) (namedprocess_namegroup_open_filedesc{hostname=\"$hostname\", job=\"process-exporter\"}))",
-              "legendFormat": "{{groupname}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Process Open File Descriptors Count",
-          "type": "status-history"
-        }
-      ],
-      "title": "Processes",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 10
-      },
       "id": 200,
       "panels": [
         {
@@ -2833,7 +1075,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 901
+            "y": 1097
           },
           "id": 835,
           "options": {
@@ -3088,7 +1330,7 @@
             "h": 12,
             "w": 10,
             "x": 4,
-            "y": 901
+            "y": 1097
           },
           "id": 837,
           "options": {
@@ -3229,7 +1471,7 @@
             "h": 12,
             "w": 10,
             "x": 14,
-            "y": 901
+            "y": 1097
           },
           "id": 838,
           "options": {
@@ -3322,7 +1564,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 905
+            "y": 1101
           },
           "id": 836,
           "options": {
@@ -3371,7 +1613,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 10
       },
       "id": 300,
       "panels": [
@@ -3406,7 +1648,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 1594
+            "y": 1790
           },
           "id": 839,
           "options": {
@@ -3538,7 +1780,7 @@
             "h": 12,
             "w": 10,
             "x": 4,
-            "y": 1594
+            "y": 1790
           },
           "id": 841,
           "options": {
@@ -3658,7 +1900,7 @@
             "h": 12,
             "w": 10,
             "x": 14,
-            "y": 1594
+            "y": 1790
           },
           "id": 842,
           "options": {
@@ -3720,7 +1962,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 1598
+            "y": 1794
           },
           "id": 840,
           "options": {
@@ -3766,7 +2008,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 11
       },
       "id": 400,
       "panels": [
@@ -3865,7 +2107,7 @@
             "h": 12,
             "w": 12,
             "x": 0,
-            "y": 1534
+            "y": 1730
           },
           "id": 847,
           "options": {
@@ -4000,7 +2242,7 @@
             "h": 12,
             "w": 12,
             "x": 12,
-            "y": 1534
+            "y": 1730
           },
           "id": 846,
           "options": {
@@ -4050,7 +2292,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 12
       },
       "id": 500,
       "panels": [
@@ -4182,7 +2424,7 @@
             "h": 12,
             "w": 8,
             "x": 0,
-            "y": 1859
+            "y": 13
           },
           "id": 845,
           "options": {
@@ -4312,7 +2554,7 @@
             "h": 12,
             "w": 16,
             "x": 8,
-            "y": 1859
+            "y": 13
           },
           "id": 508,
           "options": {
@@ -4503,7 +2745,7 @@
             "h": 12,
             "w": 8,
             "x": 0,
-            "y": 1871
+            "y": 123
           },
           "id": 805,
           "options": {
@@ -4641,7 +2883,7 @@
             "h": 12,
             "w": 8,
             "x": 8,
-            "y": 1871
+            "y": 123
           },
           "id": 843,
           "options": {
@@ -4746,7 +2988,7 @@
             "h": 12,
             "w": 8,
             "x": 16,
-            "y": 1871
+            "y": 123
           },
           "id": 844,
           "options": {
@@ -4787,6 +3029,1764 @@
         "h": 1,
         "w": 24,
         "x": 0,
+        "y": 13
+      },
+      "id": 848,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "Cantidad total de procesos principales e independientes (excluyendo sub-hilos) que están siendo clasificados y monitoreados activamente por el process-exporter en este servidor.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "text",
+                    "value": 0
+                  },
+                  {
+                    "color": "text",
+                    "value": 1
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 0,
+            "y": 14
+          },
+          "id": 861,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Total Monitored Processes",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "Suma global absoluta de todos los subprocesos e hilos activos gestionados por el kernel en el servidor.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "text",
+                    "value": 0
+                  },
+                  {
+                    "color": "text",
+                    "value": 1
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 4,
+            "y": 14
+          },
+          "id": 856,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\"})",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Total System Threads",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "Cantidad global de hilos inactivos de manera voluntaria, a la espera de tráfico de red o llamadas de sistema del software.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "text",
+                    "value": 0
+                  },
+                  {
+                    "color": "text",
+                    "value": 1
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 8,
+            "y": 14
+          },
+          "id": 858,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Sleeping\"})",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Total Sleeping Threads",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "Cantidad global de hilos que se encuentran ejecutando instrucciones o listos en la cola de la CPU.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "text",
+                    "value": 0
+                  },
+                  {
+                    "color": "text",
+                    "value": 1
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 12,
+            "y": 14
+          },
+          "id": 857,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Running\"})",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Total Running Threads",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "Cantidad global de hilos congelados en espera ininterrumpible por hardware (generalmente saturación de lecturas/escrituras en Disco o SWAP).",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 1
+                  },
+                  {
+                    "color": "orange",
+                    "value": 10
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 16,
+            "y": 14
+          },
+          "id": 859,
+          "options": {
+            "colorMode": "fixed",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Waiting\"})",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Total Waiting Threads (Disk I/O)",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "Cantidad de procesos que finalizaron pero cuyas estructuras no han sido liberadas por el proceso padre. Debe mantenerse estrictamente en 0.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 20,
+            "y": 14
+          },
+          "id": 860,
+          "options": {
+            "colorMode": "fixed",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Zombie\"})",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Total Zombie Processes",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "- **Definición**: Historial temporal de la densidad y volumen de la carga operativa del host, contrastando procesos principales frente a subprocesos ligeros.\n- **Interpretación**: Permite evaluar de forma síncrona si un incremento en la actividad se debe al despliegue de nuevas instancias o servicios (pico en procesos) o a una alta demanda de concurrencia en hilos de las aplicaciones existentes (pico en hilos), aislando patrones de sobreventa de recursos o fugas de concurrencia.\n- **Valores esperados**: Líneas estables con picos controlados coincidentes con ventanas de mantenimiento o ciclos transaccionales del negocio. Un crecimiento sostenido o vertical sin justificación en la línea de hilos alerta de posible contención o saturación en el planificador.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 3,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Processes"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#5794F2",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Threads"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#A352CC",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 4,
+            "x": 0,
+            "y": 46
+          },
+          "id": 862,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "hidden",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
+              "legendFormat": "Processes",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\"})",
+              "legendFormat": "Threads",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "Total Processes vs Total Threads",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "- **Definición**: Historial temporal de la relación de concurrencia interna promedio, calculada como el cociente entre el total de hilos activos y el total de procesos independientes mapeados.\n- **Interpretación**: Permite medir el grado de paralelismo y la naturaleza del software corriendo en el host. Un incremento sostenido en este promedio, sin cambios en el número de procesos totales, delata que las aplicaciones están incrementando internamente su pool de hilos de trabajo, lo que ayuda a predecir saturación por bloqueos de sincronización antes de comprometer la CPU.\n- **Valores esperados**: Curva de tendencia estable con fluctuaciones acordes a la carga transaccional. Valores muy elevados sugieren aplicaciones con arquitecturas altamente multihilo (como entornos Java o bases de datos) que requieren un monitoreo estricto de hilos en CPU.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 3,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 1,
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Avg Threads/Proc"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#5794F2",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 4,
+            "x": 4,
+            "y": 46
+          },
+          "id": 863,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "hidden",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\"}) / sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
+              "legendFormat": "Avg Threads/Proc",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Average Threads per Process",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "- **Definición**: Historial temporal de la relación de hilos en reposo, calculado como el cociente entre el total de hilos en estado Sleeping y el total de procesos independientes mapeados.\n- **Interpretación**: Indica la capacidad o tamaño de reserva de subprocesos ociosos esperando eventos. Es normal que este promedio absorba casi la totalidad de la densidad del pool de la aplicación.\n- **Valores esperados**: Tendencia constante y proporcional al tamaño de los pools internos configurados en tu software.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 3,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 1,
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Avg Sleeping/Proc"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#5794F2",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 4,
+            "x": 8,
+            "y": 46
+          },
+          "id": 865,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "hidden",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Sleeping\"}) / sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
+              "legendFormat": "Avg Sleeping/Proc",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Avg Sleeping Threads per Process",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "- **Definición**: Historial temporal de la relación de hilos activos en CPU, calculado como el cociente entre el total de hilos en estado Running y el total de procesos independientes mapeados.\n- **Interpretación**: Mide la intensidad de ejecución promedio por aplicación. Un incremento en esta línea indica que las aplicaciones están demandando más ciclos de CPU simultáneos para sus tareas.\n- **Valores esperados**: Tendencia baja y estable con fluctuaciones correlacionadas al uso general de la CPU del servidor.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 3,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 1,
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Avg Running/Proc"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#5794F2",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 4,
+            "x": 12,
+            "y": 46
+          },
+          "id": 864,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "hidden",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Running\"}) / sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
+              "legendFormat": "Avg Running/Proc",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Avg Running Threads per Process",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "- **Definición**: Historial temporal del ratio de hilos retenidos por hardware, calculado como el cociente entre el total de hilos en estado Waiting y el total de procesos independientes mapeados.\n- **Interpretación**: Es el indicador histórico de latencia de E/S. Un incremento en este promedio revela que las aplicaciones del host están sufriendo cuellos de botella severos debido al almacenamiento (Disco duro o SWAP).\n- **Valores esperados**: Línea plana estrictamente posicionada en 0.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 3,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 1,
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Avg Waiting/Proc"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#FFB13B",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 4,
+            "x": 16,
+            "y": 46
+          },
+          "id": 866,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "hidden",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Waiting\"}) / sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
+              "legendFormat": "Avg Waiting/Proc",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Avg Waiting Threads per Process",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "- **Definición**: Historial temporal de subprocesos finalizados no liberados, calculado como el cociente entre el total de hilos en estado Zombie y el total de procesos independientes mapeados.\n- **Interpretación**: Mide la severidad de las fugas de procesos. Si el promedio sube, indica que hay aplicaciones fallando sistemáticamente al cerrar sus procesos hijos de manera correcta en el código.\n- **Valores esperados**: Debe mantenerse de forma permanente en 0.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 3,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 1,
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Avg Zombie/Proc"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#F2495C",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 4,
+            "x": 20,
+            "y": 46
+          },
+          "id": 867,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "hidden",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum(namedprocess_namegroup_states{hostname=\"$hostname\", job=\"process-exporter\", state=\"Zombie\"}) / sum(namedprocess_namegroup_num_procs{hostname=\"$hostname\", job=\"process-exporter\"})",
+              "legendFormat": "Avg Zombie/Proc",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Avg Zombie Processes per Process",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "- **Definición**: Matriz cronológica del estado de carga de los procesos del host.\n- **Interpretación**: Permite visualizar de forma síncrona si un incremento de CPU en un servicio (ej. Java) coincide con caídas o picos en otros procesos (ej. Nginx), mapeando la correlación de eventos en el tiempo.\n- **Valores esperados**: Bloques verdes dominantes. Cambios hacia espectros rojos indican saturación localizada.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1
+              },
+              "decimals": 1,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 10
+                  },
+                  {
+                    "color": "orange",
+                    "value": 50
+                  },
+                  {
+                    "color": "red",
+                    "value": 100
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 12,
+            "x": 0,
+            "y": 51
+          },
+          "id": 849,
+          "options": {
+            "colWidth": 0.9,
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "rowHeight": 0.9,
+            "showValue": "never",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "topk(10, sum by (groupname) (rate(namedprocess_namegroup_cpu_seconds_total{hostname=\"$hostname\", job=\"process-exporter\"}[$__rate_interval])) * 100)",
+              "legendFormat": "{{groupname}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Process Resource Allocation History",
+          "type": "status-history"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "- **Definición**: Matriz cronológica del consumo de memoria residente (RSS) por grupo de procesos.\n- **Interpretación**: Permite identificar fugas de memoria (Memory Leaks) persistentes en servicios específicos, aislando la memoria volátil real que el kernel asigna a cada aplicativo.\n- **Valores esperados**: Bloques verdes o amarillos estables. Pendientes ascendentes continuas hacia bloques rojos alertan una inminente activación del OOM Killer.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1
+              },
+              "decimals": 1,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 268435456
+                  },
+                  {
+                    "color": "orange",
+                    "value": 1073741824
+                  },
+                  {
+                    "color": "red",
+                    "value": 3221225472
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 12,
+            "x": 12,
+            "y": 51
+          },
+          "id": 850,
+          "options": {
+            "colWidth": 0.9,
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "rowHeight": 0.9,
+            "showValue": "never",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "topk(10, sum by (groupname) (namedprocess_namegroup_memory_bytes{hostname=\"$hostname\", job=\"process-exporter\", memtype=\"resident\"}))",
+              "legendFormat": "{{groupname}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Process Memory Allocation History",
+          "type": "status-history"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "- **Definición**: Matriz cronológica de la tasa de transferencia de datos combinada (Lectura + Escritura) por segundo consumida por cada grupo de procesos.\n- **Interpretación**: Permite aislar con precisión qué servicio está generando un pico anómalo de tráfico en red o sockets internos. Crucial para detectar exfiltración de datos, tormentas de replicación de bases de datos o consultas masivas sin indexar.\n- **Valores esperados**: Bloques verdes dominantes durante la operación base. Transiciones hacia espectros amarillos (>500 KB/s) o rojos (>20 MB/s) alertan actividades masivas que requieren auditoría inmediata.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1
+              },
+              "decimals": 1,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 512000
+                  },
+                  {
+                    "color": "orange",
+                    "value": 5242880
+                  },
+                  {
+                    "color": "red",
+                    "value": 20971520
+                  }
+                ]
+              },
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 12,
+            "x": 0,
+            "y": 64
+          },
+          "id": 853,
+          "options": {
+            "colWidth": 0.9,
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "rowHeight": 0.9,
+            "showValue": "never",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "topk(10, sum by (groupname) (rate(namedprocess_namegroup_read_bytes_total{hostname=\"$hostname\", job=\"process-exporter\"}[$__rate_interval]) + rate(namedprocess_namegroup_write_bytes_total{hostname=\"$hostname\", job=\"process-exporter\"}[$__rate_interval])))",
+              "legendFormat": "{{groupname}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Process Network & Storage I/O Rate (Total Bps)",
+          "type": "status-history"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "- **Definición**: Matriz cronológica del volumen total de datos acumulados (en GB/MB) escritos en disco por cada grupo de procesos desde su inicio.\n- **Interpretación**: Permite identificar qué servicio específico está incrementando de tamaño de forma descontrolada a lo largo del tiempo. Si un proceso cambia de color (ej. de verde a amarillo/rojo), indica que está reteniendo o escribiendo datos persistentes masivos.\n- **Valores esperados**: Bloques estables. Transiciones verticales u horizontales hacia espectros rojos alertan sobre procesos que consumen almacenamiento rápidamente.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1
+              },
+              "decimals": 1,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 5368709120
+                  },
+                  {
+                    "color": "orange",
+                    "value": 21474836480
+                  },
+                  {
+                    "color": "red",
+                    "value": 53687091200
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 12,
+            "x": 12,
+            "y": 64
+          },
+          "id": 854,
+          "options": {
+            "colWidth": 0.9,
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "rowHeight": 0.9,
+            "showValue": "never",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "topk(10, max by (groupname) (namedprocess_namegroup_write_bytes_total{hostname=\"$hostname\", job=\"process-exporter\"}))",
+              "instant": false,
+              "legendFormat": "{{groupname}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Process Cumulative Disk Writes History",
+          "type": "status-history"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "- **Definición**: Matriz cronológica de la tasa de cambios de contexto (voluntarios e involuntarios) por segundo consumida individualmente por cada grupo de procesos.\n- **Interpretación**: Permite aislar con precisión qué servicio está generando un estrés anómalo en el planificador del kernel. Crucial para mapear si un pico de CPU global coincide con un proceso específico que satura el sistema forzando al procesador a conmutar tareas constantemente.\n- **Valores esperados**: Bloques verdes dominantes durante la operación base. Transiciones hacia espectros amarillos (>500 ops/s) o rojos (>5000 ops/s) alertan de actividades masivas o mala gestión de hilos en la aplicación que requieren auditoría inmediata.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1
+              },
+              "decimals": 1,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 500
+                  },
+                  {
+                    "color": "orange",
+                    "value": 2000
+                  },
+                  {
+                    "color": "red",
+                    "value": 5000
+                  }
+                ]
+              },
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 8,
+            "x": 0,
+            "y": 76
+          },
+          "id": 868,
+          "options": {
+            "colWidth": 0.9,
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "rowHeight": 0.9,
+            "showValue": "never",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "topk(10, sum by (groupname) (rate(namedprocess_namegroup_context_switches_total{hostname=\"$hostname\", job=\"process-exporter\"}[$__rate_interval])))",
+              "legendFormat": "{{groupname}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Process Context Switches History",
+          "type": "status-history"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "- **Definición**: Matriz cronológica que expone el peor porcentaje de saturación de Descriptores de Archivos (File Descriptors) registrado dentro de cada grupo de procesos.\n- **Interpretación**: Alerta temprana crucial para evitar caídas del sistema. Si un servicio se aproxima a espectros naranjas o rojos, significa que está consumiendo casi el total del límite impuesto por el kernel (ulimit), arriesgando un colapso inminente por errores del tipo 'Too many open files'.\n- **Valores esperados**: Bloques verdes homogéneos dominando el tablero (idealmente <50%). Transiciones sostenidas a amarillo (>70%) o naranja (>85%) exigen una ampliación inmediata de límites en el sistema o una auditoría por fuga de descriptores/sockets.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1
+              },
+              "decimals": 1,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 0.7
+                  },
+                  {
+                    "color": "orange",
+                    "value": 0.85
+                  },
+                  {
+                    "color": "red",
+                    "value": 0.95
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 8,
+            "x": 8,
+            "y": 76
+          },
+          "id": 869,
+          "options": {
+            "colWidth": 0.9,
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "rowHeight": 0.9,
+            "showValue": "never",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "topk(10, max by (groupname) (namedprocess_namegroup_worst_fd_ratio{hostname=\"$hostname\", job=\"process-exporter\"}))",
+              "legendFormat": "{{groupname}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Process File Descriptors Saturation Ratio",
+          "type": "status-history"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "- **Definición**: Matriz cronológica del volumen absoluto neto de Descriptores de Archivos (File Descriptors y sockets de red) mantenidos abiertos simultáneamente por cada grupo de procesos.\n- **Interpretación**: Permite auditar cuantitativamente el consumo de recursos del sistema por aplicación. Útil para identificar comportamientos anómalos o fugas de descriptores (*FD leaks*) si un proceso muestra una tendencia al alza constante en el número de archivos abiertos sin liberar el inventario.\n- **Valores esperados**: Bloques verdes estables correlacionados al volumen transaccional del servicio. Bloques amarillos (>500) o rojos (>3000) exigen revisar si la aplicación está sufriendo un estancamiento de conexiones o si requiere optimizar el cierre de descriptores en su código.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 500
+                  },
+                  {
+                    "color": "orange",
+                    "value": 1500
+                  },
+                  {
+                    "color": "red",
+                    "value": 3000
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 8,
+            "x": 16,
+            "y": 76
+          },
+          "id": 878,
+          "options": {
+            "colWidth": 0.9,
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "rowHeight": 0.9,
+            "showValue": "never",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "topk(10, sum by (groupname) (namedprocess_namegroup_open_filedesc{hostname=\"$hostname\", job=\"process-exporter\"}))",
+              "legendFormat": "{{groupname}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Process Open File Descriptors Count",
+          "type": "status-history"
+        }
+      ],
+      "title": "Processes",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
         "y": 14
       },
       "id": 801,
@@ -4800,7 +4800,7 @@
             "h": 2,
             "w": 12,
             "x": 0,
-            "y": 478
+            "y": 15
           },
           "id": 756,
           "options": {
@@ -4826,7 +4826,7 @@
             "h": 2,
             "w": 12,
             "x": 12,
-            "y": 478
+            "y": 15
           },
           "id": 757,
           "options": {
@@ -4904,7 +4904,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 480
+            "y": 17
           },
           "id": 784,
           "options": {
@@ -5031,7 +5031,7 @@
             "h": 4,
             "w": 4,
             "x": 4,
-            "y": 480
+            "y": 17
           },
           "id": 786,
           "options": {
@@ -5157,7 +5157,7 @@
             "h": 4,
             "w": 4,
             "x": 8,
-            "y": 480
+            "y": 17
           },
           "id": 821,
           "options": {
@@ -5288,7 +5288,7 @@
             "h": 4,
             "w": 4,
             "x": 12,
-            "y": 480
+            "y": 17
           },
           "id": 782,
           "options": {
@@ -5382,7 +5382,7 @@
             "h": 4,
             "w": 4,
             "x": 16,
-            "y": 480
+            "y": 17
           },
           "id": 793,
           "options": {
@@ -5507,7 +5507,7 @@
             "h": 4,
             "w": 4,
             "x": 20,
-            "y": 480
+            "y": 17
           },
           "id": 822,
           "options": {
@@ -5629,7 +5629,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 484
+            "y": 21
           },
           "id": 831,
           "options": {
@@ -5722,7 +5722,7 @@
             "h": 4,
             "w": 4,
             "x": 4,
-            "y": 484
+            "y": 21
           },
           "id": 789,
           "options": {
@@ -5817,7 +5817,7 @@
             "h": 4,
             "w": 4,
             "x": 8,
-            "y": 484
+            "y": 21
           },
           "id": 825,
           "options": {
@@ -5940,7 +5940,7 @@
             "h": 4,
             "w": 4,
             "x": 12,
-            "y": 484
+            "y": 21
           },
           "id": 794,
           "options": {
@@ -6067,7 +6067,7 @@
             "h": 4,
             "w": 4,
             "x": 16,
-            "y": 484
+            "y": 21
           },
           "id": 775,
           "options": {
@@ -6190,7 +6190,7 @@
             "h": 4,
             "w": 4,
             "x": 20,
-            "y": 484
+            "y": 21
           },
           "id": 776,
           "options": {
@@ -6291,7 +6291,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 488
+            "y": 25
           },
           "id": 790,
           "options": {
@@ -6383,7 +6383,7 @@
             "h": 4,
             "w": 4,
             "x": 4,
-            "y": 488
+            "y": 25
           },
           "id": 787,
           "options": {
@@ -6516,7 +6516,7 @@
             "h": 4,
             "w": 4,
             "x": 8,
-            "y": 488
+            "y": 25
           },
           "id": 542,
           "options": {
@@ -6619,7 +6619,7 @@
             "h": 4,
             "w": 4,
             "x": 12,
-            "y": 488
+            "y": 25
           },
           "id": 791,
           "options": {
@@ -6748,7 +6748,7 @@
             "h": 4,
             "w": 4,
             "x": 16,
-            "y": 488
+            "y": 25
           },
           "id": 792,
           "options": {
@@ -6879,7 +6879,7 @@
             "h": 4,
             "w": 4,
             "x": 20,
-            "y": 488
+            "y": 25
           },
           "id": 783,
           "options": {
@@ -6920,7 +6920,7 @@
             "h": 2,
             "w": 12,
             "x": 0,
-            "y": 492
+            "y": 29
           },
           "id": 759,
           "options": {
@@ -6946,7 +6946,7 @@
             "h": 2,
             "w": 12,
             "x": 12,
-            "y": 492
+            "y": 29
           },
           "id": 758,
           "options": {
@@ -7054,7 +7054,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 494
+            "y": 31
           },
           "id": 798,
           "options": {
@@ -7155,7 +7155,7 @@
             "h": 4,
             "w": 4,
             "x": 4,
-            "y": 494
+            "y": 31
           },
           "id": 800,
           "options": {
@@ -7277,7 +7277,7 @@
             "h": 4,
             "w": 4,
             "x": 8,
-            "y": 494
+            "y": 31
           },
           "id": 795,
           "options": {
@@ -7445,7 +7445,7 @@
             "h": 4,
             "w": 4,
             "x": 12,
-            "y": 494
+            "y": 31
           },
           "id": 774,
           "options": {
@@ -7558,7 +7558,7 @@
             "h": 4,
             "w": 4,
             "x": 16,
-            "y": 494
+            "y": 31
           },
           "id": 820,
           "options": {
@@ -7679,7 +7679,7 @@
             "h": 4,
             "w": 4,
             "x": 20,
-            "y": 494
+            "y": 31
           },
           "id": 780,
           "options": {
@@ -7806,7 +7806,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 498
+            "y": 35
           },
           "id": 737,
           "options": {
@@ -7901,7 +7901,7 @@
             "h": 4,
             "w": 4,
             "x": 4,
-            "y": 498
+            "y": 35
           },
           "id": 797,
           "options": {
@@ -8012,7 +8012,7 @@
             "h": 4,
             "w": 4,
             "x": 8,
-            "y": 498
+            "y": 35
           },
           "id": 823,
           "options": {
@@ -8100,7 +8100,7 @@
             "h": 4,
             "w": 4,
             "x": 12,
-            "y": 498
+            "y": 35
           },
           "id": 788,
           "options": {
@@ -8195,7 +8195,7 @@
             "h": 4,
             "w": 4,
             "x": 16,
-            "y": 498
+            "y": 35
           },
           "id": 824,
           "options": {
@@ -8321,7 +8321,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 502
+            "y": 39
           },
           "id": 796,
           "options": {
@@ -8419,7 +8419,7 @@
             "h": 4,
             "w": 4,
             "x": 4,
-            "y": 502
+            "y": 39
           },
           "id": 740,
           "options": {
@@ -8507,7 +8507,7 @@
             "h": 4,
             "w": 4,
             "x": 8,
-            "y": 502
+            "y": 39
           },
           "id": 799,
           "options": {
@@ -8632,7 +8632,7 @@
             "h": 4,
             "w": 4,
             "x": 12,
-            "y": 502
+            "y": 39
           },
           "id": 781,
           "options": {
@@ -8722,5 +8722,5 @@
   "timezone": "browser",
   "title": "Infra: Instance Detail",
   "uid": "infra-instance-detail",
-  "version": 23
+  "version": 25
 }

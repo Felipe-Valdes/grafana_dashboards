@@ -525,7 +525,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(sum by (hostname, job) (rate(oracledb_wait_time_user_io[$__rate_interval]) + rate(oracledb_wait_time_concurrency[$__rate_interval]) + rate(oracledb_wait_time_commit[$__rate_interval]) + rate(oracledb_wait_time_other[$__rate_interval])) \n/ \nsum by (hostname, job) (rate(oracledb_transaction_stats_value{name=\"DB time\"}[$__rate_interval]))) * 100",
+          "expr": "(sum(oracledb_wait_time_user_io{database=\"default\"}) + sum(oracledb_wait_time_concurrency{database=\"default\"}) + sum(oracledb_wait_time_commit{database=\"default\"})) \n/ \nsum(oracledb_transaction_stats_value{name=\"DB time\", database=\"default\"} + 0.0001) * 100",
           "legendFormat": "Wait Ratio",
           "range": true,
           "refId": "A"
@@ -1102,7 +1102,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(oracledb_ora_pga_efficiency_hit_ratio{hostname=\"$hostname\", job=\"$job\"}[$__range])",
+          "expr": "(1 - (sum(oracledb_physical_disk_value{name=\"physical reads\", database=\"default\"}) / sum(oracledb_ora_io_throughput_value{name=\"session logical reads\", database=\"default\"} + 0.0001))) * 100",
           "range": true,
           "refId": "A"
         }
@@ -1579,7 +1579,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(1 - (sum(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", hostname=\"$hostname\", job=\"$job\"}) / sum(oracledb_activity_parse_count_total{hostname=\"$hostname\", job=\"$job\"}))) * 100",
+          "expr": "(sum(oracledb_activity_execute_count{database=\"default\"}) \r\n- \r\nsum(oracledb_ora_parse_stats_value{name=\"parse count (total)\", database=\"default\"})) \r\n/ \r\nsum(oracledb_activity_execute_count{database=\"default\"}) * 100",
           "range": true,
           "refId": "A"
         }
@@ -2125,7 +2125,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(1 - (sum(avg_over_time(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", hostname=\"$hostname\", job=\"$job\"}[$__range])) / sum(avg_over_time(oracledb_activity_parse_count_total{hostname=\"$hostname\", job=\"$job\"}[$__range])))) * 100",
+          "expr": "(1 - (sum(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", database=\"default\"}) \r\n/ \r\nsum(oracledb_ora_parse_stats_value{name=\"parse count (total)\", database=\"default\"}))) * 100",
           "range": true,
           "refId": "A"
         }

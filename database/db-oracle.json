@@ -525,7 +525,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "clamp_max(\n  (\n    sum by (server) (rate(oracledb_wait_time_user_io{hostname=\"$hostname\", job=\"$job\"}[$__rate_interval])) + \n    sum by (server) (rate(oracledb_wait_time_concurrency{hostname=\"$hostname\", job=\"$job\"}[$__rate_interval])) + \n    sum by (server) (rate(oracledb_wait_time_commit{hostname=\"$hostname\", job=\"$job\"}[$__rate_interval]))\n  ) \n  / \n  sum by (server) (rate(oracledb_transaction_stats_value{name=\"DB time\", hostname=\"$hostname\", job=\"$job\"}[$__rate_interval])) \n  * 100\n, 100)",
+          "expr": "(sum by (hostname, job) (rate(oracledb_wait_time_user_io[$__rate_interval]) + rate(oracledb_wait_time_concurrency[$__rate_interval]) + rate(oracledb_wait_time_commit[$__rate_interval]) + rate(oracledb_wait_time_other[$__rate_interval])) \n/ \nsum by (hostname, job) (rate(oracledb_transaction_stats_value{name=\"DB time\"}[$__rate_interval]))) * 100",
           "legendFormat": "Wait Ratio",
           "range": true,
           "refId": "A"
@@ -724,7 +724,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_resource_current_utilization{resource_name=\"sessions\", hostname=\"$hostname\", job=\"$job\"}",
+          "expr": "sum(oracledb_sessions_value{hostname=\"$hostname\", job=\"$job\"})",
           "legendFormat": "Total Sessions",
           "range": true,
           "refId": "A"
@@ -1102,7 +1102,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(oracledb_cache_hit_ratio_value{cache_hit_type=\"Buffer Cache Hit Ratio\", hostname=\"$hostname\", job=\"$job\"}[$__range])",
+          "expr": "avg_over_time(oracledb_ora_pga_efficiency_hit_ratio{hostname=\"$hostname\", job=\"$job\"}[$__range])",
           "range": true,
           "refId": "A"
         }
@@ -1205,8 +1205,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(oracledb_resource_current_utilization{resource_name=\"sessions\", hostname=\"$hostname\", job=\"$job\"} / oracledb_resource_limit_value{resource_name=\"sessions\", hostname=\"$hostname\", job=\"$job\"}) * 100",
+          "expr": "(sum(oracledb_sessions_value{hostname=\"$hostname\", job=\"$job\"}) / ignoring(name) sum(oracledb_db_system_value{name=\"cpu_count\", hostname=\"$hostname\", job=\"$job\"} * 150)) * 100",
           "legendFormat": "Session Usage",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1578,7 +1579,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(oracledb_cache_hit_ratio_value{cache_hit_type=\"Cursor Cache Hit Ratio\", hostname=\"$hostname\", job=\"$job\"}[$__range])",
+          "expr": "(1 - (sum(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", hostname=\"$hostname\", job=\"$job\"}) / sum(oracledb_activity_parse_count_total{hostname=\"$hostname\", job=\"$job\"}))) * 100",
           "range": true,
           "refId": "A"
         }
@@ -2031,10 +2032,14 @@
               "__name__": true,
               "con_id": true,
               "database": true,
+              "env": true,
+              "hostname": true,
               "instance": true,
               "job": true,
               "server": true,
               "service": true,
+              "service_layer": true,
+              "target_type": true,
               "type": true
             },
             "indexByName": {
@@ -2120,7 +2125,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(oracledb_cache_hit_ratio_value{cache_hit_type=\"Library Cache Hit Ratio\", hostname=\"$hostname\", job=\"$job\"}[$__range])",
+          "expr": "(1 - (sum(avg_over_time(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", hostname=\"$hostname\", job=\"$job\"}[$__range])) / sum(avg_over_time(oracledb_activity_parse_count_total{hostname=\"$hostname\", job=\"$job\"}[$__range])))) * 100",
           "range": true,
           "refId": "A"
         }
@@ -2656,8 +2661,8 @@
       },
       {
         "current": {
-          "text": "master",
-          "value": "master"
+          "text": "node1",
+          "value": "node1"
         },
         "datasource": {
           "type": "prometheus",
@@ -2696,5 +2701,5 @@
   "timezone": "",
   "title": "Database: Oracle",
   "uid": "db-oracle-overview",
-  "version": 12
+  "version": 15
 }

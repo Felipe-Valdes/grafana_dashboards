@@ -192,8 +192,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(oracledb_ora_active_sessions_count{hostname=\"$hostname\", job=\"$job\"})",
+          "expr": "sum(oracledb_sessions_value{status=\"ACTIVE\", hostname=\"$hostname\", job=\"$job\"})",
           "legendFormat": "AAS Total",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -982,7 +983,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(1 - (irate(oracledb_ora_redo_stats_value{name=\"redo buffer allocation retries\", hostname=\"$hostname\", job=\"$job\"}[5m]) / (irate(oracledb_ora_redo_stats_value{name=\"redo size\", hostname=\"$hostname\", job=\"$job\"}[5m]) OR on() vector(1)))) * 100",
+          "expr": "(1 - (sum(irate(oracledb_ora_redo_stats_value{name=\"redo buffer allocation retries\", hostname=\"$hostname\", job=\"$job\"}[5m])) \r\n/ \r\nsum(irate(oracledb_ora_redo_stats_value{name=\"redo writes\", hostname=\"$hostname\", job=\"$job\"}[5m]) + 0.0001))) * 100",
           "legendFormat": "Redo Hit Ratio",
           "range": true,
           "refId": "A"
@@ -992,6 +993,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Número de operaciones de escritura física realizadas por el proceso LGWR (Log Writer) en los Redo Log Files por segundo.\n- **Interpretación**: Mide la frecuencia de sincronización de datos transaccionales a disco. Valores altos indican una carga constante de commits o un Log Buffer que se llena rápido.\n- **Valores esperados**: Debe ser consistente con el volumen de transacciones. Un cuello de botella aquí impacta directamente en el tiempo de respuesta de los Commits.",
       "fieldConfig": {
         "defaults": {
@@ -1508,6 +1513,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Porcentaje de éxito al buscar sentencias SQL o programas PL/SQL ya analizados en la Library Cache.\n- **Interpretación**: Un ratio alto indica una excelente reutilización de código. Si baja del 95%, sugiere que la Shared Pool es pequeña o que existe un exceso de Hard Parsing.\n- **Valores esperados**: Debe mantenerse idealmente por encima del 99% para minimizar el consumo de CPU por análisis de sentencias.",
       "fieldConfig": {
         "defaults": {
@@ -1596,8 +1605,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_cache_hit_ratio_value{cache_hit_type=\"Library Cache Hit Ratio\", hostname=\"$hostname\", job=\"$job\"}",
+          "expr": "(1 - (sum(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", hostname=\"$hostname\", job=\"$job\"}) / sum(oracledb_activity_parse_count_total{hostname=\"$hostname\", job=\"$job\"}))) * 100",
           "legendFormat": "Library Cache Hit Ratio",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1631,6 +1641,10 @@
       "type": "text"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Porcentaje de utilización de los límites de sesiones configurados en la base de datos (SESSIONS).\n- **Interpretación**: Muestra qué tan cerca está la instancia de alcanzar su límite máximo de conexiones. Alcanzar el 100% impedirá nuevos inicios de sesión, provocando errores en las aplicaciones.\n- **Valores esperados**: Debe mantenerse con un margen de seguridad (ej. bajo el 80%) para permitir picos de conexión incidentales.",
       "fieldConfig": {
         "defaults": {
@@ -1719,8 +1733,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(oracledb_resource_current_utilization{resource_name=\"sessions\", hostname=\"$hostname\", job=\"$job\"} / oracledb_resource_limit_value{resource_name=\"sessions\", hostname=\"$hostname\", job=\"$job\"}) * 100",
+          "expr": "(sum(oracledb_sessions_value{hostname=\"$hostname\", job=\"$job\"}) / ((sum(oracledb_db_system_value{name=\"cpu_count\", hostname=\"$hostname\", job=\"$job\"}) * 80 * 1.5) + 22)) * 100",
           "legendFormat": "Session Usage %",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1917,7 +1932,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(1 - (irate(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", hostname=\"$hostname\", job=\"$job\"}[5m]) / (irate(oracledb_ora_parse_stats_value{name=\"parse count (total)\", hostname=\"$hostname\", job=\"$job\"}[5m]) OR on() vector(1)))) * 100",
+          "expr": "(1 - (sum(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", hostname=\"$hostname\", job=\"$job\"}) / sum(oracledb_ora_parse_stats_value{name=\"parse count (total)\", hostname=\"$hostname\", job=\"$job\"}))) * 100",
           "legendFormat": "Soft Parse Ratio",
           "range": true,
           "refId": "A"
@@ -1927,6 +1942,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Porcentaje de ejecuciones de sentencias SQL que se realizaron sin necesidad de una nueva operación de análisis (parsing).\n- **Interpretación**: Es el indicador máximo de eficiencia en el uso de cursores. Un valor alto significa que la aplicación mantiene los cursores abiertos y los reutiliza, eliminando el overhead del Soft Parse.\n- **Valores esperados**: En aplicaciones bien diseñadas que utilizan persistencia de cursores, este valor debería ser significativamente alto.",
       "fieldConfig": {
         "defaults": {
@@ -2015,8 +2034,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(1 - (irate(oracledb_ora_parse_stats_value{name=\"parse count (total)\", hostname=\"$hostname\", job=\"$job\"}[5m]) / (irate(oracledb_activity_execute_count{hostname=\"$hostname\", job=\"$job\"}[5m]) OR on() vector(1)))) * 100",
+          "expr": "(sum(oracledb_activity_execute_count{hostname=\"$hostname\", job=\"$job\"}) - sum(oracledb_ora_parse_stats_value{name=\"parse count (total)\", hostname=\"$hostname\", job=\"$job\"})) / sum(oracledb_activity_execute_count{hostname=\"$hostname\", job=\"$job\"}) * 100",
           "legendFormat": "Exec without Parse",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -2050,6 +2070,10 @@
       "type": "text"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Porcentaje de éxito al buscar entradas de metadatos del diccionario de datos (como definiciones de tablas y usuarios) en la Row Cache.\n- **Interpretación**: Un ratio bajo indica que Oracle está recurriendo excesivamente al disco para obtener metadatos, lo que ralentiza el parsing y la ejecución de sentencias SQL.\n- **Valores esperados**: Debe ser extremadamente alto (habitualmente superior al 98%) en sistemas en estado estacionario.",
       "fieldConfig": {
         "defaults": {
@@ -2138,8 +2162,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_cache_hit_ratio_value{cache_hit_type=\"Row Cache Hit Ratio\", hostname=\"$hostname\", job=\"$job\"}",
+          "expr": "(1 - (sum(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", hostname=\"$hostname\", job=\"$job\"}) / sum(oracledb_ora_parse_stats_value{name=\"parse count (total)\", hostname=\"$hostname\", job=\"$job\"}))) * 100",
           "legendFormat": "Row Cache Hit Ratio",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -2530,7 +2555,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(oracledb_sga_stats_free_bytes{pool=\"shared pool\", hostname=\"$hostname\", job=\"$job\"} / (oracledb_db_system_value{name=\"sga_max_size\", hostname=\"$hostname\", job=\"$job\"} OR on() vector(1))) * 100",
+          "expr": "100 - ((sum(oracledb_ora_parse_stats_value{name=\"parse count (hard)\", hostname=\"$hostname\", job=\"$job\"}) / sum(oracledb_ora_parse_stats_value{name=\"parse count (total)\", hostname=\"$hostname\", job=\"$job\"})) * 100)",
           "legendFormat": "Shared Pool Free %",
           "range": true,
           "refId": "A"
@@ -2566,6 +2591,10 @@
       "type": "text"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Porcentaje de solicitudes de datos que se resolvieron desde la memoria (Buffer Cache) sin necesidad de acceder al disco físico.\n- **Interpretación**: Es un indicador fundamental de la eficiencia del subsistema de memoria. Un valor alto significa que los datos más consultados residen en RAM, acelerando drásticamente el rendimiento.\n- **Valores esperados**: Idealmente superior al 95%. Si el ratio es bajo, puede indicar que el Buffer Cache es demasiado pequeño o que se están realizando demasiados Full Table Scans.",
       "fieldConfig": {
         "defaults": {
@@ -2654,8 +2683,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "oracledb_cache_hit_ratio_value{cache_hit_type=\"Buffer Cache Hit Ratio\", hostname=\"$hostname\", job=\"$job\"}",
+          "expr": "(sum(oracledb_ora_io_throughput_value{name=\"session logical reads\", hostname=\"$hostname\", job=\"$job\"}) - sum(oracledb_physical_disk_value{name=\"physical reads\", hostname=\"$hostname\", job=\"$job\"})) / sum(oracledb_ora_io_throughput_value{name=\"session logical reads\", hostname=\"$hostname\", job=\"$job\"}) * 100",
           "legendFormat": "Buffer Cache Hit Ratio",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -3394,8 +3424,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(oracledb_compute_stats_value{name=\"sorts (memory)\", hostname=\"$hostname\", job=\"$job\"} / (oracledb_compute_stats_value{name=\"sorts (memory)\", hostname=\"$hostname\", job=\"$job\"} + oracledb_compute_stats_value{name=\"sorts (disk)\", hostname=\"$hostname\", job=\"$job\"} OR on() vector(1))) * 100",
-          "legendFormat": "Memory Sort Ratio",
+          "expr": "sum(oracledb_compute_stats_value{name=\"sorts (memory)\", database=\"default\"}) \r\n/ \r\n(sum(oracledb_compute_stats_value{name=\"sorts (memory)\", database=\"default\"}) + sum(oracledb_compute_stats_value{name=\"sorts (disk)\", database=\"default\"})) * 100",
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
@@ -3501,6 +3531,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Cantidad promedio de filas procesadas en cada operación de ordenamiento.\n- **Interpretación**: Proporciona contexto sobre el volumen de datos que maneja la base de datos al ordenar. Valores muy altos en combinación con 'Disk sorts' confirman que la carga de datos excede la capacidad de la memoria configurada.\n- **Valores esperados**: Depende del diseño de la aplicación, pero debe monitorearse para detectar cambios en los patrones de consulta de los usuarios.",
       "fieldConfig": {
         "defaults": {
@@ -3589,8 +3623,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_compute_stats_value{name=\"sorts (rows)\", hostname=\"$hostname\", job=\"$job\"}[5m]) / (irate(oracledb_compute_stats_value{name=\"sorts (memory)\", hostname=\"$hostname\", job=\"$job\"}[5m]) + irate(oracledb_compute_stats_value{name=\"sorts (disk)\", hostname=\"$hostname\", job=\"$job\"}[5m]) OR on() vector(1))",
+          "expr": "sum(oracledb_compute_stats_value{name=\"sorts (rows)\"}) / \r\n(sum(oracledb_compute_stats_value{name=\"sorts (memory)\"}) + sum(oracledb_compute_stats_value{name=\"sorts (disk)\"}))",
           "legendFormat": "Avg Rows/Sort",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -3624,6 +3659,10 @@
       "type": "text"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "- **Definición**: Cantidad total de espacio en bytes utilizado actualmente en el Tablespace Temporal.\n- **Interpretación**: El espacio temporal es utilizado para operaciones que no caben en la PGA, como ordenamientos grandes, creación de índices o joins complejos. Si este valor llega al máximo del archivo físico, las consultas fallarán con un error ORA-01652.\n- **Valores esperados**: Debe fluctuar según la carga de trabajo. Un uso persistentemente alto puede indicar la necesidad de optimizar SQL o aumentar el tamaño de los archivos temporales.",
       "fieldConfig": {
         "defaults": {
@@ -3712,8 +3751,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(oracledb_ora_temp_usage_bytes_used{hostname=\"$hostname\", job=\"$job\"})",
+          "expr": "oracledb_tablespace_used_percent{tablespace=\"TEMP\", database=\"default\"} * 100",
           "legendFormat": "Temp Used Bytes",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -3813,7 +3853,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(irate(oracledb_compute_stats_value{name=\"sorts (memory)\", hostname=\"$hostname\", job=\"$job\"}[5m]) + irate(oracledb_compute_stats_value{name=\"sorts (disk)\", hostname=\"$hostname\", job=\"$job\"}[5m])) / (irate(oracledb_activity_execute_count{hostname=\"$hostname\", job=\"$job\"}[5m]) OR on() vector(1))",
+          "expr": "(sum(oracledb_compute_stats_value{name=\"sorts (memory)\", database=\"default\"}) + sum(oracledb_compute_stats_value{name=\"sorts (disk)\", database=\"default\"})) / sum(oracledb_activity_execute_count{database=\"default\"})",
           "legendFormat": "Sorts per User Call",
           "range": true,
           "refId": "A"
@@ -4489,7 +4529,7 @@
               "mode": "off"
             }
           },
-          "decimals": 4,
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -4504,7 +4544,7 @@
               }
             ]
           },
-          "unit": "s"
+          "unit": "binBps"
         },
         "overrides": []
       },
@@ -4536,7 +4576,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(oracledb_wait_time_user_io{hostname=\"$hostname\", job=\"$job\"}[5m]) / (irate(oracledb_physical_disk_value{name=\"physical reads\", hostname=\"$hostname\", job=\"$job\"}[5m]) OR on() vector(1))",
+          "expr": "sum(oracledb_ora_io_throughput_value{name=\"physical read total bytes\", hostname=\"$hostname\", job=\"$job\"}) / 1024 / 1024",
           "legendFormat": "Avg Single Block Read (s)",
           "range": true,
           "refId": "A"
@@ -5024,8 +5064,8 @@
       },
       {
         "current": {
-          "text": "master",
-          "value": "master"
+          "text": "node1",
+          "value": "node1"
         },
         "datasource": {
           "type": "prometheus",
@@ -5067,5 +5107,5 @@
   "timezone": "browser",
   "title": "Database: Oracle DBM",
   "uid": "db-oracle-dbm",
-  "version": 6
+  "version": 9
 }
